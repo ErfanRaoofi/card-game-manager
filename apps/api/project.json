@@ -6,6 +6,16 @@
   "targets": {
     "build": {
       "executor": "nx:run-commands",
+      "inputs": [
+        "production",
+        "^production",
+        "{workspaceRoot}/package.json",
+        "{workspaceRoot}/package-lock.json",
+        {
+          "json": "{workspaceRoot}/tsconfig.json",
+          "fields": ["extends", "files", "include"]
+        }
+      ],
       "options": {
         "command": "webpack-cli build",
         "args": ["--node-env=production"],

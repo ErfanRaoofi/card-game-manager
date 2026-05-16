@@ -1,2 +1,34 @@
-<app-nx-welcome></app-nx-welcome>
+<div
+  style="text-align: center; margin-top: 50px; font-family: Tahoma, sans-serif"
+  dir="rtl"
+>
+  <h1>مدیریت بازی کارتی 🃏</h1>
+  <button
+    (click)="joinTestRoom()"
+    style="padding: 10px 20px; font-size: 16px; cursor: pointer"
+  >
+    ورود به روم تستی (Room-1)
+  </button>
+
+  <div
+    style="
+      margin-top: 30px;
+      background: #f4f4f4;
+      padding: 20px;
+      border-radius: 8px;
+      display: inline-block;
+      min-width: 300px;
+    "
+  >
+    <h3>لاگ‌های سرور:</h3>
+    <ul style="list-style: none; padding: 0">
+      <li
+        *ngFor="let msg of messages"
+        style="margin-bottom: 10px; color: green"
+      >
+        {{ msg.message }}
+      </li>
+    </ul>
+  </div>
+</div>
 <router-outlet></router-outlet>

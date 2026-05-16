@@ -2,51 +2,129 @@
   "version": "6.0",
   "nxVersion": "22.7.2",
   "pathMappings": {},
-  "nxJsonPlugins": [],
+  "nxJsonPlugins": [
+    {
+      "name": "@nx/webpack/plugin",
+      "options": {
+        "buildTargetName": "build",
+        "serveTargetName": "serve",
+        "previewTargetName": "preview",
+        "buildDepsTargetName": "build-deps",
+        "watchDepsTargetName": "watch-deps",
+        "serveStaticTargetName": "serve-static"
+      }
+    }
+  ],
   "fileMap": {
     "nonProjectFiles": [
       {
+        "file": "tsconfig.base.json",
+        "hash": "3385014866466956207"
+      },
+      {
+        "file": ".vscode/launch.json",
+        "hash": "11911801181309274062"
+      },
+      {
+        "file": "README.md",
+        "hash": "4578715060092819908"
+      },
+      {
+        "file": "package.json",
+        "hash": "9189103379048979024"
+      },
+      {
+        "file": "nx.json",
+        "hash": "17610434417343544344"
+      },
+      {
         "file": ".editorconfig",
         "hash": "5443105041930014821"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "557385588170937783"
-      },
-      {
-        "file": ".prettierignore",
-        "hash": "5407418692668764289"
       },
       {
         "file": ".prettierrc",
         "hash": "16267754514737964994"
       },
       {
-        "file": ".vscode/extensions.json",
-        "hash": "16884713733442577066"
-      },
-      {
-        "file": "README.md",
-        "hash": "7635568267690701555"
+        "file": "docker-compose.yml",
+        "hash": "12573238763937485288"
       },
       {
         "file": "eslint.config.mjs",
         "hash": "12926286793420397906"
       },
       {
-        "file": "nx.json",
-        "hash": "17209782199831689"
+        "file": ".vscode/extensions.json",
+        "hash": "16884713733442577066"
       },
       {
-        "file": "package.json",
-        "hash": "6601130069927153364"
+        "file": ".prettierignore",
+        "hash": "5407418692668764289"
       },
       {
-        "file": "tsconfig.base.json",
-        "hash": "3385014866466956207"
+        "file": ".gitignore",
+        "hash": "557385588170937783"
       }
     ],
     "projectFileMap": {
+      "api": [
+        {
+          "file": "apps/api/project.json",
+          "hash": "2576555401231572824"
+        },
+        {
+          "file": "apps/api/src/app/app.controller.ts",
+          "hash": "15276891910009544695"
+        },
+        {
+          "file": "apps/api/src/app/app.module.ts",
+          "hash": "9804491110828135733"
+        },
+        {
+          "file": "apps/api/src/app/app.service.ts",
+          "hash": "9967902337593410053"
+        },
+        {
+          "file": "apps/api/src/app/entities/game-log.entity.ts",
+          "hash": "9829467356259012149"
+        },
+        {
+          "file": "apps/api/src/app/entities/room-member.entity.ts",
+          "hash": "5422079947378511379"
+        },
+        {
+          "file": "apps/api/src/app/entities/room.entity.ts",
+          "hash": "16647472524721230987"
+        },
+        {
+          "file": "apps/api/src/app/entities/user.entity.ts",
+          "hash": "11752525127615116853"
+        },
+        {
+          "file": "apps/api/src/app/gateways/ame.gateway.ts",
+          "hash": "5152161377506231940"
+        },
+        {
+          "file": "apps/api/src/assets/.gitkeep",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/api/src/main.ts",
+          "hash": "14244403322143362372"
+        },
+        {
+          "file": "apps/api/tsconfig.app.json",
+          "hash": "14721380886453079150"
+        },
+        {
+          "file": "apps/api/tsconfig.json",
+          "hash": "3025378044812449119"
+        },
+        {
+          "file": "apps/api/webpack.config.js",
+          "hash": "5823274778110364646"
+        }
+      ],
       "web-app": [
         {
           "file": "apps/web-app/eslint.config.mjs",
@@ -74,7 +152,7 @@
         },
         {
           "file": "apps/web-app/src/app/app.html",
-          "hash": "11987652264972370457"
+          "hash": "9447720425859754063"
         },
         {
           "file": "apps/web-app/src/app/app.routes.server.ts",
@@ -86,11 +164,15 @@
         },
         {
           "file": "apps/web-app/src/app/app.ts",
-          "hash": "7795671040467714322"
+          "hash": "13805958249532403114"
         },
         {
           "file": "apps/web-app/src/app/nx-welcome.ts",
           "hash": "14986445073308384342"
+        },
+        {
+          "file": "apps/web-app/src/app/socket.service.ts",
+          "hash": "4082650329910708236"
         },
         {
           "file": "apps/web-app/src/index.html",
