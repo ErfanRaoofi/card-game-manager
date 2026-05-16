@@ -1,0 +1,167 @@
+{
+  "version": "6.0",
+  "nxVersion": "22.7.2",
+  "pathMappings": {},
+  "nxJsonPlugins": [],
+  "fileMap": {
+    "nonProjectFiles": [
+      {
+        "file": "package.json",
+        "hash": "2211919821941072500"
+      },
+      {
+        "file": ".prettierrc",
+        "hash": "16267754514737964994"
+      },
+      {
+        "file": ".prettierignore",
+        "hash": "5407418692668764289"
+      },
+      {
+        "file": "README.md",
+        "hash": "7635568267690701555"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "3385014866466956207"
+      },
+      {
+        "file": ".gitignore",
+        "hash": "11681346040584619379"
+      },
+      {
+        "file": ".vscode/extensions.json",
+        "hash": "16884713733442577066"
+      },
+      {
+        "file": "package-lock.json",
+        "hash": "9554803754174049643"
+      },
+      {
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
+      },
+      {
+        "file": "eslint.config.mjs",
+        "hash": "12926286793420397906"
+      },
+      {
+        "file": "nx.json",
+        "hash": "17209782199831689"
+      }
+    ],
+    "projectFileMap": {
+      "web-app": [
+        {
+          "file": "apps/web-app/eslint.config.mjs",
+          "hash": "11999635802406141026",
+          "deps": [
+            "npm:@nx/eslint-plugin"
+          ]
+        },
+        {
+          "file": "apps/web-app/project.json",
+          "hash": "14823765032762396423"
+        },
+        {
+          "file": "apps/web-app/public/favicon.ico",
+          "hash": "9303420814833116677"
+        },
+        {
+          "file": "apps/web-app/src/app/app.config.server.ts",
+          "hash": "16664769899172877666",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/ssr"
+          ]
+        },
+        {
+          "file": "apps/web-app/src/app/app.config.ts",
+          "hash": "2705505458140564383",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router",
+            "npm:@angular/platform-browser"
+          ]
+        },
+        {
+          "file": "apps/web-app/src/app/app.css",
+          "hash": "3244421341483603138"
+        },
+        {
+          "file": "apps/web-app/src/app/app.html",
+          "hash": "11987652264972370457"
+        },
+        {
+          "file": "apps/web-app/src/app/app.routes.server.ts",
+          "hash": "16960858348243221237",
+          "deps": [
+            "npm:@angular/ssr"
+          ]
+        },
+        {
+          "file": "apps/web-app/src/app/app.routes.ts",
+          "hash": "6185150965714414910",
+          "deps": [
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/web-app/src/app/app.ts",
+          "hash": "7795671040467714322",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/router"
+          ]
+        },
+        {
+          "file": "apps/web-app/src/app/nx-welcome.ts",
+          "hash": "14986445073308384342",
+          "deps": [
+            "npm:@angular/core",
+            "npm:@angular/common"
+          ]
+        },
+        {
+          "file": "apps/web-app/src/index.html",
+          "hash": "8659890205843491733"
+        },
+        {
+          "file": "apps/web-app/src/main.server.ts",
+          "hash": "2790221776171602446",
+          "deps": [
+            "npm:@angular/platform-browser"
+          ]
+        },
+        {
+          "file": "apps/web-app/src/main.ts",
+          "hash": "3314327030169821486",
+          "deps": [
+            "npm:@angular/platform-browser"
+          ]
+        },
+        {
+          "file": "apps/web-app/src/server.ts",
+          "hash": "4501044531871950503",
+          "deps": [
+            "npm:@angular/ssr",
+            "npm:express"
+          ]
+        },
+        {
+          "file": "apps/web-app/src/styles.css",
+          "hash": "5195668842064076916"
+        },
+        {
+          "file": "apps/web-app/tsconfig.app.json",
+          "hash": "2438757114263802077"
+        },
+        {
+          "file": "apps/web-app/tsconfig.json",
+          "hash": "4516499123136711707"
+        }
+      ]
+    }
+  },
+  "externalNodesHash": "6436275443907220245"
+}
