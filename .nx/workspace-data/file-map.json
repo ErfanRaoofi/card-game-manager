@@ -6,40 +6,28 @@
   "fileMap": {
     "nonProjectFiles": [
       {
-        "file": "package.json",
-        "hash": "2211919821941072500"
+        "file": ".editorconfig",
+        "hash": "5443105041930014821"
       },
       {
-        "file": ".prettierrc",
-        "hash": "16267754514737964994"
+        "file": ".gitignore",
+        "hash": "557385588170937783"
       },
       {
         "file": ".prettierignore",
         "hash": "5407418692668764289"
       },
       {
-        "file": "README.md",
-        "hash": "7635568267690701555"
-      },
-      {
-        "file": "tsconfig.base.json",
-        "hash": "3385014866466956207"
-      },
-      {
-        "file": ".gitignore",
-        "hash": "11681346040584619379"
+        "file": ".prettierrc",
+        "hash": "16267754514737964994"
       },
       {
         "file": ".vscode/extensions.json",
         "hash": "16884713733442577066"
       },
       {
-        "file": "package-lock.json",
-        "hash": "9554803754174049643"
-      },
-      {
-        "file": ".editorconfig",
-        "hash": "5443105041930014821"
+        "file": "README.md",
+        "hash": "7635568267690701555"
       },
       {
         "file": "eslint.config.mjs",
@@ -48,16 +36,21 @@
       {
         "file": "nx.json",
         "hash": "17209782199831689"
+      },
+      {
+        "file": "package.json",
+        "hash": "6601130069927153364"
+      },
+      {
+        "file": "tsconfig.base.json",
+        "hash": "3385014866466956207"
       }
     ],
     "projectFileMap": {
       "web-app": [
         {
           "file": "apps/web-app/eslint.config.mjs",
-          "hash": "11999635802406141026",
-          "deps": [
-            "npm:@nx/eslint-plugin"
-          ]
+          "hash": "11999635802406141026"
         },
         {
           "file": "apps/web-app/project.json",
@@ -69,20 +62,11 @@
         },
         {
           "file": "apps/web-app/src/app/app.config.server.ts",
-          "hash": "16664769899172877666",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@angular/ssr"
-          ]
+          "hash": "16664769899172877666"
         },
         {
           "file": "apps/web-app/src/app/app.config.ts",
-          "hash": "2705505458140564383",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@angular/router",
-            "npm:@angular/platform-browser"
-          ]
+          "hash": "2705505458140564383"
         },
         {
           "file": "apps/web-app/src/app/app.css",
@@ -94,33 +78,19 @@
         },
         {
           "file": "apps/web-app/src/app/app.routes.server.ts",
-          "hash": "16960858348243221237",
-          "deps": [
-            "npm:@angular/ssr"
-          ]
+          "hash": "16960858348243221237"
         },
         {
           "file": "apps/web-app/src/app/app.routes.ts",
-          "hash": "6185150965714414910",
-          "deps": [
-            "npm:@angular/router"
-          ]
+          "hash": "6185150965714414910"
         },
         {
           "file": "apps/web-app/src/app/app.ts",
-          "hash": "7795671040467714322",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@angular/router"
-          ]
+          "hash": "7795671040467714322"
         },
         {
           "file": "apps/web-app/src/app/nx-welcome.ts",
-          "hash": "14986445073308384342",
-          "deps": [
-            "npm:@angular/core",
-            "npm:@angular/common"
-          ]
+          "hash": "14986445073308384342"
         },
         {
           "file": "apps/web-app/src/index.html",
@@ -128,25 +98,15 @@
         },
         {
           "file": "apps/web-app/src/main.server.ts",
-          "hash": "2790221776171602446",
-          "deps": [
-            "npm:@angular/platform-browser"
-          ]
+          "hash": "2790221776171602446"
         },
         {
           "file": "apps/web-app/src/main.ts",
-          "hash": "3314327030169821486",
-          "deps": [
-            "npm:@angular/platform-browser"
-          ]
+          "hash": "3314327030169821486"
         },
         {
           "file": "apps/web-app/src/server.ts",
-          "hash": "4501044531871950503",
-          "deps": [
-            "npm:@angular/ssr",
-            "npm:express"
-          ]
+          "hash": "4501044531871950503"
         },
         {
           "file": "apps/web-app/src/styles.css",
@@ -163,5 +123,5 @@
       ]
     }
   },
-  "externalNodesHash": "6436275443907220245"
+  "externalNodesHash": "3244421341483603138"
 }
