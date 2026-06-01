@@ -2,7 +2,9 @@
   "name": "@card-game-manager-new/source",
   "version": "0.0.0",
   "license": "MIT",
-  "scripts": {},
+  "scripts": {
+    "start:frontend": "npx nx run frontend:serve --configuration=production"
+  },
   "private": true,
   "dependencies": {
     "@angular-devkit/build-angular": "~21.2.0",
@@ -14,8 +16,11 @@
     "@angular/platform-server": "~21.2.0",
     "@angular/router": "~21.2.0",
     "@angular/ssr": "~21.2.0",
+    "@tailwindcss/postcss": "^4.3.0",
     "express": "^4.21.2",
-    "rxjs": "~7.8.0"
+    "postcss": "^8.5.15",
+    "rxjs": "~7.8.0",
+    "tailwindcss": "^4.3.0"
   },
   "devDependencies": {
     "@angular-devkit/core": "~21.2.0",
@@ -43,6 +48,8 @@
     "eslint-config-prettier": "^10.0.0",
     "nx": "22.7.5",
     "prettier": "~3.6.2",
+    "prettier-plugin-organize-imports": "^4.1.0",
+    "prettier-plugin-tailwindcss": "^0.6.11",
     "tslib": "^2.3.0",
     "typescript": "~5.9.2",
     "typescript-eslint": "^8.40.0"
