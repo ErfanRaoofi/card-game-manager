@@ -1,4 +1,6 @@
-npx nx generate @nx/angular:library --directory=libs/date-picker --name=date-picker --publishable=true --changeDetection=OnPush --flat=true --importPath=@fe/date-picker --skipModule=true --skipTests=true --style=css --unitTestRunner=none --viewEncapsulation=None --no-interactive
+npx nx generate @nx/angular:library --directory=libs/room --name=room --publishable=true --changeDetection=OnPush --flat=true --importPath=@fe/room --skipModule=true --skipTests=true --style=css --unitTestRunner=none --viewEncapsulation=None --no-interactive
+
+
 
 PWA
 npm install @angular/pwa --save-dev
@@ -17,3 +19,10 @@ taskkill /F /IM node.exe
 netstat -ano | findstr :4200
 
 taskkill /F /PID 1234
+
+
+npm install @nestjs/typeorm typeorm pg @nestjs/websockets @nestjs/platform-socket.io socket.io
+
+npm install socket.io-client
+
+

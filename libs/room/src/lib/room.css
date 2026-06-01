@@ -1,0 +1,58 @@
+/* چوب کبریت — روش مرسوم امتیازدهی حکم */
+.chalk-board {
+  background: linear-gradient(180deg, #f5f0e6 0%, #ebe4d4 100%);
+  border: 1px solid #c4b89a;
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+}
+
+.chalk-sticks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  align-items: flex-end;
+  min-height: 2.75rem;
+  padding: 0.25rem 0;
+}
+
+.chalk-stick {
+  display: block;
+  width: 0.45rem;
+  border-radius: 2px 2px 1px 1px;
+  box-shadow: 1px 1px 0 rgba(0, 0, 0, 0.15);
+  transition: height 0.15s ease, background 0.15s ease;
+}
+
+/* امتیاز دست — چوب‌های بلندتر */
+.chalk-stick--hand {
+  height: 2.25rem;
+}
+
+.chalk-stick--hand.chalk-stick--on {
+  background: linear-gradient(90deg, #6b5344 0%, #8b6914 35%, #a08020 70%, #6b5344 100%);
+  border: 1px solid #4a3728;
+}
+
+.chalk-stick--hand.chalk-stick--off {
+  height: 2.25rem;
+  background: #ddd6c8;
+  border: 1px dashed #b8ad96;
+  opacity: 0.55;
+}
+
+/* امتیاز ست — چوب‌های کوتاه‌تر (امتیاز بزرگ) */
+.chalk-stick--set {
+  height: 1.35rem;
+  width: 0.55rem;
+}
+
+.chalk-stick--set.chalk-stick--on {
+  background: linear-gradient(90deg, #4a3728 0%, #5c4033 50%, #4a3728 100%);
+  border: 1px solid #3d2e22;
+}
+
+.chalk-sticks--sets:empty::after {
+  content: '—';
+  color: #9ca3af;
+  font-size: 0.875rem;
+}

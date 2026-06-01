@@ -13,7 +13,11 @@
     "lib": ["es2020", "dom"],
     "skipLibCheck": true,
     "skipDefaultLibCheck": true,
-    "paths": {}
+    "paths": {
+      "@fe/shared-types": ["./libs/shared-types/src/index.ts"],
+      "@fe/services": ["./libs/services/src/index.ts"],
+      "@fe/room": ["./libs/room/src/index.ts"]
+    }
   },
   "exclude": ["node_modules", "tmp"]
 }
