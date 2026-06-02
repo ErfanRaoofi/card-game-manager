@@ -1,0 +1,616 @@
+/* ——— لابی و پوسته ——— */
+.hokm-app {
+  min-height: 100vh;
+  background: #f1f5f9;
+  font-family: system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
+}
+
+.hokm-shell {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 1rem 1.25rem 2rem;
+}
+
+.hokm-card {
+  background: #fff;
+  border-radius: 1rem;
+  box-shadow: 0 1px 3px rgb(0 0 0 / 0.08);
+  padding: 1.25rem 1.5rem;
+}
+
+/* ——— نوار کاربر ——— */
+.user-bar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.65rem 1rem;
+  background: #fff;
+  border-radius: 0.75rem;
+  border: 1px solid #e2e8f0;
+  margin-bottom: 1rem;
+}
+
+.user-bar__name {
+  font-size: 0.875rem;
+  color: #64748b;
+}
+
+.user-bar__name strong {
+  color: #0f172a;
+  font-weight: 600;
+}
+
+.user-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.user-bar__link {
+  font-size: 0.875rem;
+  color: #b45309;
+  font-weight: 500;
+  text-decoration: none;
+}
+
+.user-bar__link:hover {
+  color: #92400e;
+}
+
+.user-bar__logout {
+  font-size: 0.875rem;
+  color: #dc2626;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.user-bar__logout:hover {
+  color: #b91c1c;
+}
+
+/* ——— داشبورد بازی ——— */
+.game-dashboard {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.game-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.game-head__main {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.75rem 1.25rem;
+}
+
+.game-head__back {
+  font-size: 0.8125rem;
+  color: #64748b;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+
+.game-head__back:hover {
+  color: #334155;
+}
+
+.game-head__title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.status-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  background: #dcfce7;
+  color: #166534;
+}
+
+.status-pill--setup {
+  background: #fef9c3;
+  color: #854d0e;
+}
+
+.status-pill__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.status-pill--setup .status-pill__dot {
+  background: #eab308;
+}
+
+.room-code {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.8125rem;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  padding: 0.35rem 0.65rem;
+}
+
+.room-code__value {
+  font-family: ui-monospace, monospace;
+  font-weight: 600;
+  color: #334155;
+}
+
+.room-code__copy {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.15rem;
+  color: #64748b;
+  line-height: 0;
+}
+
+.room-code__copy:hover {
+  color: #2563eb;
+}
+
+.btn-undo {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  border: 1px solid #fdba74;
+  background: #fff7ed;
+  color: #c2410c;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+.btn-undo:hover {
+  background: #ffedd5;
+}
+
+/* ——— نوار حکم ——— */
+.hokm-bar {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.75rem;
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hokm-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.85rem;
+  border-radius: 0.5rem;
+  font-weight: 700;
+  font-size: 0.9375rem;
+  background: #eef2ff;
+  color: #4338ca;
+  border: 1px solid #c7d2fe;
+}
+
+.hokm-badge--special {
+  background: #f5f3ff;
+  color: #6d28d9;
+  border-color: #ddd6fe;
+}
+
+.hokm-picker {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+}
+
+.hokm-picker__label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #475569;
+}
+
+.hokm-pill {
+  padding: 0.35rem 0.85rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border: 1px solid #e2e8f0;
+  background: #fff;
+  color: #334155;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.hokm-pill:hover {
+  background: #f1f5f9;
+}
+
+.hokm-pill--active {
+  background: #4f46e5;
+  border-color: #4338ca;
+  color: #fff;
+}
+
+.hokm-pill--special.hokm-pill--active {
+  background: #7c3aed;
+  border-color: #6d28d9;
+}
+
+.hokm-pill--special {
+  border-color: #ddd6fe;
+  color: #5b21b6;
+}
+
+.btn-confirm-hokm {
+  margin-right: auto;
+  padding: 0.4rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  background: #4f46e5;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.btn-confirm-hokm:hover {
+  background: #4338ca;
+}
+
+/* ——— باکس قوانین ——— */
+.rules-banner {
+  background: #fffbeb;
+  border: 2px dashed #fcd34d;
+  border-radius: 0.75rem;
+  padding: 0.85rem 1.1rem;
+  font-size: 0.8125rem;
+  line-height: 1.65;
+  color: #78350f;
+}
+
+.rules-banner strong {
+  color: #92400e;
+}
+
+/* ——— کارت تیم ——— */
+.teams-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .teams-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+.team-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1.25rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
+}
+
+.team-card__head {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.team-card__head svg {
+  flex-shrink: 0;
+  color: #64748b;
+}
+
+.team-card__hakem-tag {
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #b45309;
+}
+
+/* ——— چوب کبریت ——— */
+.chalk-board {
+  background: linear-gradient(180deg, #faf6ee 0%, #f0e9d8 100%);
+  border: 1px solid #d6cbb0;
+  border-radius: 0.65rem;
+  padding: 0.85rem 1rem;
+  margin-bottom: 1rem;
+}
+
+.chalk-row {
+  margin-bottom: 0.75rem;
+}
+
+.chalk-row:last-child {
+  margin-bottom: 0;
+}
+
+.chalk-row__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+}
+
+.chalk-row__label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #57534e;
+}
+
+.chalk-row__number {
+  font-size: 1.5rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  color: #1c1917;
+  line-height: 1;
+}
+
+.chalk-row__number small {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #78716c;
+}
+
+.chalk-sticks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  align-items: flex-end;
+  min-height: 2.5rem;
+}
+
+.chalk-stick {
+  position: relative;
+  display: block;
+  width: 0.35rem;
+  border-radius: 1px;
+}
+
+.chalk-stick--hand {
+  height: 2rem;
+}
+
+.chalk-stick--hand.chalk-stick--on {
+  background: linear-gradient(180deg, #fb923c 0%, #ea580c 55%, #c2410c 100%);
+  box-shadow: 0 1px 2px rgb(0 0 0 / 0.2);
+}
+
+.chalk-stick--hand.chalk-stick--on::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 30% 30%, #fdba74, #ea580c);
+  border: 1px solid #c2410c;
+}
+
+.chalk-stick--hand.chalk-stick--off {
+  height: 2rem;
+  background: #e7e5e4;
+  border: 1px dashed #a8a29e;
+  opacity: 0.5;
+}
+
+.chalk-stick--set {
+  height: 1.25rem;
+  width: 0.4rem;
+}
+
+.chalk-stick--set.chalk-stick--on {
+  background: linear-gradient(180deg, #fb923c 0%, #c2410c 100%);
+  box-shadow: 0 1px 1px rgb(0 0 0 / 0.15);
+}
+
+.chalk-stick--set.chalk-stick--on::before {
+  content: '';
+  position: absolute;
+  top: -4px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fb923c;
+  border: 1px solid #ea580c;
+}
+
+.chalk-sticks--sets:empty::after {
+  content: '—';
+  color: #a8a29e;
+  font-size: 0.875rem;
+}
+
+/* ——— لیست بازیکنان ——— */
+.player-fields {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.player-field {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.55rem 0.85rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 0.5rem;
+  font-size: 0.9375rem;
+  color: #334155;
+}
+
+.player-field__crown {
+  font-size: 1rem;
+}
+
+/* ——— دکمه‌های امتیاز ——— */
+.team-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.btn-score {
+  flex: 1;
+  padding: 0.65rem 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.btn-score:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+
+.btn-score--ket {
+  background: #f97316;
+  color: #fff;
+}
+
+.btn-score--ket:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.btn-score--hand {
+  background: #3b82f6;
+  color: #fff;
+}
+
+.btn-score--hand:hover:not(:disabled) {
+  filter: brightness(1.05);
+}
+
+.btn-score__hint {
+  display: block;
+  font-size: 0.6875rem;
+  font-weight: 400;
+  opacity: 0.9;
+  margin-top: 0.15rem;
+}
+
+/* ——— تاریخچه ——— */
+.history-card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 1rem;
+  padding: 1rem 1.25rem;
+}
+
+.history-card__title {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.85rem;
+}
+
+.history-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  max-height: 14rem;
+  overflow-y: auto;
+}
+
+.history-item {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.35rem 1rem;
+  padding: 0.55rem 0;
+  border-bottom: 1px solid #f1f5f9;
+  font-size: 0.8125rem;
+}
+
+.history-item:last-child {
+  border-bottom: none;
+}
+
+.history-item__type {
+  font-weight: 600;
+  color: #334155;
+  min-width: 3rem;
+}
+
+.history-item__type--ket {
+  color: #c2410c;
+}
+
+.history-item__meta {
+  color: #64748b;
+}
+
+.history-empty {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  padding: 1rem;
+}
+
+/* ——— مودال پیروزی ——— */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgb(0 0 0 / 0.55);
+  padding: 1rem;
+}
+
+.modal-win {
+  background: #fff;
+  border-radius: 1rem;
+  border: 4px solid #fbbf24;
+  padding: 2rem;
+  max-width: 24rem;
+  width: 100%;
+  text-align: center;
+  box-shadow: 0 25px 50px rgb(0 0 0 / 0.2);
+}
