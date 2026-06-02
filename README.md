@@ -26,3 +26,18 @@ npm install @nestjs/typeorm typeorm pg @nestjs/websockets @nestjs/platform-socke
 npm install socket.io-client
 
 
+#022028
+
+#1c39bb
+#0067a5
+#32127a
+#fe28a2
+#e77fbe
+#00a693
+#701c1c
+#cc3333
+#d99058
+
+
+
+

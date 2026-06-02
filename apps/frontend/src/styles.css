@@ -1,2 +1,42 @@
-/* You can add global styles to this file, and also import other style files */
 @import "tailwindcss";
+@import "./assets/font/index.css";
+
+/* override فونت پیش‌فرض tailwind */
+:root {
+    --font-sans: "ModernPro", "Vazirmatn FD", sans-serif;
+}
+
+/* @layer base {
+
+    html,
+    body {
+        font-family: var(--font-sans);
+    }
+} */
+
+@theme {
+    --color-primary: #00a693;
+    --color-persian-green-50: #effefa;
+    --color-persian-green-100: #c7fff2;
+    --color-persian-green-200: #90ffe7;
+    --color-persian-green-300: #51f7d9;
+    --color-persian-green-400: #1de4c6;
+    --color-persian-green-500: #04c8ad;
+    --color-persian-green-600: #00a693;
+    --color-persian-green-700: #058073;
+    --color-persian-green-800: #0a655d;
+    --color-persian-green-900: #0d544d;
+    --color-persian-green-950: #003331;
+    --color-secondary: #022028;
+    --color-daintree-50: #ebffff;
+    --color-daintree-100: #ccfeff;
+    --color-daintree-200: #9ffcff;
+    --color-daintree-300: #5cf8ff;
+    --color-daintree-400: #13effd;
+    --color-daintree-500: #00d2e3;
+    --color-daintree-600: #00a7be;
+    --color-daintree-700: #058499;
+    --color-daintree-800: #0e6a7c;
+    --color-daintree-900: #105769;
+    --color-daintree-950: #022028;
+}

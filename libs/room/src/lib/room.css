@@ -2,7 +2,7 @@
 .hokm-app {
   min-height: 100vh;
   background: #f1f5f9;
-  font-family: system-ui, -apple-system, 'Segoe UI', Tahoma, sans-serif;
+  font-family: inherit;
 }
 
 .hokm-shell {
@@ -613,4 +613,8 @@
   width: 100%;
   text-align: center;
   box-shadow: 0 25px 50px rgb(0 0 0 / 0.2);
+}
+
+table{
+  font-family: Vazirmatn FD !important;
 }
