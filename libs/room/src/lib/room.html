@@ -1,590 +1,422 @@
-<div class="min-h-screen bg-gray-100 p-8 font-sans" dir="rtl">
-  <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-6">
-
+<div class="hokm-app" dir="rtl">
+  <div class="hokm-shell">
     @if (error()) {
-      <div class="bg-red-100 text-red-700 p-4 rounded-lg mb-4 text-center font-bold">
-        {{ error() }}
+    <div class="mb-4 rounded-lg bg-red-100 p-4 text-center font-bold text-red-700">{{ error() }}</div>
+    } @if (currentUser(); as user) {
+    <div class="user-bar">
+      <div class="user-bar__name">
+        <strong>{{ user.displayName }}</strong>
+        <span>(@{{ user.username }})</span>
       </div>
+      <div class="user-bar__actions">
+        @if (authService.isAdmin()) {
+        <a routerLink="/admin" class="user-bar__link">پنل مدیر</a>
+        }
+        <button type="button" class="user-bar__logout" (click)="logout()">خروج</button>
+      </div>
+    </div>
     }
 
-    <!-- کاربر واردشده -->
-    @if (currentUser(); as user) {
-      <div class="mb-6 p-4 rounded-lg border border-slate-200 bg-slate-50 flex flex-wrap justify-between items-center gap-2">
-        <div>
-          <span class="text-sm text-slate-600">وارد شده به عنوان:</span>
-          <strong class="text-slate-900 mr-1">{{ user.displayName }}</strong>
-          <span class="text-xs text-slate-500">(@{{ user.username }})</span>
-        </div>
-        <div class="flex items-center gap-3">
-          @if (authService.isAdmin()) {
-            <a routerLink="/admin" class="text-sm text-amber-700 hover:text-amber-900 font-medium">
-              پنل مدیر
-            </a>
-          }
-          <button type="button" (click)="logout()" class="text-sm text-red-600 hover:text-red-800">
-            خروج
-          </button>
-        </div>
-      </div>
-    }
-
-    <!-- لابی: لیست اتاق‌ها + ساخت اتاق جدید -->
-    @if (!roomId()) {
+    <div class="hokm-card">
+      <!-- لابی: لیست اتاق‌ها + ساخت اتاق جدید -->
+      @if (!roomId()) {
       <div class="space-y-8">
         <div>
-          <div class="flex justify-between items-center mb-4">
+          <div class="mb-4 flex items-center justify-between">
             <h2 class="text-2xl font-bold text-gray-800">اتاق‌های بازی</h2>
-            <button (click)="loadRoomList()" [disabled]="isLoadingRooms()"
-                    class="text-sm text-blue-600 hover:text-blue-800 disabled:opacity-50">
+            <button (click)="loadRoomList()" [disabled]="isLoadingRooms()" class="text-sm text-blue-600 hover:text-blue-800 disabled:opacity-50">
               {{ isLoadingRooms() ? 'در حال بارگذاری...' : 'بروزرسانی' }}
             </button>
           </div>
 
-          <div class="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-4 text-sm text-blue-900">
-            <strong>کاربران ثبت‌شده:</strong> {{ registeredUsers().length }} نفر —
-            برای شروع بازی حداقل ۴ کاربر با ثبت‌نام جداگانه لازم است.
-            اولین ورود شما به اتاق = میزبان.
+          <div class="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
+            <strong>کاربران ثبت‌شده:</strong> {{ registeredUsers().length }} نفر — برای شروع بازی حداقل ۴ کاربر با ثبت‌نام جداگانه لازم است. اولین ورود شما به اتاق = میزبان.
           </div>
 
           @if (roomList().length === 0 && !isLoadingRooms()) {
-            <p class="text-center text-gray-500 py-8 border border-dashed rounded-lg">
-              هنوز اتاقی ساخته نشده. یک اتاق جدید بسازید.
-            </p>
+          <p class="rounded-lg border border-dashed py-8 text-center text-gray-500">هنوز اتاقی ساخته نشده. یک اتاق جدید بسازید.</p>
           } @else {
-            <div class="overflow-x-auto border rounded-lg">
-              <table class="w-full text-sm">
-                <thead class="bg-gray-50 text-gray-700">
-                  <tr>
-                    <th class="text-right p-3">بازی</th>
-                    <th class="text-right p-3">وضعیت</th>
-                    <th class="text-right p-3">بازیکن</th>
-                    <th class="text-right p-3">میزبان</th>
-                    <th class="text-right p-3">ست (۱ / ۲)</th>
-                    <th class="text-right p-3"></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  @for (item of roomList(); track item.roomId) {
-                    <tr class="border-t hover:bg-gray-50">
-                      <td class="p-3">{{ gameTypeLabel(item.gameType) }}</td>
-                      <td class="p-3">{{ statusLabel(item.status) }}</td>
-                      <td class="p-3">
-                        {{ item.playerCount }}/4
-                        @if (item.playerNames.length) {
-                          <span class="block text-xs text-gray-500 mt-0.5">{{ item.playerNames.join('، ') }}</span>
-                        }
-                      </td>
-                      <td class="p-3">
-                        @if (item.hasHost) {
-                          <span class="text-green-700">{{ item.hostUsername || 'دارد' }}</span>
-                        } @else {
-                          <span class="text-amber-700">آزاد</span>
-                        }
-                      </td>
-                      <td class="p-3">{{ item.setsTeam1 }} – {{ item.setsTeam2 }}</td>
-                      <td class="p-3">
-                        <button (click)="openRoom(item)"
-                                class="text-blue-600 hover:text-blue-800 font-medium">
-                          ورود
-                        </button>
-                      </td>
-                    </tr>
-                  }
-                </tbody>
-              </table>
-            </div>
+          <div class="overflow-x-auto rounded-lg border">
+            <table class="w-full text-sm">
+              <thead class="bg-gray-50 text-gray-700">
+                <tr>
+                  <th class="p-3 text-right">بازی</th>
+                  <th class="p-3 text-right">وضعیت</th>
+                  <th class="p-3 text-right">بازیکن</th>
+                  <th class="p-3 text-right">میزبان</th>
+                  <th class="p-3 text-right">ست (۱ / ۲)</th>
+                  <th class="p-3 text-right"></th>
+                </tr>
+              </thead>
+              <tbody>
+                @for (item of roomList(); track item.roomId) {
+                <tr class="border-t hover:bg-gray-50">
+                  <td class="p-3">{{ gameTypeLabel(item.gameType) }}</td>
+                  <td class="p-3">{{ statusLabel(item.status) }}</td>
+                  <td class="p-3">
+                    {{ item.playerCount }}/4 @if (item.playerNames.length) {
+                    <span class="mt-0.5 block text-xs text-gray-500">{{ item.playerNames.join('، ') }}</span>
+                    }
+                  </td>
+                  <td class="p-3">
+                    @if (item.hasHost) {
+                    <span class="text-green-700">{{ item.hostUsername || 'دارد' }}</span>
+                    } @else {
+                    <span class="text-amber-700">آزاد</span>
+                    }
+                  </td>
+                  <td class="p-3">{{ item.setsTeam1 }} – {{ item.setsTeam2 }}</td>
+                  <td class="p-3">
+                    <button (click)="openRoom(item)" class="font-medium text-blue-600 hover:text-blue-800">ورود</button>
+                  </td>
+                </tr>
+                }
+              </tbody>
+            </table>
+          </div>
           }
         </div>
 
-        <div class="border-t pt-8 flex flex-col items-center space-y-4">
+        <div class="flex flex-col items-center space-y-4 border-t pt-8">
           <h3 class="text-lg font-bold text-gray-800">ساخت اتاق جدید</h3>
-          <div class="flex flex-col space-y-2 w-64">
+          <div class="flex w-64 flex-col space-y-2">
             <label for="gameType" class="text-sm font-semibold text-gray-700">نوع بازی:</label>
-            <select [(ngModel)]="gameType" class="border rounded-lg px-4 py-2 focus:ring-2 focus:ring-blue-500 outline-none">
+            <select [(ngModel)]="gameType" class="rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500">
               <option value="hokm">حکم</option>
               <option value="shelem">شلم</option>
               <option value="11tayi">۱۱ تایی</option>
             </select>
           </div>
-          <button (click)="createRoom()"
-                  class="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700 w-64 transition-colors">
-            ساخت اتاق
-          </button>
+          <button (click)="createRoom()" class="w-64 rounded-lg bg-green-600 px-6 py-2 text-white transition-colors hover:bg-green-700">ساخت اتاق</button>
         </div>
       </div>
-    }
-    <!-- ورود به اتاق موجود -->
-    @else if (!isConnected()) {
+      }
+      <!-- ورود به اتاق موجود -->
+      @else if (!isConnected()) {
       <div class="flex flex-col items-center justify-center space-y-6 py-10">
-        <button (click)="goToLobby()" class="self-start text-sm text-gray-500 hover:text-gray-800">
-          ← بازگشت به لیست اتاق‌ها
-        </button>
+        <button (click)="goToLobby()" class="self-start text-sm text-gray-500 hover:text-gray-800">← بازگشت به لیست اتاق‌ها</button>
         <h2 class="text-2xl font-bold text-gray-800">ورود به میز</h2>
-        <div class="bg-blue-50 text-blue-800 px-4 py-2 rounded-md text-sm border border-blue-200">
-          کد اتاق: <span class="font-mono font-bold">{{ roomId() }}</span>
-        </div>
-        @if (roomState(); as preview) {
-          @if (preview.players.length > 0) {
-            <div class="w-full max-w-md border rounded-lg p-4 bg-white text-sm">
-              <p class="font-bold text-gray-800 mb-2">بازیکنان ثبت‌شده در این اتاق:</p>
-              <ul class="space-y-1">
-                @for (p of preview.players; track p.id) {
-                  <li class="flex justify-between text-gray-700">
-                    <span>{{ p.name }}</span>
-                    <span class="text-gray-500">
-                      {{ p.team === 'team1' ? 'تیم ۱' : 'تیم ۲' }}
-                      @if (preview.hakemId === p.id) { · حاکم 👑 }
-                    </span>
-                  </li>
-                }
-              </ul>
-              <p class="text-xs text-gray-500 mt-2">
-                هر بازیکن یک شناسه ثابت در سرور دارد؛ با خروج و ورود مجدد شما، همین نام‌ها و امتیازها حفظ می‌شوند.
-              </p>
-            </div>
-          }
-        }
-        <div class="bg-amber-50 border border-amber-200 text-amber-900 px-4 py-3 rounded-lg text-sm max-w-md text-center">
-          @if (roomState(); as preview) {
-            @if (preview.hostUsername && isCurrentUserHost(preview)) {
-              شما قبلاً میزبان این اتاق بودید (<strong>{{ preview.hostUsername }}</strong>) — با ورود، کنترل برمی‌گردد.
-            } @else if (preview.hostUsername) {
-              میزبان فعلی: <strong>{{ preview.hostUsername }}</strong> — فقط همان کاربر می‌تواند امتیاز بزند.
-            } @else {
-              اولین ورود شما = میزبان این اتاق.
+        <div class="rounded-md border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-blue-800">کد اتاق: <span class="font-mono font-bold">{{ roomId() }}</span></div>
+        @if (roomState(); as preview) { @if (preview.players.length > 0) {
+        <div class="w-full max-w-md rounded-lg border bg-white p-4 text-sm">
+          <p class="mb-2 font-bold text-gray-800">بازیکنان ثبت‌شده در این اتاق:</p>
+          <ul class="space-y-1">
+            @for (p of preview.players; track p.id) {
+            <li class="flex justify-between text-gray-700">
+              <span>{{ p.name }}</span>
+              <span class="text-gray-500"> {{ p.team === 'team1' ? 'تیم ۱' : 'تیم ۲' }} @if (preview.hakemId === p.id) { · حاکم 👑 } </span>
+            </li>
             }
-          }
+          </ul>
+          <p class="mt-2 text-xs text-gray-500">هر بازیکن یک شناسه ثابت در سرور دارد؛ با خروج و ورود مجدد شما، همین نام‌ها و امتیازها حفظ می‌شوند.</p>
         </div>
-        <button (click)="connectToRoom()"
-                class="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50 w-64 transition-colors">
-          ورود به میز
-        </button>
+        } }
+        <div class="max-w-md rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm text-amber-900">
+          @if (roomState(); as preview) { @if (preview.hostUsername && isCurrentUserHost(preview)) { شما قبلاً میزبان این اتاق بودید (<strong>{{ preview.hostUsername }}</strong>) — با ورود، کنترل
+          برمی‌گردد. } @else if (preview.hostUsername) { میزبان فعلی: <strong>{{ preview.hostUsername }}</strong> — فقط همان کاربر می‌تواند امتیاز بزند. } @else { اولین ورود شما = میزبان این اتاق. } }
+        </div>
+        <button (click)="connectToRoom()" class="w-64 rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 disabled:opacity-50">ورود به میز</button>
       </div>
-    }
-    @else if (roomState(); as state) {
-      <div>
-        <div class="flex justify-between items-center border-b pb-4 mb-6">
-          <div>
-            <button (click)="goToLobby()" class="text-sm text-gray-500 hover:text-gray-800 mb-2">
-              ← لیست اتاق‌ها
-            </button>
-            <h1 class="text-xl font-bold text-gray-800">بازی {{ gameTypeLabel(state.gameType) }}</h1>
-            <p class="text-sm text-gray-500 font-mono mt-1">کد اتاق: {{ state.roomId }}</p>
-            @if (isHost()) {
-              <span class="inline-block mt-1 text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full">
-                شما میزبان هستید
-              </span>
-            } @else if (state.hostUsername) {
-              <span class="inline-block mt-1 text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">
-                میزبان: {{ state.hostUsername }}
-              </span>
-            }
-          </div>
-          <div class="text-left">
-            <div class="text-sm font-semibold py-1 px-3 rounded-full"
-                 [ngClass]="state.status === 'SETUP' ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'">
+      } @else if (roomState(); as state) {
+      <div class="game-dashboard">
+        <div class="game-head">
+          <div class="game-head__main">
+            <button type="button" class="game-head__back" (click)="goToLobby()">← لیست اتاق‌ها</button>
+            <h1 class="game-head__title">بازی {{ gameTypeLabel(state.gameType) }}</h1>
+            <span class="status-pill" [class.status-pill--setup]="state.status === 'SETUP'">
+              <span class="status-pill__dot"></span>
               {{ state.status === 'SETUP' ? 'تنظیم بازیکنان' : 'در حال بازی' }}
+            </span>
+            <div class="room-code">
+              <span>کد:</span>
+              <span class="room-code__value">{{ state.roomId.slice(0, 8) }}</span>
+              <button type="button" class="room-code__copy" (click)="copyRoomCode(state.roomId)" title="کپی">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <rect x="9" y="9" width="13" height="13" rx="2" />
+                  <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1" />
+                </svg>
+              </button>
+              @if (copyToast()) {
+              <span class="text-xs text-green-600">کپی شد</span>
+              }
             </div>
-            @if (state.hokm) {
-              <div class="mt-2 text-lg font-bold"
-                   [ngClass]="isSpecialHokm(state.hokm) ? 'text-violet-700' : 'text-indigo-700'">
-                حکم: {{ state.hokm }}
-                @if (isSpecialHokm(state.hokm)) {
-                  <span class="text-xs font-normal block">(حکم ویژه)</span>
-                }
-              </div>
+            @if (isHost()) {
+            <span class="text-xs font-medium text-emerald-700">شما میزبان</span>
+            } @else if (state.hostUsername) {
+            <span class="text-xs text-slate-500">میزبان: {{ state.hostUsername }}</span>
             }
           </div>
+          @if (state.status === 'PLAYING' && isHost() && canUndoScore()) {
+          <button type="button" class="btn-undo" (click)="undoLastScore()">↩ برگشت آخرین امتیاز</button>
+          }
         </div>
 
         <!-- فرم تنظیم ۴ بازیکن -->
         @if (state.status === 'SETUP' && isHost()) {
-          <div class="bg-amber-50 border border-amber-200 rounded-xl p-6 mb-6">
-            <h2 class="text-lg font-bold text-amber-900 mb-2">انتخاب بازیکنان از لیست کاربران</h2>
-            <p class="text-sm text-amber-800 mb-4">
-              هر ۴ نفر را از کاربران ثبت‌شده انتخاب کنید، تیم و حاکم را مشخص کنید.
-            </p>
+        <div class="mb-6 rounded-xl border border-amber-200 bg-amber-50 p-6">
+          <h2 class="mb-2 text-lg font-bold text-amber-900">انتخاب بازیکنان از لیست کاربران</h2>
+          <p class="mb-4 text-sm text-amber-800">هر ۴ نفر را از کاربران ثبت‌شده انتخاب کنید، تیم و حاکم را مشخص کنید.</p>
 
-            @if (registeredUsers().length < 4) {
-              <p class="text-red-600 text-sm mb-4">
-                فقط {{ registeredUsers().length }} کاربر دارید. از صفحه
-                <a routerLink="/login" class="underline">ثبت‌نام</a>
-                حداقل ۴ حساب بسازید (می‌توانید با مرورگرهای مختلف یا حالت ناشناس امتحان کنید).
-              </p>
-            }
+          @if (registeredUsers().length < 4) {
+          <p class="mb-4 text-sm text-red-600">
+            فقط {{ registeredUsers().length }} کاربر دارید. از صفحه
+            <a routerLink="/login" class="underline">ثبت‌نام</a>
+            حداقل ۴ حساب بسازید (می‌توانید با مرورگرهای مختلف یا حالت ناشناس امتحان کنید).
+          </p>
+          }
 
-            <div class="space-y-3">
-              @for (draft of playerDrafts; track $index) {
-                <div class="grid grid-cols-1 sm:grid-cols-12 gap-2 items-center bg-white p-3 rounded-lg border">
-                  <span class="sm:col-span-1 text-sm font-bold text-gray-500">{{ $index + 1 }}</span>
-                  <select
-                    [(ngModel)]="draft.appUserId"
-                    class="sm:col-span-4 border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-400 outline-none"
-                  >
-                    <option value="">— انتخاب کاربر —</option>
-                    @for (u of registeredUsers(); track u.id) {
-                      <option [value]="u.id">{{ u.displayName }} (@{{ u.username }})</option>
-                    }
-                  </select>
-                  <select
-                    [(ngModel)]="draft.team"
-                    class="sm:col-span-3 border rounded-lg px-3 py-2 text-sm focus:ring-2 focus:ring-amber-400 outline-none"
-                  >
-                    <option value="team1">تیم ۱</option>
-                    <option value="team2">تیم ۲</option>
-                  </select>
-                  <label class="sm:col-span-4 flex items-center gap-2 cursor-pointer text-sm">
-                    <input
-                      type="radio"
-                      name="hakemDraft"
-                      [checked]="draft.isHakem"
-                      (change)="selectHakemDraft($index)"
-                      class="w-4 h-4 text-amber-600"
-                    />
-                    <span>حاکم 👑</span>
-                  </label>
-                </div>
-              }
+          <div class="space-y-3">
+            @for (draft of playerDrafts; track $index) {
+            <div class="grid grid-cols-1 items-center gap-2 rounded-lg border bg-white p-3 sm:grid-cols-12">
+              <span class="text-sm font-bold text-gray-500 sm:col-span-1">{{ $index + 1 }}</span>
+              <select [(ngModel)]="draft.appUserId" class="rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-400 sm:col-span-4">
+                <option value="">— انتخاب کاربر —</option>
+                @for (u of registeredUsers(); track u.id) {
+                <option [value]="u.id">{{ u.displayName }} (@{{ u.username }})</option>
+                }
+              </select>
+              <select [(ngModel)]="draft.team" class="rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-400 sm:col-span-3">
+                <option value="team1">تیم ۱</option>
+                <option value="team2">تیم ۲</option>
+              </select>
+              <label class="flex cursor-pointer items-center gap-2 text-sm sm:col-span-4">
+                <input type="radio" name="hakemDraft" [checked]="draft.isHakem" (change)="selectHakemDraft($index)" class="h-4 w-4 text-amber-600" />
+                <span>حاکم 👑</span>
+              </label>
             </div>
-
-            @if (getSetupValidationError()) {
-              <p class="text-red-600 text-sm mt-3">{{ getSetupValidationError() }}</p>
             }
-
-            <button
-              (click)="startGame()"
-              [disabled]="!!getSetupValidationError()"
-              class="mt-4 w-full bg-amber-600 text-white py-3 rounded-lg hover:bg-amber-700 disabled:opacity-50 font-bold"
-            >
-              شروع بازی
-            </button>
           </div>
+
+          @if (getSetupValidationError()) {
+          <p class="mt-3 text-sm text-red-600">{{ getSetupValidationError() }}</p>
+          }
+
+          <button (click)="startGame()" [disabled]="!!getSetupValidationError()" class="mt-4 w-full rounded-lg bg-amber-600 py-3 font-bold text-white hover:bg-amber-700 disabled:opacity-50">
+            شروع بازی
+          </button>
+        </div>
         } @else if (state.status === 'SETUP' && !isHost()) {
-          <div class="bg-gray-50 border p-4 rounded-lg mb-6 text-center text-gray-600">
-            فقط میزبان می‌تواند بازیکنان را تنظیم کند.
-          </div>
-        }
-
-        @if (state.pendingSetCelebration; as pending) {
-          <div class="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4" dir="rtl">
-            <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full text-center border-4 border-amber-400">
-              <div class="text-5xl mb-3" aria-hidden="true">🏆</div>
-              <h2 class="text-2xl font-bold text-amber-800 mb-2">پیروزی در ست!</h2>
-              <p class="text-lg text-gray-800 mb-1">
-                <strong>{{ teamLabel(pending.winnerTeam) }}</strong>
-                به {{ scoring.HANDS_TO_WIN_SET }} دست رسید.
-              </p>
-              <div class="chalk-board text-right mb-6 space-y-2">
-                <p class="text-xs text-stone-600 text-center mb-2">امتیاز ست (چوب کبریت)</p>
-                <div class="flex justify-between gap-4 text-sm">
-                  <div class="flex-1">
-                    <span class="font-semibold">تیم ۱: {{ state.scores.team1.setsWon }}</span>
-                    <div class="chalk-sticks chalk-sticks--sets justify-center mt-1">
-                      @for (s of setChalkSticks(state.scores.team1.setsWon); track s) {
-                        <span class="chalk-stick chalk-stick--set chalk-stick--on"></span>
-                      }
-                    </div>
-                  </div>
-                  <div class="flex-1">
-                    <span class="font-semibold">تیم ۲: {{ state.scores.team2.setsWon }}</span>
-                    <div class="chalk-sticks chalk-sticks--sets justify-center mt-1">
-                      @for (s of setChalkSticks(state.scores.team2.setsWon); track s) {
-                        <span class="chalk-stick chalk-stick--set chalk-stick--on"></span>
-                      }
-                    </div>
-                  </div>
-                </div>
-              </div>
-              @if (isHost()) {
-                @if (canUndoScore()) {
-                  <button
-                    type="button"
-                    (click)="undoLastScore()"
-                    class="w-full mb-3 text-sm px-4 py-2 rounded-lg border border-orange-300 bg-orange-50 text-orange-900 hover:bg-orange-100"
-                  >
-                    ↩ برگشت آخرین امتیاز
-                  </button>
-                }
-                <button
-                  type="button"
-                  (click)="confirmSetNext()"
-                  class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-6 rounded-xl text-lg"
-                >
-                  تأیید و شروع ست بعدی
-                </button>
-              } @else {
-                <p class="text-gray-500 text-sm">در انتظار تأیید میزبان برای شروع ست بعدی...</p>
-              }
-            </div>
-          </div>
-        }
-
-        @if (state.status === 'PLAYING') {
-          @if (isHost() && canUndoScore()) {
-            <div class="mb-4 flex justify-end">
-              <button
-                type="button"
-                (click)="undoLastScore()"
-                class="text-sm px-4 py-2 rounded-lg border border-orange-300 bg-orange-50 text-orange-900 hover:bg-orange-100 font-medium"
-              >
-                ↩ برگشت آخرین امتیاز
-              </button>
-            </div>
-          }
-
-          <div class="bg-slate-50 border border-slate-200 rounded-lg p-3 mb-6 text-sm text-slate-700">
-            <strong>امتیاز (برای کل تیم):</strong>
-            برد دست = {{ scoring.NORMAL_HAND }} |
-            کت تیم حاکم = {{ scoring.HAKEM_TEAM_KET }} |
-            کت تیم حریف = {{ scoring.OPPONENT_KET }} |
-            {{ scoring.HANDS_TO_WIN_SET }} دست = یک ست —
-            <span class="text-stone-700">امتیاز با عدد و چوب کبریت</span> نمایش داده می‌شود.
-            <span class="block mt-1 text-indigo-700">
-              اگر تیم حاکم دست را ببازد، تیم مقابل حاکم می‌شود. بعد از هر دست حکم جدید (خال یا نرس/سرس/تک‌نرس) ثبت می‌شود.
-            </span>
-          </div>
-
-          <!-- تعیین حاکم و حکم (میزبان) — وقتی حکم هنوز زده نشده -->
-          @if (isHost() && !state.hokm && !state.pendingSetCelebration) {
-            <div class="bg-indigo-50 border-2 border-indigo-300 p-6 rounded-xl mb-6 shadow-sm">
-              <h3 class="text-xl font-bold text-indigo-900 mb-1">ثبت حکم</h3>
-              <p class="text-sm text-indigo-700 mb-4">
-                تیم حاکم: <strong>{{ hakemTeamLabel(state) }}</strong> —
-                حاکم را انتخاب کنید، سپس <strong>خال</strong> یا <strong>حکم ویژه</strong> (نرس / سرس / تک‌نرس) را بزنید.
-              </p>
-
-              <div class="mb-5">
-                <span class="block text-sm font-semibold text-indigo-900 mb-2">حاکم:</span>
-                <div class="flex flex-wrap gap-2">
-                  @for (player of hakemTeamPlayers(state); track player.id) {
-                    <button
-                      type="button"
-                      (click)="changeHakem(player.id)"
-                      class="px-3 py-1.5 rounded-full text-sm border transition-colors"
-                      [ngClass]="isPlayerHakem(state, player.id)
-                        ? 'bg-yellow-400 border-yellow-500 text-yellow-900 font-bold'
-                        : 'bg-white border-indigo-200 text-indigo-800 hover:bg-indigo-100'"
-                    >
-                      {{ player.name }}
-                    </button>
-                  }
-                </div>
-              </div>
-
-              <div class="mb-5">
-                <span class="block text-sm font-semibold text-indigo-900 mb-2">خال حکم:</span>
-                <div class="flex flex-wrap gap-2">
-                  @for (suit of hokmSuits; track suit) {
-                    <button
-                      type="button"
-                      (click)="selectHokmChoice(suit)"
-                      class="px-4 py-2 rounded-lg text-sm font-medium border-2 transition-colors"
-                      [ngClass]="isSelectedHokm(suit)
-                        ? 'bg-indigo-600 border-indigo-700 text-white'
-                        : 'bg-white border-indigo-200 text-indigo-900 hover:bg-indigo-100'"
-                    >
-                      {{ suit }}
-                    </button>
-                  }
-                </div>
-              </div>
-
-              <div class="mb-5 p-4 rounded-lg bg-violet-100 border border-violet-300">
-                <span class="block text-sm font-bold text-violet-900 mb-2">حکم ویژه (بدون امتیاز جدا):</span>
-                <div class="flex flex-wrap gap-2">
-                  @for (kind of hokmSpecial; track kind) {
-                    <button
-                      type="button"
-                      (click)="selectHokmChoice(kind)"
-                      class="px-4 py-2 rounded-lg text-sm font-medium border-2 transition-colors"
-                      [ngClass]="isSelectedHokm(kind)
-                        ? 'bg-violet-700 border-violet-800 text-white'
-                        : 'bg-white border-violet-300 text-violet-900 hover:bg-violet-50'"
-                    >
-                      {{ kind }}
-                    </button>
-                  }
-                </div>
-              </div>
-
-              <p class="text-sm text-indigo-800 mb-3">
-                انتخاب شما: <strong class="text-lg">{{ selectedHokm }}</strong>
-              </p>
-
-              <button
-                type="button"
-                (click)="confirmHokm()"
-                class="w-full sm:w-auto bg-indigo-600 text-white px-8 py-3 rounded-lg hover:bg-indigo-700 font-bold"
-              >
-                ثبت حکم «{{ selectedHokm }}» و شروع دست‌ها
-              </button>
-            </div>
-          } @else if (!state.hokm) {
-            <div class="bg-gray-50 border border-gray-200 p-4 rounded-lg mb-6 text-center text-gray-600">
-              در انتظار ثبت حکم توسط میزبان (پیک/دل/خشت/گشنیز یا نرس/سرس/تک‌نرس)...
-              <span class="block mt-1 text-sm">حاکم: {{ getHakemName(state) }}</span>
-            </div>
-          }
-
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <!-- تیم ۱ -->
-            <div class="border rounded-xl p-4 bg-gray-50">
-              <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-gray-800">
-                  تیم ۱
-                  @if (isHakemTeam(state, 'team1')) {
-                    <span class="text-xs font-normal text-amber-700 mr-1">(تیم حاکم)</span>
-                  }
-                </h3>
-              </div>
-
-              <div class="chalk-board mb-4 space-y-3">
-                <div>
-                  <div class="flex justify-between items-baseline mb-1">
-                    <span class="text-sm font-semibold text-stone-700">امتیاز دست</span>
-                    <span class="text-2xl font-bold tabular-nums text-stone-900 leading-none">
-                      {{ state.scores.team1.handsWon }}
-                      <span class="text-base font-medium text-stone-500">/ {{ scoring.HANDS_TO_WIN_SET }}</span>
-                    </span>
-                  </div>
-                  <div class="chalk-sticks" title="چوب کبریت — امتیاز دست">
-                    @for (slot of handChalkSlots; track slot) {
-                      <span
-                        class="chalk-stick chalk-stick--hand"
-                        [class.chalk-stick--on]="slot < state.scores.team1.handsWon"
-                        [class.chalk-stick--off]="slot >= state.scores.team1.handsWon"
-                      ></span>
-                    }
-                  </div>
-                </div>
-                <div>
-                  <div class="flex justify-between items-baseline mb-1">
-                    <span class="text-sm font-semibold text-stone-700">امتیاز ست</span>
-                    <span class="text-xl font-bold tabular-nums text-stone-900">{{ state.scores.team1.setsWon }}</span>
-                  </div>
-                  <div class="chalk-sticks chalk-sticks--sets" title="چوب کبریت — ست">
+        <div class="mb-6 rounded-lg border bg-gray-50 p-4 text-center text-gray-600">فقط میزبان می‌تواند بازیکنان را تنظیم کند.</div>
+        } @if (state.pendingSetCelebration; as pending) {
+        <div class="modal-overlay">
+          <div class="modal-win">
+            <div class="mb-3 text-5xl" aria-hidden="true">🏆</div>
+            <h2 class="mb-2 text-2xl font-bold text-amber-800">پیروزی در ست!</h2>
+            <p class="mb-1 text-lg text-gray-800">
+              <strong>{{ teamLabel(pending.winnerTeam) }}</strong>
+              به {{ scoring.HANDS_TO_WIN_SET }} دست رسید.
+            </p>
+            <div class="chalk-board mb-6 space-y-2 text-right">
+              <p class="mb-2 text-center text-xs text-stone-600">امتیاز ست (چوب کبریت)</p>
+              <div class="flex justify-between gap-4 text-sm">
+                <div class="flex-1">
+                  <span class="font-semibold">تیم ۱: {{ state.scores.team1.setsWon }}</span>
+                  <div class="chalk-sticks chalk-sticks--sets mt-1 justify-center">
                     @for (s of setChalkSticks(state.scores.team1.setsWon); track s) {
-                      <span class="chalk-stick chalk-stick--set chalk-stick--on"></span>
+                    <span class="chalk-stick chalk-stick--set chalk-stick--on"></span>
                     }
                   </div>
                 </div>
-              </div>
-
-              <ul class="space-y-2 mb-4">
-                @for (player of team1Players(); track player.id) {
-                  <li class="flex items-center justify-between bg-white p-2 rounded shadow-sm">
-                    <span class="font-medium">{{ player.name }}</span>
-                    @if (isPlayerHakem(state, player.id)) {
-                      <span class="text-xs bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full font-bold">حاکم 👑</span>
-                    }
-                  </li>
-                }
-              </ul>
-              @if (isHost()) {
-                <div class="flex gap-2">
-                  <button
-                    type="button"
-                    [disabled]="!canScore()"
-                    (click)="scoreNormalHand('team1')"
-                    class="flex-1 bg-blue-500 text-white py-2.5 rounded-lg hover:bg-blue-600 disabled:opacity-50 text-sm font-medium"
-                  >
-                    + برد دست ({{ scoring.NORMAL_HAND }})
-                    @if (!isHakemTeam(state, 'team1')) {
-                      <span class="block text-xs opacity-90 font-normal">حاکم عوض می‌شود</span>
-                    }
-                  </button>
-                  <button
-                    type="button"
-                    [disabled]="!canScore()"
-                    (click)="scoreKetForTeam('team1')"
-                    class="flex-1 bg-amber-500 text-white py-2.5 rounded-lg hover:bg-amber-600 disabled:opacity-50 text-sm font-medium"
-                  >
-                    کت (+{{ ketPointsForTeam(state, 'team1') }})
-                  </button>
-                </div>
-              }
-            </div>
-
-            <!-- تیم ۲ -->
-            <div class="border rounded-xl p-4 bg-gray-50">
-              <div class="flex justify-between items-center mb-4">
-                <h3 class="text-lg font-bold text-gray-800">
-                  تیم ۲
-                  @if (isHakemTeam(state, 'team2')) {
-                    <span class="text-xs font-normal text-amber-700 mr-1">(تیم حاکم)</span>
-                  }
-                </h3>
-              </div>
-
-              <div class="chalk-board mb-4 space-y-3">
-                <div>
-                  <div class="flex justify-between items-baseline mb-1">
-                    <span class="text-sm font-semibold text-stone-700">امتیاز دست</span>
-                    <span class="text-2xl font-bold tabular-nums text-stone-900 leading-none">
-                      {{ state.scores.team2.handsWon }}
-                      <span class="text-base font-medium text-stone-500">/ {{ scoring.HANDS_TO_WIN_SET }}</span>
-                    </span>
-                  </div>
-                  <div class="chalk-sticks" title="چوب کبریت — امتیاز دست">
-                    @for (slot of handChalkSlots; track slot) {
-                      <span
-                        class="chalk-stick chalk-stick--hand"
-                        [class.chalk-stick--on]="slot < state.scores.team2.handsWon"
-                        [class.chalk-stick--off]="slot >= state.scores.team2.handsWon"
-                      ></span>
-                    }
-                  </div>
-                </div>
-                <div>
-                  <div class="flex justify-between items-baseline mb-1">
-                    <span class="text-sm font-semibold text-stone-700">امتیاز ست</span>
-                    <span class="text-xl font-bold tabular-nums text-stone-900">{{ state.scores.team2.setsWon }}</span>
-                  </div>
-                  <div class="chalk-sticks chalk-sticks--sets" title="چوب کبریت — ست">
+                <div class="flex-1">
+                  <span class="font-semibold">تیم ۲: {{ state.scores.team2.setsWon }}</span>
+                  <div class="chalk-sticks chalk-sticks--sets mt-1 justify-center">
                     @for (s of setChalkSticks(state.scores.team2.setsWon); track s) {
-                      <span class="chalk-stick chalk-stick--set chalk-stick--on"></span>
+                    <span class="chalk-stick chalk-stick--set chalk-stick--on"></span>
                     }
                   </div>
                 </div>
               </div>
+            </div>
+            @if (isHost()) { @if (canUndoScore()) {
+            <button type="button" (click)="undoLastScore()" class="mb-3 w-full rounded-lg border border-orange-300 bg-orange-50 px-4 py-2 text-sm text-orange-900 hover:bg-orange-100">
+              ↩ برگشت آخرین امتیاز
+            </button>
+            }
+            <button type="button" (click)="confirmSetNext()" class="w-full rounded-xl bg-amber-500 px-6 py-3 text-lg font-bold text-white hover:bg-amber-600">تأیید و شروع ست بعدی</button>
+            } @else {
+            <p class="text-sm text-gray-500">در انتظار تأیید میزبان برای شروع ست بعدی...</p>
+            }
+          </div>
+        </div>
+        } @if (state.status === 'PLAYING') {
+        <div class="hokm-bar">
+          @if (state.hokm) {
+          <span class="hokm-badge" [class.hokm-badge--special]="isSpecialHokm(state.hokm)"> حکم: {{ state.hokm }} </span>
+          } @if (isHost()) {
+          <div class="hokm-picker">
+            <span class="hokm-picker__label">انتخاب حکم:</span>
+            @for (suit of hokmSuits; track suit) {
+            <button type="button" class="hokm-pill" [class.hokm-pill--active]="(state.hokm || selectedHokm) === suit" (click)="pickHokm(suit)">{{ suit }}</button>
+            } @for (kind of hokmSpecial; track kind) {
+            <button type="button" class="hokm-pill hokm-pill--special" [class.hokm-pill--active]="(state.hokm || selectedHokm) === kind" (click)="pickHokm(kind)">{{ kind }}</button>
+            } @if (!state.hokm) {
+            <button type="button" class="btn-confirm-hokm" (click)="confirmHokm()">ثبت «{{ selectedHokm }}»</button>
+            }
+          </div>
+          } @else if (!state.hokm) {
+          <span class="text-sm text-slate-500">در انتظار حکم از میزبان — حاکم: {{ getHakemName(state) }}</span>
+          }
+        </div>
 
-              <ul class="space-y-2 mb-4">
-                @for (player of team2Players(); track player.id) {
-                  <li class="flex items-center justify-between bg-white p-2 rounded shadow-sm">
-                    <span class="font-medium">{{ player.name }}</span>
-                    @if (isPlayerHakem(state, player.id)) {
-                      <span class="text-xs bg-yellow-400 text-yellow-900 px-2 py-1 rounded-full font-bold">حاکم 👑</span>
-                    }
-                  </li>
-                }
-              </ul>
-              @if (isHost()) {
-                <div class="flex gap-2">
-                  <button
-                    type="button"
-                    [disabled]="!canScore()"
-                    (click)="scoreNormalHand('team2')"
-                    class="flex-1 bg-blue-500 text-white py-2.5 rounded-lg hover:bg-blue-600 disabled:opacity-50 text-sm font-medium"
-                  >
-                    + برد دست ({{ scoring.NORMAL_HAND }})
-                    @if (!isHakemTeam(state, 'team2')) {
-                      <span class="block text-xs opacity-90 font-normal">حاکم عوض می‌شود</span>
-                    }
-                  </button>
-                  <button
-                    type="button"
-                    [disabled]="!canScore()"
-                    (click)="scoreKetForTeam('team2')"
-                    class="flex-1 bg-amber-500 text-white py-2.5 rounded-lg hover:bg-amber-600 disabled:opacity-50 text-sm font-medium"
-                  >
-                    کت (+{{ ketPointsForTeam(state, 'team2') }})
-                  </button>
-                </div>
+        @if (isHost() && !state.hokm && !state.pendingSetCelebration) {
+        <div class="hokm-bar" style="border-color: #c7d2fe; background: #eef2ff">
+          <span class="mb-1 w-full text-sm font-semibold text-indigo-900">حاکم (تیم {{ hakemTeamLabel(state) }}):</span>
+          <div class="flex flex-wrap gap-2">
+            @for (player of hakemTeamPlayers(state); track player.id) {
+            <button type="button" (click)="changeHakem(player.id)" class="hokm-pill" [class.hokm-pill--active]="isPlayerHakem(state, player.id)">{{ player.name }}</button>
+            }
+          </div>
+        </div>
+        }
+
+        <!-- <div class="rules-banner">
+          <strong>امتیاز:</strong>
+          برد دست = {{ scoring.NORMAL_HAND }} | کت تیم حاکم = {{ scoring.HAKEM_TEAM_KET }} | کت تیم حریف = {{ scoring.OPPONENT_KET }} | {{ scoring.HANDS_TO_WIN_SET }} دست = یک ست. امتیاز با
+          <strong>عدد و چوب کبریت</strong> نشان داده می‌شود. اگر تیم حاکم دست را ببازد، تیم مقابل حاکم می‌شود.
+        </div> -->
+
+        <div class="teams-grid">
+          <!-- تیم ۱ -->
+          <div class="team-card">
+            <div class="team-card__head">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              تیم ۱ @if (isHakemTeam(state, 'team1')) {
+              <span class="team-card__hakem-tag">(تیم حاکم)</span>
               }
             </div>
+            <div class="chalk-board">
+              <div class="chalk-row">
+                <div class="chalk-row__header">
+                  <span class="chalk-row__label">امتیاز دست</span>
+                  <span class="chalk-row__number">{{ state.scores.team1.handsWon }}<small> / {{ scoring.HANDS_TO_WIN_SET }}</small></span>
+                </div>
+                <div class="chalk-sticks">
+                  @for (slot of handChalkSlots; track slot) {
+                  <span class="chalk-stick chalk-stick--hand" [class.chalk-stick--on]="slot < state.scores.team1.handsWon" [class.chalk-stick--off]="slot >= state.scores.team1.handsWon"></span>
+                  }
+                </div>
+              </div>
+              <div class="chalk-row">
+                <div class="chalk-row__header">
+                  <span class="chalk-row__label">امتیاز ست</span>
+                  <span class="chalk-row__number">{{ state.scores.team1.setsWon }}</span>
+                </div>
+                <div class="chalk-sticks chalk-sticks--sets">
+                  @for (s of setChalkSticks(state.scores.team1.setsWon); track s) {
+                  <span class="chalk-stick chalk-stick--set chalk-stick--on"></span>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="player-fields">
+              @for (player of team1Players(); track player.id) {
+              <div class="player-field">
+                <span>{{ player.name }}</span>
+                @if (isPlayerHakem(state, player.id)) { <span class="player-field__crown">👑</span> }
+              </div>
+              }
+            </div>
+            @if (isHost()) {
+            <div class="team-actions">
+              <button type="button" class="btn-score btn-score--ket" [disabled]="!canScore()" (click)="scoreKetForTeam('team1')">کت (+{{ ketPointsForTeam(state, 'team1') }})</button>
+              <button type="button" class="btn-score btn-score--hand" [disabled]="!canScore()" (click)="scoreNormalHand('team1')">
+                + برد دست ({{ scoring.NORMAL_HAND }}) @if (!isHakemTeam(state, 'team1')) {
+                <span class="btn-score__hint">حاکم عوض می‌شود</span>
+                }
+              </button>
+            </div>
+            }
           </div>
+
+          <!-- تیم ۲ -->
+          <div class="team-card">
+            <div class="team-card__head">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" />
+                <circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" />
+                <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              تیم ۲ @if (isHakemTeam(state, 'team2')) {
+              <span class="team-card__hakem-tag">(تیم حاکم)</span>
+              }
+            </div>
+            <div class="chalk-board">
+              <div class="chalk-row">
+                <div class="chalk-row__header">
+                  <span class="chalk-row__label">امتیاز دست</span>
+                  <span class="chalk-row__number">{{ state.scores.team2.handsWon }}<small> / {{ scoring.HANDS_TO_WIN_SET }}</small></span>
+                </div>
+                <div class="chalk-sticks">
+                  @for (slot of handChalkSlots; track slot) {
+                  <span class="chalk-stick chalk-stick--hand" [class.chalk-stick--on]="slot < state.scores.team2.handsWon" [class.chalk-stick--off]="slot >= state.scores.team2.handsWon"></span>
+                  }
+                </div>
+              </div>
+              <div class="chalk-row">
+                <div class="chalk-row__header">
+                  <span class="chalk-row__label">امتیاز ست</span>
+                  <span class="chalk-row__number">{{ state.scores.team2.setsWon }}</span>
+                </div>
+                <div class="chalk-sticks chalk-sticks--sets">
+                  @for (s of setChalkSticks(state.scores.team2.setsWon); track s) {
+                  <span class="chalk-stick chalk-stick--set chalk-stick--on"></span>
+                  }
+                </div>
+              </div>
+            </div>
+            <div class="player-fields">
+              @for (player of team2Players(); track player.id) {
+              <div class="player-field">
+                <span>{{ player.name }}</span>
+                @if (isPlayerHakem(state, player.id)) { <span class="player-field__crown">👑</span> }
+              </div>
+              }
+            </div>
+            @if (isHost()) {
+            <div class="team-actions">
+              <button type="button" class="btn-score btn-score--ket" [disabled]="!canScore()" (click)="scoreKetForTeam('team2')">کت (+{{ ketPointsForTeam(state, 'team2') }})</button>
+              <button type="button" class="btn-score btn-score--hand" [disabled]="!canScore()" (click)="scoreNormalHand('team2')">
+                + برد دست ({{ scoring.NORMAL_HAND }}) @if (!isHakemTeam(state, 'team2')) {
+                <span class="btn-score__hint">حاکم عوض می‌شود</span>
+                }
+              </button>
+            </div>
+            }
+          </div>
+        </div>
+
+        <div class="history-card">
+          <h3 class="history-card__title">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" />
+              <path d="M12 6v6l4 2" />
+            </svg>
+            تاریخچه دست‌ها
+          </h3>
+          @if (historyEntries(state).length === 0) {
+          <p class="history-empty">هنوز دستی ثبت نشده است.</p>
+          } @else {
+          <ul class="history-list">
+            @for (h of historyEntries(state); track h.at + h.teamId + h.type) {
+            <li class="history-item">
+              <span class="history-item__type" [class.history-item__type--ket]="h.type === 'KET'">{{ historyTypeLabel(h.type) }}</span>
+              <span>{{ teamLabel(h.teamId) }} · +{{ h.points }}</span>
+              @if (h.hokm) { <span>حکم {{ h.hokm }}</span> }
+              <span class="history-item__meta">{{ historyTimeAgo(h.at) }} · ست {{ h.setNumber }}</span>
+            </li>
+            }
+          </ul>
+          }
+        </div>
         }
       </div>
-    }
+      }
+    </div>
   </div>
 </div>

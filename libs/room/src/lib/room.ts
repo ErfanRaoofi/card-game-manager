@@ -19,6 +19,7 @@ import {
   HOKM_ALL_CHOICES,
   HOKM_SPECIAL_CHOICES,
   HOKM_SUIT_CHOICES,
+  HandHistoryEntry,
   RoomListItem,
   RoomState,
   RoomStatus,
@@ -52,6 +53,9 @@ export class Room implements OnInit {
       if (state?.players.length) {
         this.syncDraftsFromState(state);
       }
+      if (state?.hokm) {
+        this.selectedHokm = state.hokm;
+      }
     });
   }
 
@@ -80,6 +84,7 @@ export class Room implements OnInit {
   public registeredUsers = this.gameService.registeredUsers;
   public error = this.gameService.connectionError;
   public isLoadingRooms = signal(false);
+  public copyToast = signal(false);
 
   public currentUser = this.authService.currentUser;
   public isHost = computed(() => this.gameService.isHost(this.roomState()));
@@ -259,6 +264,47 @@ export class Room implements OnInit {
   selectHokmChoice(choice: string) {
     this.selectedHokm = choice;
     this.cdr.markForCheck();
+  }
+
+  pickHokm(choice: string) {
+    this.selectHokmChoice(choice);
+    const state = this.roomState();
+    if (this.roomId() && this.isHost() && state?.hokm) {
+      this.gameService.setHokm(this.roomId(), choice);
+    }
+  }
+
+  async copyRoomCode(code: string) {
+    try {
+      await navigator.clipboard.writeText(code);
+      this.copyToast.set(true);
+      setTimeout(() => {
+        this.copyToast.set(false);
+        this.cdr.markForCheck();
+      }, 2000);
+    } catch {
+      /* clipboard denied */
+    }
+  }
+
+  historyEntries(state: RoomState): HandHistoryEntry[] {
+    return state.handHistory ?? [];
+  }
+
+  historyTypeLabel(type: HandHistoryEntry['type']): string {
+    const labels: Record<HandHistoryEntry['type'], string> = {
+      NORMAL: 'دست',
+      KET: 'کت',
+      SET_WON: 'ست',
+      UNDO: 'برگشت',
+    };
+    return labels[type];
+  }
+
+  historyTimeAgo(iso: string): string {
+    const min = Math.floor((Date.now() - new Date(iso).getTime()) / 60000);
+    if (min < 1) return 'همین الان';
+    return `${min} دقیقه پیش`;
   }
 
   isSelectedHokm(choice: string): boolean {

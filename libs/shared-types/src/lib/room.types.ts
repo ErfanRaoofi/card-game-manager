@@ -85,4 +85,15 @@ export interface RoomState {
   pendingSetCelebration?: PendingSetCelebration | null;
   /** تاریخچه برای «برگشت آخرین امتیاز» (فقط میزبان) */
   scoreUndoHistory?: ScoreUndoSnapshot[];
+  /** تاریخچهٔ دست‌ها برای نمایش در UI */
+  handHistory?: HandHistoryEntry[];
+}
+
+export interface HandHistoryEntry {
+  at: string;
+  type: 'NORMAL' | 'KET' | 'SET_WON' | 'UNDO';
+  teamId: TeamId;
+  points: number;
+  hokm: string | null;
+  setNumber: number;
 }

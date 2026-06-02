@@ -15,6 +15,7 @@ import {
   getHokmHandPoints,
   HOKM_SCORING,
   ScoreUndoSnapshot,
+  HandHistoryEntry,
 } from '@fe/shared-types';
 
 const MAX_SCORE_UNDO = 25;
@@ -87,6 +88,7 @@ export class RoomService {
       players: [],
       pendingSetCelebration: null,
       scoreUndoHistory: [],
+      handHistory: [],
     };
 
     const room = this.roomRepository.create({ state: initialState as RoomState });
@@ -137,7 +139,26 @@ export class RoomService {
     if (!state.members) state.members = [];
     if (state.pendingSetCelebration === undefined) state.pendingSetCelebration = null;
     if (!state.scoreUndoHistory) state.scoreUndoHistory = [];
+    if (!state.handHistory) state.handHistory = [];
     return state;
+  }
+
+  private pushHandHistory(
+    state: RoomState,
+    entry: Omit<HandHistoryEntry, 'at'> & { at?: string },
+  ): void {
+    if (!state.handHistory) state.handHistory = [];
+    state.handHistory.unshift({
+      at: entry.at ?? new Date().toISOString(),
+      type: entry.type,
+      teamId: entry.teamId,
+      points: entry.points,
+      hokm: entry.hokm,
+      setNumber: entry.setNumber,
+    });
+    if (state.handHistory.length > 50) {
+      state.handHistory.length = 50;
+    }
   }
 
   private captureScoreUndoSnapshot(state: RoomState): ScoreUndoSnapshot {
@@ -283,6 +304,7 @@ export class RoomService {
     state.status = 'PLAYING';
     state.pendingSetCelebration = null;
     state.scoreUndoHistory = [];
+    state.handHistory = [];
 
     return this.saveState(roomId, state);
   }
@@ -417,10 +439,18 @@ export class RoomService {
     this.pushScoreUndo(state);
 
     const points = getHokmHandPoints(pointType, scoringTeamId, hakemTeamId);
+    const hokmAtHand = state.hokm;
     state.scores[scoringTeamId].handsWon += points;
 
     if (state.scores[scoringTeamId].handsWon >= HOKM_SCORING.HANDS_TO_WIN_SET) {
       state.scores[scoringTeamId].setsWon += 1;
+      this.pushHandHistory(state, {
+        type: pointType === 'KET' ? 'KET' : 'NORMAL',
+        teamId: scoringTeamId,
+        points,
+        hokm: hokmAtHand,
+        setNumber: state.scores[scoringTeamId].setsWon,
+      });
       state.pendingSetCelebration = {
         winnerTeam: scoringTeamId,
         scoringTeamId,
@@ -429,6 +459,14 @@ export class RoomService {
       };
       return this.saveState(roomId, state);
     }
+
+    this.pushHandHistory(state, {
+      type: pointType === 'KET' ? 'KET' : 'NORMAL',
+      teamId: scoringTeamId,
+      points,
+      hokm: hokmAtHand,
+      setNumber: state.scores[scoringTeamId].setsWon,
+    });
 
     this.afterHandResolved(state, scoringTeamId, pointType, ketPlayerId);
 
@@ -478,6 +516,9 @@ export class RoomService {
 
     const snap = history.pop()!;
     this.applyScoreUndo(state, snap);
+    if (state.handHistory?.length) {
+      state.handHistory.shift();
+    }
 
     return this.saveState(roomId, state);
   }
