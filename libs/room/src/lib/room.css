@@ -3,9 +3,12 @@
   min-height: 100vh;
   background: #f1f5f9;
   font-family: inherit;
+  height: 100%;
+  overflow: auto;
 }
 
 .hokm-shell {
+  overflow-y: auto;
   max-width: 72rem;
   margin: 0 auto;
   padding: 1rem 1.25rem 2rem;

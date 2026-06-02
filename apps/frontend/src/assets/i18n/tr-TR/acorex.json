@@ -1,0 +1,271 @@
+{
+  "common": {
+    "actions": {
+      "cancel": "İptal",
+      "canceled": "İptal Edildi",
+      "next": "İleri",
+      "prev": "Geri",
+      "retry": "Tekrar Dene",
+      "uploading": "Yükleniyor",
+      "search": "Ara",
+      "okay": "Tamam",
+      "apply": "Uygula"
+    },
+    "form": {
+      "title": "Başlık",
+      "name": "Ad",
+      "size": "Boyut",
+      "color": "Renk",
+      "display": "Görüntüle",
+      "value": "Değer"
+    },
+    "status": {
+      "loading": "Yükleniyor",
+      "failed": "Başarısız",
+      "completed": "Tamamlandı",
+      "processing": "İşleniyor"
+    },
+    "general": {
+      "custom": "Özel",
+      "and": "ve",
+      "between": "arasında",
+      "every": "Her",
+      "no-result-found": "Sonuç bulunamadı",
+      "more-items": "{{ number }} tane daha",
+      "no-record": "Kayıt yok",
+      "no-data-yet": "Henüz veri yüklenmedi.",
+      "full-screen": "Tam Ekran",
+      "clear": "Temizle",
+      "close": "Kapat",
+      "close-all": "Tümünü Kapat"
+    },
+    "notifications": {
+      "more": "Ve {{ number }} tane daha..."
+    }
+  },
+  "error": {
+    "message": "Hata: {{ message }}"
+  },
+  "validation": {
+    "messages": {
+      "title": "Lütfen aşağıdaki hata(ları) düzeltin:",
+      "required": "{{ title }} zorunludur",
+      "email": "Lütfen geçerli bir e‑posta adresi girin {{ title }}!",
+      "phone": "Lütfen geçerli bir telefon numarası girin!",
+      "invalid-rull-name": "Geçersiz kural adı: <b>\"{{ name }}\"</b>",
+      "min": "Değer {{ value }} değerinden büyük olmalıdır",
+      "max": "Değer {{ value }} değerinden küçük olmalıdır"
+    }
+  },
+  "password-strength": {
+    "rules": {
+      "at-least-8-characters": "En az 8 karakter",
+      "english-upper-case-letter": "Büyük harf (A‑Z)",
+      "english-lower-case-letter": "Küçük harf (a‑z)",
+      "special-character": "Özel karakter (%,$,...)",
+      "digits": "Rakamlar (0‑9)"
+    },
+    "levels": {
+      "fragile": "Çok Zayıf",
+      "weak": "Zayıf",
+      "good": "İyi",
+      "strong": "Güçlü",
+      "unbreakable": "Kırılamaz"
+    }
+  },
+  "scheduler": {
+    "time-units": {
+      "select-second": "saniye seç",
+      "select-minute": "dakika seç",
+      "select-hour": "saat seç",
+      "select-day": "gün seç",
+      "select-month": "ay seç",
+      "select-year": "yıl seç"
+    },
+    "starting-at": {
+      "second": "saniyeden başlayan saniyeler",
+      "minute": "dakikadan başlayan dakikalar",
+      "hour": "saatten başlayan saatler",
+      "day": "günden başlayan günler",
+      "month": "aydan başlayan aylar",
+      "year": "yıldan başlayan yıllar"
+    },
+    "specific": {
+      "second": "Belirli saniyeler (bir veya daha fazla seçin)",
+      "minute": "Belirli dakikalar (bir veya daha fazla seçin)",
+      "hour": "Belirli saatler (bir veya daha fazla seçin)",
+      "day-of-month": "Ayın belirli günleri (bir veya daha fazla seçin)",
+      "day-of-week": "Haftanın belirli günleri (bir veya daha fazla seçin)",
+      "month": "Belirli aylar (bir veya daha fazla seçin)",
+      "year": "Belirli yıllar (bir veya daha fazla seçin)"
+    },
+    "base-on-week": "Haftaya göre",
+    "base-on-month": "Aya göre",
+    "of-the-month": "ayın",
+    "on-the": "Şu gün",
+    "on-the-last": "Son",
+    "on-the-last-day-of-the-month": "Ayın son günü",
+    "day-before-the-end-of-the-month": "ayın bitiminden önceki gün(ler)",
+    "ordinal-suffix": ".",
+    "ordinal-suffix-of-month": ". günü"
+  },
+  "dateTime": {
+    "set": "Ayarla",
+    "today": "Bugün",
+    "now": "Şimdi",
+    "date": "Tarih",
+    "time": "Saat",
+    "units": {
+      "millisecond": "milisaniye",
+      "second": "Saniye",
+      "seconds": "Saniye",
+      "minute": "Dakika",
+      "minutes": "Dakika",
+      "hour": "Saat",
+      "hours": "Saat",
+      "day": "Gün",
+      "days": "Gün",
+      "week": "Hafta",
+      "month": "Ay",
+      "months": "Ay",
+      "year": "Yıl",
+      "years": "Yıl"
+    },
+    "weekdays": {
+      "short": {
+        "0": "Paz",
+        "1": "Pzt",
+        "2": "Sal",
+        "3": "Çar",
+        "4": "Per",
+        "5": "Cum",
+        "6": "Cts"
+      },
+      "long": {
+        "0": "Pazar",
+        "1": "Pazartesi",
+        "2": "Salı",
+        "3": "Çarşamba",
+        "4": "Perşembe",
+        "5": "Cuma",
+        "6": "Cumartesi"
+      }
+    },
+    "months": {
+      "gregorian": {
+        "short": {
+          "0": "Oca",
+          "1": "Şub",
+          "2": "Mar",
+          "3": "Nis",
+          "4": "May",
+          "5": "Haz",
+          "6": "Tem",
+          "7": "Ağu",
+          "8": "Eyl",
+          "9": "Eki",
+          "10": "Kas",
+          "11": "Ara"
+        },
+        "long": {
+          "0": "Ocak",
+          "1": "Şubat",
+          "2": "Mart",
+          "3": "Nisan",
+          "4": "Mayıs",
+          "5": "Haziran",
+          "6": "Temmuz",
+          "7": "Ağustos",
+          "8": "Eylül",
+          "9": "Ekim",
+          "10": "Kasım",
+          "11": "Aralık"
+        }
+      }
+    },
+    "day-period": {
+      "am": "ÖÖ",
+      "pm": "ÖS",
+      "m": "ö",
+      "a": "ö",
+      "p": "ö"
+    },
+    "duration": {
+      "format-second": "{0} saniye",
+      "format-minute": "{0} dakika",
+      "daily": "Günlük",
+      "daily-timeline": "Günlük Zaman Çizelgesi",
+      "multi-day-timeline": "Çok Günlü Zaman Çizelgesi",
+      "weekly": "Haftalık",
+      "weekly-timeline": "Haftalık Zaman Çizelgesi",
+      "monthly": "Aylık",
+      "monthly-timeline": "Aylık Zaman Çizelgesi",
+      "yearly": "Yıllık",
+      "yearly-timeline": "Yıllık Zaman Çizelgesi",
+      "all-day": "Tüm Gün",
+      "agenda": "Ajanda"
+    }
+  },
+  "selectbox": {
+    "popover": {
+      "title": "Öğe seçin..."
+    }
+  },
+  "datapager": {
+    "info": {
+      "text": "[totalPages] sayfadan [page]. sayfa ([totalItems] öğe)"
+    }
+  },
+  "uploader": {
+    "zone": {
+      "text": "Yüklemek için dosyaları bırakın",
+      "drag": "Sürükle & Bırak veya ",
+      "choose": "Dosya Seç",
+      "to-upload": " yüklemek için",
+      "uploadFile": "Dosya Yükle",
+      "uploadFiles": "Dosyaları Yükle"
+    }
+  },
+  "comment": {
+    "replies": "Yanıtlar",
+    "reply": "Yanıtla",
+    "view": "Görüntüle"
+  },
+  "paint": {
+    "tools": {
+      "pen": "Kalem",
+      "highlight": "Vurgula",
+      "eraser": "Silgi"
+    },
+    "actions": {
+      "reset": "Sıfırla"
+    }
+  },
+  "image-editor": {
+    "crop": "Kırp",
+    "undo": "Geri Al",
+    "redo": "Yinele",
+    "rotate-left": "Sola Döndür",
+    "rotate-right": "Sağa Döndür",
+    "rotate": "Döndür"
+  },
+  "time": {
+    "left": "kaldı",
+    "ago": "önce",
+    "seconds": "saniye",
+    "minute": "dakika",
+    "minutes": "dakika",
+    "hour": "saat",
+    "hours": "saat",
+    "day": "gün",
+    "days": "gün",
+    "month": "ay",
+    "months": "ay",
+    "year": "yıl",
+    "years": "yıl",
+    "an-hour": "bir saat",
+    "a-day": "bir gün",
+    "a-month": "bir ay",
+    "a-year": "bir yıl"
+  }
+}

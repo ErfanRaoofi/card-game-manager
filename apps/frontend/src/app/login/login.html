@@ -1,12 +1,12 @@
-<div class="flex min-h-screen items-center justify-center bg-gray-100 p-6 font-sans" dir="rtl">
-  <div class="bg-secondary w-full max-w-md rounded-xl p-4 shadow-lg">
+<div class="p-4 h-full">
+  <div class="bg-secondary-500 w-full h-full rounded-xl p-4 shadow-lg flex flex-col items-center justify-center">
     <div class="flex w-full justify-center">
-      <img src="/assets/images/logo_200x300.webp" alt="logo" class="h-2w-24 mb-4 w-24" />
+      <img src="/assets/images/logo_200x300.webp" alt="logo" class="h-2w-28 mb-4 w-28" />
     </div>
     <!-- <h1 class="text-2xl font-bold text-center text-gray-800 mb-2">مدیریت بازی حکم</h1> -->
     <p class="mb-6 text-center text-sm text-gray-100">ثبت‌نام یا ورود برای ساخت اتاق و ثبت امتیاز</p>
 
-    <div class="border-persian-green-600 mb-4 flex overflow-hidden rounded-lg border">
+    <div class="border-persian-green-600 mb-4 flex overflow-hidden rounded-lg border w-full">
       <button
         type="button"
         class="flex-1 py-2 text-sm font-medium"
@@ -33,7 +33,7 @@
     <div class="mb-4 rounded-lg bg-red-100 p-3 text-center text-sm text-red-700">{{ error() }}</div>
     }
 
-    <form class="space-y-4" (ngSubmit)="submit()">
+    <form class="space-y-4 w-full" (ngSubmit)="submit()">
       <div>
         <label for="username" class="mb-1 block text-sm font-semibold text-gray-100">نام کاربری (انگلیسی)</label>
         <input

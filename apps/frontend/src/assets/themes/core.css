@@ -1,0 +1,2442 @@
+@import 'tailwindcss';
+@import 'tw-animate';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  * {
+    border-color: var(--color-border-default);
+    scrollbar-width: thin;
+    scrollbar-color: var(--ax-sys-scroller-thumb-color) var(--ax-sys-scroller-track-color);
+
+    ::-webkit-scrollbar {
+      width: var(--ax-sys-scroller-size);
+      height: var(--ax-sys-scroller-size);
+    }
+
+    ::-webkit-scrollbar-track {
+      background: var(--ax-sys-scroller-track-color);
+      border-radius: var(--ax-sys-scroller-size-radius);
+    }
+
+    ::-webkit-scrollbar-thumb {
+      background: var(--ax-sys-scroller-thumb-color);
+      border-radius: var(--ax-sys-scroller-size-radius);
+    }
+  }
+}
+
+html {
+  background-color: rgba(var(--ax-sys-color-lightest-surface));
+  color: rgba(var(--ax-sys-color-on-lightest-surface));
+}
+
+html.dark {
+  background-color: rgba(var(--ax-sys-color-darkest-surface));
+  color: rgba(var(--ax-sys-color-on-darkest-surface));
+}
+
+:root {
+  --ax-sys-icon-size: 100%;
+  --ax-sys-icon-weight: 400;
+  --ax-sys-size-base: 2.5rem;
+  --ax-overlay-full-width: 93;
+  --ax-sys-icon-width: inherit;
+  --ax-sys-icon-height: inherit;
+  --ax-sys-body-font-size: 1rem;
+  --ax-sys-border-radius: 0.5rem;
+  --ax-sys-transition-duration: 150ms;
+  --ax-sys-transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+
+  --ax-sys-scroller-size: 5px;
+  --ax-sys-scroller-size-radius: 3px;
+  --ax-sys-scroller-track-color: rgba(var(--ax-sys-color-light-surface));
+  --ax-sys-scroller-thumb-color: rgba(var(--ax-sys-color-darkest-surface));
+
+  --ax-sys-color-lightest-surface: 255, 255, 255;
+  --ax-sys-color-on-lightest-surface: 10, 10, 10;
+  --ax-sys-color-border-lightest-surface: 233, 233, 233;
+
+  --ax-sys-color-lighter-surface: 250, 250, 250;
+  --ax-sys-color-on-lighter-surface: 10, 10, 10;
+  --ax-sys-color-border-lighter-surface: 228, 228, 228;
+
+  --ax-sys-color-light-surface: 245, 245, 245;
+  --ax-sys-color-on-light-surface: 10, 10, 10;
+  --ax-sys-color-border-light-surface: 223, 223, 223;
+
+  --ax-sys-color-surface: 240, 240, 241;
+  --ax-sys-color-on-surface: 10, 10, 10;
+  --ax-sys-color-border-surface: 218, 218, 218;
+
+  --ax-sys-color-dark-surface: 235, 235, 236;
+  --ax-sys-color-on-dark-surface: 10, 10, 10;
+  --ax-sys-color-border-dark-surface: 213, 213, 213;
+
+  --ax-sys-color-darker-surface: 230, 230, 231;
+  --ax-sys-color-on-darker-surface: 10, 10, 10;
+  --ax-sys-color-border-darker-surface: 208, 208, 208;
+
+  --ax-sys-color-darkest-surface: 224, 224, 225;
+  --ax-sys-color-on-darkest-surface: 10, 10, 10;
+  --ax-sys-color-border-darkest-surface: 202, 202, 202;
+
+  --ax-sys-color-primary-50: 205, 244, 255;
+  --ax-sys-color-primary-100: 183, 222, 237;
+  --ax-sys-color-primary-200: 153, 191, 205;
+  --ax-sys-color-primary-300: 108, 144, 158;
+  --ax-sys-color-primary-400: 54, 88, 101;
+  --ax-sys-color-primary-500: 20, 55, 67;
+  --ax-sys-color-primary-600: 19, 54, 66;
+  --ax-sys-color-primary-700: 18, 53, 65;
+  --ax-sys-color-primary-800: 21, 52, 63;
+  --ax-sys-color-primary-900: 29, 50, 58;
+  --ax-sys-color-primary-950: 33, 48, 54;
+
+  --ax-sys-color-secondary-50: 255, 243, 206;
+  --ax-sys-color-secondary-100: 255, 230, 177;
+  --ax-sys-color-secondary-200: 255, 212, 131;
+  --ax-sys-color-secondary-300: 250, 188, 97;
+  --ax-sys-color-secondary-400: 221, 161, 68;
+  --ax-sys-color-secondary-500: 203, 144, 47;
+  --ax-sys-color-secondary-600: 180, 122, 9;
+  --ax-sys-color-secondary-700: 152, 96, 0;
+  --ax-sys-color-secondary-800: 124, 79, 18;
+  --ax-sys-color-secondary-900: 97, 68, 37;
+  --ax-sys-color-secondary-950: 45, 32, 20;
+
+  --ax-sys-color-success-50: 207, 255, 232;
+  --ax-sys-color-success-100: 162, 255, 211;
+  --ax-sys-color-success-200: 111, 255, 188;
+  --ax-sys-color-success-300: 86, 233, 167;
+  --ax-sys-color-success-400: 48, 206, 141;
+  --ax-sys-color-success-500: 1, 188, 125;
+  --ax-sys-color-success-600: 0, 165, 104;
+  --ax-sys-color-success-700: 0, 136, 81;
+  --ax-sys-color-success-800: 22, 110, 67;
+  --ax-sys-color-success-900: 43, 89, 61;
+  --ax-sys-color-success-950: 23, 41, 28;
+
+  --ax-sys-color-warning-50: 255, 244, 220;
+  --ax-sys-color-warning-100: 255, 234, 201;
+  --ax-sys-color-warning-200: 255, 221, 174;
+  --ax-sys-color-warning-300: 255, 198, 128;
+  --ax-sys-color-warning-400: 255, 168, 40;
+  --ax-sys-color-warning-500: 253, 154, 1;
+  --ax-sys-color-warning-600: 224, 127, 0;
+  --ax-sys-color-warning-700: 181, 100, 0;
+  --ax-sys-color-warning-800: 144, 81, 20;
+  --ax-sys-color-warning-900: 110, 71, 40;
+  --ax-sys-color-warning-950: 44, 28, 18;
+
+  --ax-sys-color-danger-50: 255, 233, 227;
+  --ax-sys-color-danger-100: 255, 212, 202;
+  --ax-sys-color-danger-200: 255, 180, 166;
+  --ax-sys-color-danger-300: 255, 123, 104;
+  --ax-sys-color-danger-400: 230, 65, 49;
+  --ax-sys-color-danger-500: 200, 29, 17;
+  --ax-sys-color-danger-600: 185, 0, 0;
+  --ax-sys-color-danger-700: 165, 0, 0;
+  --ax-sys-color-danger-800: 140, 19, 12;
+  --ax-sys-color-danger-900: 111, 39, 31;
+  --ax-sys-color-danger-950: 67, 30, 25;
+
+  --ax-sys-color-surface-50: 255, 254, 249;
+  --ax-sys-color-surface-100: 255, 253, 249;
+  --ax-sys-color-surface-200: 255, 253, 248;
+  --ax-sys-color-surface-300: 254, 251, 246;
+  --ax-sys-color-surface-400: 252, 249, 244;
+  --ax-sys-color-surface-500: 251, 248, 243;
+  --ax-sys-color-surface-600: 211, 208, 203;
+  --ax-sys-color-surface-700: 163, 160, 156;
+  --ax-sys-color-surface-800: 126, 124, 119;
+  --ax-sys-color-surface-900: 98, 96, 93;
+  --ax-sys-color-surface-950: 27, 26, 24;
+
+  --ax-sys-color-accent-50: 206, 255, 255;
+  --ax-sys-color-accent-100: 176, 255, 255;
+  --ax-sys-color-accent-200: 139, 250, 255;
+  --ax-sys-color-accent-300: 122, 233, 250;
+  --ax-sys-color-accent-400: 99, 212, 229;
+  --ax-sys-color-accent-500: 84, 198, 215;
+  --ax-sys-color-accent-600: 51, 171, 188;
+  --ax-sys-color-accent-700: 0, 139, 155;
+  --ax-sys-color-accent-800: 25, 113, 127;
+  --ax-sys-color-accent-900: 45, 90, 99;
+  --ax-sys-color-accent-950: 21, 37, 41;
+
+  --ax-sys-color-accent2-50: 192, 253, 255;
+  --ax-sys-color-accent2-100: 157, 239, 255;
+  --ax-sys-color-accent2-200: 133, 215, 236;
+  --ax-sys-color-accent2-300: 97, 178, 199;
+  --ax-sys-color-accent2-400: 48, 134, 153;
+  --ax-sys-color-accent2-500: 3, 106, 125;
+  --ax-sys-color-accent2-600: 0, 96, 115;
+  --ax-sys-color-accent2-700: 0, 85, 103;
+  --ax-sys-color-accent2-800: 13, 75, 92;
+  --ax-sys-color-accent2-900: 32, 66, 78;
+  --ax-sys-color-accent2-950: 27, 46, 52;
+
+  --ax-sys-color-accent3-50: 255, 233, 227;
+  --ax-sys-color-accent3-100: 255, 212, 202;
+  --ax-sys-color-accent3-200: 255, 180, 166;
+  --ax-sys-color-accent3-300: 255, 123, 104;
+  --ax-sys-color-accent3-400: 230, 65, 49;
+  --ax-sys-color-accent3-500: 200, 29, 17;
+  --ax-sys-color-accent3-600: 185, 0, 0;
+  --ax-sys-color-accent3-700: 165, 0, 0;
+  --ax-sys-color-accent3-800: 140, 19, 12;
+  --ax-sys-color-accent3-900: 111, 39, 31;
+  --ax-sys-color-accent3-950: 67, 30, 25;
+
+  --ax-sys-color-primary-lightest-surface: 183, 222, 237;
+  --ax-sys-color-on-primary-lightest-surface: 14, 51, 63;
+  --ax-sys-color-border-primary-lightest-surface: 154, 209, 230;
+
+  --ax-sys-color-primary-lighter-surface: 153, 191, 205;
+  --ax-sys-color-on-primary-lighter-surface: 15, 51, 62;
+  --ax-sys-color-border-primary-lighter-surface: 129, 176, 193;
+
+  --ax-sys-color-primary-light-surface: 108, 144, 158;
+  --ax-sys-color-on-primary-light-surface: 231, 255, 255;
+  --ax-sys-color-border-primary-light-surface: 92, 126, 139;
+
+  --ax-sys-color-primary-surface: 20, 55, 67;
+  --ax-sys-color-on-primary-surface: 231, 255, 255;
+  --ax-sys-color-border-primary-surface: 12, 32, 40;
+
+  --ax-sys-color-primary-dark-surface: 19, 54, 66;
+  --ax-sys-color-on-primary-dark-surface: 231, 255, 255;
+  --ax-sys-color-border-primary-dark-surface: 11, 31, 38;
+
+  --ax-sys-color-primary-darker-surface: 18, 53, 65;
+  --ax-sys-color-on-primary-darker-surface: 231, 255, 255;
+  --ax-sys-color-border-primary-darker-surface: 10, 30, 37;
+
+  --ax-sys-color-primary-darkest-surface: 21, 52, 63;
+  --ax-sys-color-on-primary-darkest-surface: 231, 255, 255;
+  --ax-sys-color-border-primary-darkest-surface: 12, 30, 36;
+
+  --ax-sys-color-secondary-lightest-surface: 255, 230, 177;
+  --ax-sys-color-on-secondary-lightest-surface: 62, 42, 0;
+  --ax-sys-color-border-secondary-lightest-surface: 255, 219, 141;
+
+  --ax-sys-color-secondary-lighter-surface: 255, 212, 131;
+  --ax-sys-color-on-secondary-lighter-surface: 65, 40, 0;
+  --ax-sys-color-border-secondary-lighter-surface: 255, 200, 95;
+
+  --ax-sys-color-secondary-light-surface: 250, 188, 97;
+  --ax-sys-color-on-secondary-light-surface: 69, 38, 0;
+  --ax-sys-color-border-secondary-light-surface: 249, 173, 62;
+
+  --ax-sys-color-secondary-surface: 203, 144, 47;
+  --ax-sys-color-on-secondary-surface: 255, 250, 224;
+  --ax-sys-color-border-secondary-surface: 174, 123, 40;
+
+  --ax-sys-color-secondary-dark-surface: 180, 122, 9;
+  --ax-sys-color-on-secondary-dark-surface: 255, 250, 225;
+  --ax-sys-color-border-secondary-dark-surface: 146, 99, 7;
+
+  --ax-sys-color-secondary-darker-surface: 152, 96, 0;
+  --ax-sys-color-on-secondary-darker-surface: 255, 250, 228;
+  --ax-sys-color-border-secondary-darker-surface: 116, 73, 0;
+
+  --ax-sys-color-secondary-darkest-surface: 124, 79, 18;
+  --ax-sys-color-on-secondary-darkest-surface: 255, 250, 229;
+  --ax-sys-color-border-secondary-darkest-surface: 93, 59, 13;
+
+  --ax-sys-color-success-lightest-surface: 162, 255, 211;
+  --ax-sys-color-on-success-lightest-surface: 0, 59, 32;
+  --ax-sys-color-border-success-lightest-surface: 126, 255, 194;
+
+  --ax-sys-color-success-lighter-surface: 111, 255, 188;
+  --ax-sys-color-on-success-lighter-surface: 0, 59, 29;
+  --ax-sys-color-border-success-lighter-surface: 75, 255, 171;
+
+  --ax-sys-color-success-light-surface: 86, 233, 167;
+  --ax-sys-color-on-success-light-surface: 0, 59, 29;
+  --ax-sys-color-border-success-light-surface: 54, 229, 151;
+
+  --ax-sys-color-success-surface: 1, 188, 125;
+  --ax-sys-color-on-success-surface: 231, 255, 244;
+  --ax-sys-color-border-success-surface: 1, 152, 101;
+
+  --ax-sys-color-success-dark-surface: 0, 165, 104;
+  --ax-sys-color-on-success-dark-surface: 231, 255, 243;
+  --ax-sys-color-border-success-dark-surface: 0, 129, 81;
+
+  --ax-sys-color-success-darker-surface: 0, 136, 81;
+  --ax-sys-color-on-success-darker-surface: 232, 255, 242;
+  --ax-sys-color-border-success-darker-surface: 0, 100, 60;
+
+  --ax-sys-color-success-darkest-surface: 22, 110, 67;
+  --ax-sys-color-on-success-darkest-surface: 232, 255, 242;
+  --ax-sys-color-border-success-darkest-surface: 16, 80, 49;
+
+  --ax-sys-color-warning-lightest-surface: 255, 234, 201;
+  --ax-sys-color-on-warning-lightest-surface: 59, 43, 14;
+  --ax-sys-color-border-warning-lightest-surface: 255, 220, 165;
+
+  --ax-sys-color-warning-lighter-surface: 255, 221, 174;
+  --ax-sys-color-on-warning-lighter-surface: 66, 39, 0;
+  --ax-sys-color-border-warning-lighter-surface: 255, 206, 138;
+
+  --ax-sys-color-warning-light-surface: 255, 198, 128;
+  --ax-sys-color-on-warning-light-surface: 71, 36, 0;
+  --ax-sys-color-border-warning-light-surface: 255, 182, 92;
+
+  --ax-sys-color-warning-surface: 253, 154, 1;
+  --ax-sys-color-on-warning-surface: 255, 250, 231;
+  --ax-sys-color-border-warning-surface: 217, 132, 1;
+
+  --ax-sys-color-warning-dark-surface: 224, 127, 0;
+  --ax-sys-color-on-warning-dark-surface: 255, 249, 233;
+  --ax-sys-color-border-warning-dark-surface: 188, 107, 0;
+
+  --ax-sys-color-warning-darker-surface: 181, 100, 0;
+  --ax-sys-color-on-warning-darker-surface: 255, 249, 234;
+  --ax-sys-color-border-warning-darker-surface: 145, 80, 0;
+
+  --ax-sys-color-warning-darkest-surface: 144, 81, 20;
+  --ax-sys-color-on-warning-darkest-surface: 255, 249, 234;
+  --ax-sys-color-border-warning-darkest-surface: 113, 63, 16;
+
+  --ax-sys-color-danger-lightest-surface: 255, 212, 202;
+  --ax-sys-color-on-danger-lightest-surface: 68, 36, 29;
+  --ax-sys-color-border-danger-lightest-surface: 255, 183, 166;
+
+  --ax-sys-color-danger-lighter-surface: 255, 180, 166;
+  --ax-sys-color-on-danger-lighter-surface: 82, 23, 14;
+  --ax-sys-color-border-danger-lighter-surface: 255, 150, 130;
+
+  --ax-sys-color-danger-light-surface: 255, 123, 104;
+  --ax-sys-color-on-danger-light-surface: 255, 248, 244;
+  --ax-sys-color-border-danger-light-surface: 255, 92, 68;
+
+  --ax-sys-color-danger-surface: 200, 29, 17;
+  --ax-sys-color-on-danger-surface: 255, 248, 244;
+  --ax-sys-color-border-danger-surface: 167, 24, 14;
+
+  --ax-sys-color-danger-dark-surface: 185, 0, 0;
+  --ax-sys-color-on-danger-dark-surface: 255, 248, 244;
+  --ax-sys-color-border-danger-dark-surface: 149, 0, 0;
+
+  --ax-sys-color-danger-darker-surface: 165, 0, 0;
+  --ax-sys-color-on-danger-darker-surface: 255, 248, 244;
+  --ax-sys-color-border-danger-darker-surface: 129, 0, 0;
+
+  --ax-sys-color-danger-darkest-surface: 140, 19, 12;
+  --ax-sys-color-on-danger-darkest-surface: 255, 248, 244;
+  --ax-sys-color-border-danger-darkest-surface: 107, 15, 9;
+
+  --ax-sys-color-surface-lightest-surface: 255, 253, 249;
+  --ax-sys-color-on-surface-lightest-surface: 47, 46, 43;
+  --ax-sys-color-border-surface-lightest-surface: 255, 241, 213;
+
+  --ax-sys-color-surface-lighter-surface: 255, 253, 248;
+  --ax-sys-color-on-surface-lighter-surface: 47, 46, 42;
+  --ax-sys-color-border-surface-lighter-surface: 255, 243, 212;
+
+  --ax-sys-color-surface-light-surface: 254, 251, 246;
+  --ax-sys-color-on-surface-light-surface: 48, 45, 42;
+  --ax-sys-color-border-surface-light-surface: 250, 237, 214;
+
+  --ax-sys-color-surface-surface: 251, 248, 243;
+  --ax-sys-color-on-surface-surface: 48, 45, 42;
+  --ax-sys-color-border-surface-surface: 242, 232, 216;
+
+  --ax-sys-color-surface-dark-surface: 211, 208, 203;
+  --ax-sys-color-on-surface-dark-surface: 48, 45, 42;
+  --ax-sys-color-border-surface-dark-surface: 195, 191, 184;
+
+  --ax-sys-color-surface-darker-surface: 163, 160, 156;
+  --ax-sys-color-on-surface-darker-surface: 255, 253, 249;
+  --ax-sys-color-border-surface-darker-surface: 146, 142, 137;
+
+  --ax-sys-color-surface-darkest-surface: 126, 124, 119;
+  --ax-sys-color-on-surface-darkest-surface: 255, 253, 248;
+  --ax-sys-color-border-surface-darkest-surface: 108, 106, 102;
+
+  --ax-sys-color-accent-lightest-surface: 176, 255, 255;
+  --ax-sys-color-on-accent-lightest-surface: 0, 56, 57;
+  --ax-sys-color-border-accent-lightest-surface: 140, 255, 255;
+
+  --ax-sys-color-accent-lighter-surface: 139, 250, 255;
+  --ax-sys-color-on-accent-lighter-surface: 0, 56, 59;
+  --ax-sys-color-border-accent-lighter-surface: 103, 248, 255;
+
+  --ax-sys-color-accent-light-surface: 122, 233, 250;
+  --ax-sys-color-on-accent-light-surface: 0, 55, 65;
+  --ax-sys-color-border-accent-light-surface: 88, 227, 249;
+
+  --ax-sys-color-accent-surface: 84, 198, 215;
+  --ax-sys-color-on-accent-surface: 0, 55, 65;
+  --ax-sys-color-border-accent-surface: 55, 188, 208;
+
+  --ax-sys-color-accent-dark-surface: 51, 171, 188;
+  --ax-sys-color-on-accent-dark-surface: 224, 255, 255;
+  --ax-sys-color-border-accent-dark-surface: 43, 145, 160;
+
+  --ax-sys-color-accent-darker-surface: 0, 139, 155;
+  --ax-sys-color-on-accent-darker-surface: 224, 255, 255;
+  --ax-sys-color-border-accent-darker-surface: 0, 107, 119;
+
+  --ax-sys-color-accent-darkest-surface: 25, 113, 127;
+  --ax-sys-color-on-accent-darkest-surface: 225, 255, 255;
+  --ax-sys-color-border-accent-darkest-surface: 19, 86, 97;
+
+  --ax-sys-color-accent2-lightest-surface: 157, 239, 255;
+  --ax-sys-color-on-accent2-lightest-surface: 0, 54, 66;
+  --ax-sys-color-border-accent2-lightest-surface: 121, 233, 255;
+
+  --ax-sys-color-accent2-lighter-surface: 133, 215, 236;
+  --ax-sys-color-on-accent2-lighter-surface: 0, 54, 69;
+  --ax-sys-color-border-accent2-lighter-surface: 102, 205, 231;
+
+  --ax-sys-color-accent2-light-surface: 97, 178, 199;
+  --ax-sys-color-on-accent2-light-surface: 0, 54, 69;
+  --ax-sys-color-border-accent2-light-surface: 71, 165, 190;
+
+  --ax-sys-color-accent2-surface: 3, 106, 125;
+  --ax-sys-color-on-accent2-surface: 227, 255, 255;
+  --ax-sys-color-border-accent2-surface: 2, 76, 90;
+
+  --ax-sys-color-accent2-dark-surface: 0, 96, 115;
+  --ax-sys-color-on-accent2-dark-surface: 228, 255, 255;
+  --ax-sys-color-border-accent2-dark-surface: 0, 66, 79;
+
+  --ax-sys-color-accent2-darker-surface: 0, 85, 103;
+  --ax-sys-color-on-accent2-darker-surface: 228, 255, 255;
+  --ax-sys-color-border-accent2-darker-surface: 0, 56, 67;
+
+  --ax-sys-color-accent2-darkest-surface: 13, 75, 92;
+  --ax-sys-color-on-accent2-darkest-surface: 230, 255, 255;
+  --ax-sys-color-border-accent2-darkest-surface: 9, 50, 61;
+
+  --ax-sys-color-accent3-lightest-surface: 255, 212, 202;
+  --ax-sys-color-on-accent3-lightest-surface: 68, 36, 29;
+  --ax-sys-color-border-accent3-lightest-surface: 255, 183, 166;
+
+  --ax-sys-color-accent3-lighter-surface: 255, 180, 166;
+  --ax-sys-color-on-accent3-lighter-surface: 82, 23, 14;
+  --ax-sys-color-border-accent3-lighter-surface: 255, 150, 130;
+
+  --ax-sys-color-accent3-light-surface: 255, 123, 104;
+  --ax-sys-color-on-accent3-light-surface: 255, 248, 244;
+  --ax-sys-color-border-accent3-light-surface: 255, 92, 68;
+
+  --ax-sys-color-accent3-surface: 200, 29, 17;
+  --ax-sys-color-on-accent3-surface: 255, 248, 244;
+  --ax-sys-color-border-accent3-surface: 167, 24, 14;
+
+  --ax-sys-color-accent3-dark-surface: 185, 0, 0;
+  --ax-sys-color-on-accent3-dark-surface: 255, 248, 244;
+  --ax-sys-color-border-accent3-dark-surface: 149, 0, 0;
+
+  --ax-sys-color-accent3-darker-surface: 165, 0, 0;
+  --ax-sys-color-on-accent3-darker-surface: 255, 248, 244;
+  --ax-sys-color-border-accent3-darker-surface: 129, 0, 0;
+
+  --ax-sys-color-accent3-darkest-surface: 140, 19, 12;
+  --ax-sys-color-on-accent3-darkest-surface: 255, 248, 244;
+  --ax-sys-color-border-accent3-darkest-surface: 107, 15, 9;
+
+  --ax-sys-color-bg-default: var(--ax-sys-color-lightest-surface);
+  --ax-sys-color-text-default: var(--ax-sys-color-on-lightest-surface);
+  --ax-sys-color-border-default: var(--ax-sys-color-border-lightest-surface);
+}
+
+.dark:root {
+  --ax-sys-scroller-track-color: rgba(var(--ax-sys-color-darker-surface));
+  --ax-sys-scroller-thumb-color: rgba(var(--ax-sys-color-lightest-surface));
+
+  --ax-sys-color-lightest-surface: 56, 56, 56;
+  --ax-sys-color-on-lightest-surface: 245, 245, 245;
+  --ax-sys-color-border-lightest-surface: 64, 64, 64;
+
+  --ax-sys-color-lighter-surface: 49, 49, 49;
+  --ax-sys-color-on-lighter-surface: 245, 245, 245;
+  --ax-sys-color-border-lighter-surface: 56, 56, 56;
+
+  --ax-sys-color-light-surface: 42, 42, 42;
+  --ax-sys-color-on-light-surface: 245, 245, 245;
+  --ax-sys-color-border-light-surface: 50, 50, 50;
+
+  --ax-sys-color-surface: 33, 33, 33;
+  --ax-sys-color-on-surface: 245, 245, 245;
+  --ax-sys-color-border-surface: 44, 44, 44;
+
+  --ax-sys-color-dark-surface: 27, 27, 27;
+  --ax-sys-color-on-dark-surface: 245, 245, 245;
+  --ax-sys-color-border-dark-surface: 38, 38, 38;
+
+  --ax-sys-color-darker-surface: 20, 20, 20;
+  --ax-sys-color-on-darker-surface: 245, 245, 245;
+  --ax-sys-color-border-darker-surface: 32, 32, 32;
+
+  --ax-sys-color-darkest-surface: 10, 10, 10;
+  --ax-sys-color-on-darkest-surface: 245, 245, 245;
+  --ax-sys-color-border-darkest-surface: 28, 28, 28;
+
+  --ax-sys-color-primary-50: 220, 255, 255;
+  --ax-sys-color-primary-100: 210, 248, 255;
+  --ax-sys-color-primary-200: 197, 234, 250;
+  --ax-sys-color-primary-300: 183, 221, 236;
+  --ax-sys-color-primary-400: 170, 207, 223;
+  --ax-sys-color-primary-500: 157, 193, 209;
+  --ax-sys-color-primary-600: 144, 180, 195;
+  --ax-sys-color-primary-700: 131, 167, 182;
+  --ax-sys-color-primary-800: 114, 149, 164;
+  --ax-sys-color-primary-900: 97, 132, 146;
+  --ax-sys-color-primary-950: 88, 123, 137;
+
+  --ax-sys-color-secondary-50: 255, 244, 209;
+  --ax-sys-color-secondary-100: 255, 235, 188;
+  --ax-sys-color-secondary-200: 255, 216, 143;
+  --ax-sys-color-secondary-300: 255, 199, 108;
+  --ax-sys-color-secondary-400: 247, 185, 94;
+  --ax-sys-color-secondary-500: 232, 171, 79;
+  --ax-sys-color-secondary-600: 217, 158, 63;
+  --ax-sys-color-secondary-700: 203, 144, 47;
+  --ax-sys-color-secondary-800: 185, 127, 20;
+  --ax-sys-color-secondary-900: 167, 110, 0;
+  --ax-sys-color-secondary-950: 158, 101, 0;
+
+  --ax-sys-color-success-50: 210, 255, 233;
+  --ax-sys-color-success-100: 180, 255, 219;
+  --ax-sys-color-success-200: 115, 255, 191;
+  --ax-sys-color-success-300: 99, 244, 178;
+  --ax-sys-color-success-400: 82, 230, 164;
+  --ax-sys-color-success-500: 64, 216, 151;
+  --ax-sys-color-success-600: 42, 202, 138;
+  --ax-sys-color-success-700: 1, 188, 125;
+  --ax-sys-color-success-800: 0, 170, 108;
+  --ax-sys-color-success-900: 0, 151, 91;
+  --ax-sys-color-success-950: 0, 142, 85;
+
+  --ax-sys-color-warning-50: 255, 245, 222;
+  --ax-sys-color-warning-100: 255, 238, 208;
+  --ax-sys-color-warning-200: 255, 224, 181;
+  --ax-sys-color-warning-300: 255, 210, 152;
+  --ax-sys-color-warning-400: 255, 195, 120;
+  --ax-sys-color-warning-500: 255, 180, 82;
+  --ax-sys-color-warning-600: 255, 165, 33;
+  --ax-sys-color-warning-700: 253, 154, 1;
+  --ax-sys-color-warning-800: 230, 133, 0;
+  --ax-sys-color-warning-900: 203, 114, 0;
+  --ax-sys-color-warning-950: 190, 105, 0;
+
+  --ax-sys-color-danger-50: 255, 235, 229;
+  --ax-sys-color-danger-100: 255, 220, 211;
+  --ax-sys-color-danger-200: 255, 188, 175;
+  --ax-sys-color-danger-300: 255, 154, 136;
+  --ax-sys-color-danger-400: 255, 113, 94;
+  --ax-sys-color-danger-500: 248, 83, 65;
+  --ax-sys-color-danger-600: 224, 59, 43;
+  --ax-sys-color-danger-700: 200, 29, 17;
+  --ax-sys-color-danger-800: 188, 3, 0;
+  --ax-sys-color-danger-900: 176, 0, 0;
+  --ax-sys-color-danger-950: 170, 0, 0;
+
+  --ax-sys-color-surface-50: 237, 237, 237;
+  --ax-sys-color-surface-100: 219, 219, 219;
+  --ax-sys-color-surface-200: 185, 185, 185;
+  --ax-sys-color-surface-300: 151, 151, 151;
+  --ax-sys-color-surface-400: 119, 119, 119;
+  --ax-sys-color-surface-500: 89, 89, 89;
+  --ax-sys-color-surface-600: 60, 60, 60;
+  --ax-sys-color-surface-700: 33, 33, 33;
+  --ax-sys-color-surface-800: 35, 35, 35;
+  --ax-sys-color-surface-900: 37, 37, 37;
+  --ax-sys-color-surface-950: 37, 37, 37;
+
+  --ax-sys-color-accent-50: 208, 255, 255;
+  --ax-sys-color-accent-100: 187, 255, 255;
+  --ax-sys-color-accent-200: 146, 252, 255;
+  --ax-sys-color-accent-300: 131, 242, 255;
+  --ax-sys-color-accent-400: 119, 231, 248;
+  --ax-sys-color-accent-500: 108, 220, 237;
+  --ax-sys-color-accent-600: 96, 209, 226;
+  --ax-sys-color-accent-700: 84, 198, 215;
+  --ax-sys-color-accent-800: 58, 177, 193;
+  --ax-sys-color-accent-900: 25, 155, 172;
+  --ax-sys-color-accent-950: 0, 145, 162;
+
+  --ax-sys-color-accent2-50: 196, 254, 255;
+  --ax-sys-color-accent2-100: 163, 246, 255;
+  --ax-sys-color-accent2-200: 139, 221, 242;
+  --ax-sys-color-accent2-300: 115, 197, 218;
+  --ax-sys-color-accent2-400: 91, 173, 194;
+  --ax-sys-color-accent2-500: 67, 150, 170;
+  --ax-sys-color-accent2-600: 41, 128, 147;
+  --ax-sys-color-accent2-700: 3, 106, 125;
+  --ax-sys-color-accent2-800: 0, 98, 117;
+  --ax-sys-color-accent2-900: 0, 91, 110;
+  --ax-sys-color-accent2-950: 0, 87, 106;
+
+  --ax-sys-color-accent3-50: 255, 235, 229;
+  --ax-sys-color-accent3-100: 255, 220, 211;
+  --ax-sys-color-accent3-200: 255, 188, 175;
+  --ax-sys-color-accent3-300: 255, 154, 136;
+  --ax-sys-color-accent3-400: 255, 113, 94;
+  --ax-sys-color-accent3-500: 248, 83, 65;
+  --ax-sys-color-accent3-600: 224, 59, 43;
+  --ax-sys-color-accent3-700: 200, 29, 17;
+  --ax-sys-color-accent3-800: 188, 3, 0;
+  --ax-sys-color-accent3-900: 176, 0, 0;
+  --ax-sys-color-accent3-950: 170, 0, 0;
+
+  --ax-sys-color-primary-lightest-surface: 210, 248, 255;
+  --ax-sys-color-on-primary-lightest-surface: 0, 27, 32;
+  --ax-sys-color-border-primary-lightest-surface: 255, 255, 255;
+
+  --ax-sys-color-primary-lighter-surface: 197, 234, 250;
+  --ax-sys-color-on-primary-lighter-surface: 0, 26, 37;
+  --ax-sys-color-border-primary-lighter-surface: 239, 249, 254;
+
+  --ax-sys-color-primary-light-surface: 183, 221, 236;
+  --ax-sys-color-on-primary-light-surface: 0, 26, 37;
+  --ax-sys-color-border-primary-light-surface: 219, 238, 246;
+
+  --ax-sys-color-primary-surface: 157, 193, 209;
+  --ax-sys-color-on-primary-surface: 0, 26, 37;
+  --ax-sys-color-border-primary-surface: 188, 213, 224;
+
+  --ax-sys-color-primary-dark-surface: 144, 180, 195;
+  --ax-sys-color-on-primary-dark-surface: 0, 26, 37;
+  --ax-sys-color-border-primary-dark-surface: 174, 200, 211;
+
+  --ax-sys-color-primary-darker-surface: 131, 167, 182;
+  --ax-sys-color-on-primary-darker-surface: 0, 26, 37;
+  --ax-sys-color-border-primary-darker-surface: 160, 188, 199;
+
+  --ax-sys-color-primary-darkest-surface: 114, 149, 164;
+  --ax-sys-color-on-primary-darkest-surface: 0, 26, 37;
+  --ax-sys-color-border-primary-darkest-surface: 142, 170, 182;
+
+  --ax-sys-color-secondary-lightest-surface: 255, 235, 188;
+  --ax-sys-color-on-secondary-lightest-surface: 33, 19, 0;
+  --ax-sys-color-border-secondary-lightest-surface: 255, 249, 234;
+
+  --ax-sys-color-secondary-lighter-surface: 255, 216, 143;
+  --ax-sys-color-on-secondary-lighter-surface: 35, 18, 0;
+  --ax-sys-color-border-secondary-lighter-surface: 255, 232, 189;
+
+  --ax-sys-color-secondary-light-surface: 255, 199, 108;
+  --ax-sys-color-on-secondary-light-surface: 37, 17, 0;
+  --ax-sys-color-border-secondary-light-surface: 255, 216, 154;
+
+  --ax-sys-color-secondary-surface: 232, 171, 79;
+  --ax-sys-color-on-secondary-surface: 38, 16, 0;
+  --ax-sys-color-border-secondary-surface: 237, 190, 120;
+
+  --ax-sys-color-secondary-dark-surface: 217, 158, 63;
+  --ax-sys-color-on-secondary-dark-surface: 37, 16, 0;
+  --ax-sys-color-border-secondary-dark-surface: 225, 177, 101;
+
+  --ax-sys-color-secondary-darker-surface: 203, 144, 47;
+  --ax-sys-color-on-secondary-darker-surface: 37, 16, 0;
+  --ax-sys-color-border-secondary-darker-surface: 215, 164, 81;
+
+  --ax-sys-color-secondary-darkest-surface: 185, 127, 20;
+  --ax-sys-color-on-secondary-darkest-surface: 255, 250, 224;
+  --ax-sys-color-border-secondary-darkest-surface: 226, 155, 24;
+
+  --ax-sys-color-success-lightest-surface: 180, 255, 219;
+  --ax-sys-color-on-success-lightest-surface: 0, 31, 13;
+  --ax-sys-color-border-success-lightest-surface: 226, 255, 241;
+
+  --ax-sys-color-success-lighter-surface: 115, 255, 191;
+  --ax-sys-color-on-success-lighter-surface: 0, 31, 11;
+  --ax-sys-color-border-success-lighter-surface: 161, 255, 212;
+
+  --ax-sys-color-success-light-surface: 99, 244, 178;
+  --ax-sys-color-on-success-light-surface: 0, 31, 10;
+  --ax-sys-color-border-success-light-surface: 142, 247, 199;
+
+  --ax-sys-color-success-surface: 64, 216, 151;
+  --ax-sys-color-on-success-surface: 0, 31, 10;
+  --ax-sys-color-border-success-surface: 102, 224, 172;
+
+  --ax-sys-color-success-dark-surface: 42, 202, 138;
+  --ax-sys-color-on-success-dark-surface: 0, 31, 10;
+  --ax-sys-color-border-success-dark-surface: 73, 217, 159;
+
+  --ax-sys-color-success-darker-surface: 1, 188, 125;
+  --ax-sys-color-on-success-darker-surface: 0, 31, 10;
+  --ax-sys-color-border-success-darker-surface: 1, 234, 155;
+
+  --ax-sys-color-success-darkest-surface: 0, 170, 108;
+  --ax-sys-color-on-success-darkest-surface: 0, 31, 8;
+  --ax-sys-color-border-success-darkest-surface: 0, 216, 137;
+
+  --ax-sys-color-warning-lightest-surface: 255, 238, 208;
+  --ax-sys-color-on-warning-lightest-surface: 32, 20, 0;
+  --ax-sys-color-border-warning-lightest-surface: 255, 255, 254;
+
+  --ax-sys-color-warning-lighter-surface: 255, 224, 181;
+  --ax-sys-color-on-warning-lighter-surface: 37, 16, 0;
+  --ax-sys-color-border-warning-lighter-surface: 255, 243, 227;
+
+  --ax-sys-color-warning-light-surface: 255, 210, 152;
+  --ax-sys-color-on-warning-light-surface: 38, 16, 0;
+  --ax-sys-color-border-warning-light-surface: 255, 230, 198;
+
+  --ax-sys-color-warning-surface: 255, 180, 82;
+  --ax-sys-color-on-warning-surface: 39, 15, 0;
+  --ax-sys-color-border-warning-surface: 255, 200, 128;
+
+  --ax-sys-color-warning-dark-surface: 255, 165, 33;
+  --ax-sys-color-on-warning-dark-surface: 40, 14, 0;
+  --ax-sys-color-border-warning-dark-surface: 255, 184, 79;
+
+  --ax-sys-color-warning-darker-surface: 253, 154, 1;
+  --ax-sys-color-on-warning-darker-surface: 41, 13, 0;
+  --ax-sys-color-border-warning-darker-surface: 254, 172, 46;
+
+  --ax-sys-color-warning-darkest-surface: 230, 133, 0;
+  --ax-sys-color-on-warning-darkest-surface: 42, 12, 0;
+  --ax-sys-color-border-warning-darkest-surface: 255, 156, 21;
+
+  --ax-sys-color-danger-lightest-surface: 255, 220, 211;
+  --ax-sys-color-on-danger-lightest-surface: 38, 14, 9;
+  --ax-sys-color-border-danger-lightest-surface: 255, 255, 255;
+
+  --ax-sys-color-danger-lighter-surface: 255, 188, 175;
+  --ax-sys-color-on-danger-lighter-surface: 50, 1, 0;
+  --ax-sys-color-border-danger-lighter-surface: 255, 226, 221;
+
+  --ax-sys-color-danger-light-surface: 255, 154, 136;
+  --ax-sys-color-on-danger-light-surface: 56, 0, 0;
+  --ax-sys-color-border-danger-light-surface: 255, 193, 182;
+
+  --ax-sys-color-danger-surface: 248, 83, 65;
+  --ax-sys-color-on-danger-surface: 56, 0, 0;
+  --ax-sys-color-border-danger-surface: 250, 123, 109;
+
+  --ax-sys-color-danger-dark-surface: 224, 59, 43;
+  --ax-sys-color-on-danger-dark-surface: 255, 248, 244;
+  --ax-sys-color-border-danger-dark-surface: 230, 96, 83;
+
+  --ax-sys-color-danger-darker-surface: 200, 29, 17;
+  --ax-sys-color-on-danger-darker-surface: 255, 248, 244;
+  --ax-sys-color-border-danger-darker-surface: 236, 41, 27;
+
+  --ax-sys-color-danger-darkest-surface: 188, 3, 0;
+  --ax-sys-color-on-danger-darkest-surface: 255, 248, 244;
+  --ax-sys-color-border-danger-darkest-surface: 234, 4, 0;
+
+  --ax-sys-color-surface-lightest-surface: 219, 219, 219;
+  --ax-sys-color-on-surface-lightest-surface: 22, 22, 22;
+  --ax-sys-color-border-surface-lightest-surface: 242, 242, 242;
+
+  --ax-sys-color-surface-lighter-surface: 185, 185, 185;
+  --ax-sys-color-on-surface-lighter-surface: 22, 22, 22;
+  --ax-sys-color-border-surface-lighter-surface: 208, 208, 208;
+
+  --ax-sys-color-surface-light-surface: 151, 151, 151;
+  --ax-sys-color-on-surface-light-surface: 22, 22, 22;
+  --ax-sys-color-border-surface-light-surface: 174, 174, 174;
+
+  --ax-sys-color-surface-surface: 89, 89, 89;
+  --ax-sys-color-on-surface-surface: 253, 253, 253;
+  --ax-sys-color-border-surface-surface: 112, 112, 112;
+
+  --ax-sys-color-surface-dark-surface: 60, 60, 60;
+  --ax-sys-color-on-surface-dark-surface: 253, 253, 253;
+  --ax-sys-color-border-surface-dark-surface: 83, 83, 83;
+
+  --ax-sys-color-surface-darker-surface: 33, 33, 33;
+  --ax-sys-color-on-surface-darker-surface: 253, 253, 253;
+  --ax-sys-color-border-surface-darker-surface: 56, 56, 56;
+
+  --ax-sys-color-surface-darkest-surface: 35, 35, 35;
+  --ax-sys-color-on-surface-darkest-surface: 253, 253, 253;
+  --ax-sys-color-border-surface-darkest-surface: 58, 58, 58;
+
+  --ax-sys-color-accent-lightest-surface: 187, 255, 255;
+  --ax-sys-color-on-accent-lightest-surface: 0, 29, 30;
+  --ax-sys-color-border-accent-lightest-surface: 233, 255, 255;
+
+  --ax-sys-color-accent-lighter-surface: 146, 252, 255;
+  --ax-sys-color-on-accent-lighter-surface: 0, 29, 31;
+  --ax-sys-color-border-accent-lighter-surface: 192, 253, 255;
+
+  --ax-sys-color-accent-light-surface: 131, 242, 255;
+  --ax-sys-color-on-accent-light-surface: 0, 28, 34;
+  --ax-sys-color-border-accent-light-surface: 177, 247, 255;
+
+  --ax-sys-color-accent-surface: 108, 220, 237;
+  --ax-sys-color-on-accent-surface: 0, 28, 35;
+  --ax-sys-color-border-accent-surface: 149, 230, 242;
+
+  --ax-sys-color-accent-dark-surface: 96, 209, 226;
+  --ax-sys-color-on-accent-dark-surface: 0, 28, 35;
+  --ax-sys-color-border-accent-dark-surface: 135, 220, 233;
+
+  --ax-sys-color-accent-darker-surface: 84, 198, 215;
+  --ax-sys-color-on-accent-darker-surface: 0, 28, 35;
+  --ax-sys-color-border-accent-darker-surface: 121, 210, 224;
+
+  --ax-sys-color-accent-darkest-surface: 58, 177, 193;
+  --ax-sys-color-on-accent-darkest-surface: 0, 28, 35;
+  --ax-sys-color-border-accent-darkest-surface: 91, 192, 206;
+
+  --ax-sys-color-accent2-lightest-surface: 163, 246, 255;
+  --ax-sys-color-on-accent2-lightest-surface: 0, 28, 33;
+  --ax-sys-color-border-accent2-lightest-surface: 209, 250, 255;
+
+  --ax-sys-color-accent2-lighter-surface: 139, 221, 242;
+  --ax-sys-color-on-accent2-lighter-surface: 0, 27, 38;
+  --ax-sys-color-border-accent2-lighter-surface: 180, 233, 247;
+
+  --ax-sys-color-accent2-light-surface: 115, 197, 218;
+  --ax-sys-color-on-accent2-light-surface: 0, 27, 38;
+  --ax-sys-color-border-accent2-light-surface: 151, 212, 228;
+
+  --ax-sys-color-accent2-surface: 67, 150, 170;
+  --ax-sys-color-on-accent2-surface: 0, 27, 38;
+  --ax-sys-color-border-accent2-surface: 92, 172, 191;
+
+  --ax-sys-color-accent2-dark-surface: 41, 128, 147;
+  --ax-sys-color-on-accent2-dark-surface: 227, 255, 255;
+  --ax-sys-color-border-accent2-dark-surface: 51, 159, 183;
+
+  --ax-sys-color-accent2-darker-surface: 3, 106, 125;
+  --ax-sys-color-on-accent2-darker-surface: 227, 255, 255;
+  --ax-sys-color-border-accent2-darker-surface: 4, 144, 170;
+
+  --ax-sys-color-accent2-darkest-surface: 0, 98, 117;
+  --ax-sys-color-on-accent2-darkest-surface: 228, 255, 255;
+  --ax-sys-color-border-accent2-darkest-surface: 0, 136, 163;
+
+  --ax-sys-color-accent3-lightest-surface: 255, 220, 211;
+  --ax-sys-color-on-accent3-lightest-surface: 38, 14, 9;
+  --ax-sys-color-border-accent3-lightest-surface: 255, 255, 255;
+
+  --ax-sys-color-accent3-lighter-surface: 255, 188, 175;
+  --ax-sys-color-on-accent3-lighter-surface: 50, 1, 0;
+  --ax-sys-color-border-accent3-lighter-surface: 255, 226, 221;
+
+  --ax-sys-color-accent3-light-surface: 255, 154, 136;
+  --ax-sys-color-on-accent3-light-surface: 56, 0, 0;
+  --ax-sys-color-border-accent3-light-surface: 255, 193, 182;
+
+  --ax-sys-color-accent3-surface: 248, 83, 65;
+  --ax-sys-color-on-accent3-surface: 56, 0, 0;
+  --ax-sys-color-border-accent3-surface: 250, 123, 109;
+
+  --ax-sys-color-accent3-dark-surface: 224, 59, 43;
+  --ax-sys-color-on-accent3-dark-surface: 255, 248, 244;
+  --ax-sys-color-border-accent3-dark-surface: 230, 96, 83;
+
+  --ax-sys-color-accent3-darker-surface: 200, 29, 17;
+  --ax-sys-color-on-accent3-darker-surface: 255, 248, 244;
+  --ax-sys-color-border-accent3-darker-surface: 236, 41, 27;
+
+  --ax-sys-color-accent3-darkest-surface: 188, 3, 0;
+  --ax-sys-color-on-accent3-darkest-surface: 255, 248, 244;
+  --ax-sys-color-border-accent3-darkest-surface: 234, 4, 0;
+
+}
+
+@theme {
+  --color-bg-default: rgba(var(--ax-sys-color-bg-default));
+  --color-text-default: rgba(var(--ax-sys-color-text-default));
+  --color-border-default: rgba(var(--ax-sys-color-border-default));
+  --color-border: rgba(var(--ax-sys-color-border-default));
+  --radius-default: var(--ax-sys-border-radius);
+  --breakpoint-3xl: 1920px;
+  --breakpoint-4xl: 2560px;
+  
+  --color-lightest: rgba(var(--ax-sys-color-lightest-surface));
+  --color-on-lightest: rgba(var(--ax-sys-color-on-lightest-surface));
+  --color-border-lightest: rgba(var(--ax-sys-color-border-lightest-surface));
+  --color-lighter: rgba(var(--ax-sys-color-lighter-surface));
+  --color-on-lighter: rgba(var(--ax-sys-color-on-lighter-surface));
+  --color-border-lighter: rgba(var(--ax-sys-color-border-lighter-surface));
+  --color-light: rgba(var(--ax-sys-color-light-surface));
+  --color-on-light: rgba(var(--ax-sys-color-on-light-surface));
+  --color-border-light: rgba(var(--ax-sys-color-border-light-surface));
+  --color-surface: rgba(var(--ax-sys-color-surface));
+  --color-on-surface: rgba(var(--ax-sys-color-on-surface));
+  --color-border-surface: rgba(var(--ax-sys-color-border-surface));
+  --color-dark: rgba(var(--ax-sys-color-dark-surface));
+  --color-on-dark: rgba(var(--ax-sys-color-on-dark-surface));
+  --color-border-dark: rgba(var(--ax-sys-color-border-dark-surface));
+  --color-darker: rgba(var(--ax-sys-color-darker-surface));
+  --color-on-darker: rgba(var(--ax-sys-color-on-darker-surface));
+  --color-border-darker: rgba(var(--ax-sys-color-border-darker-surface));
+  --color-darkest: rgba(var(--ax-sys-color-darkest-surface));
+  --color-on-darkest: rgba(var(--ax-sys-color-on-darkest-surface));
+  --color-border-darkest: rgba(var(--ax-sys-color-border-darkest-surface));
+  /* Primary Surfaces */
+  --color-primary-50: rgba(var(--ax-sys-color-primary-50));
+  --color-primary-100: rgba(var(--ax-sys-color-primary-100));
+  --color-primary-200: rgba(var(--ax-sys-color-primary-200));
+  --color-primary-300: rgba(var(--ax-sys-color-primary-300));
+  --color-primary-400: rgba(var(--ax-sys-color-primary-400));
+  --color-primary-500: rgba(var(--ax-sys-color-primary-500));
+  --color-primary-600: rgba(var(--ax-sys-color-primary-600));
+  --color-primary-700: rgba(var(--ax-sys-color-primary-700));
+  --color-primary-800: rgba(var(--ax-sys-color-primary-800));
+  --color-primary-900: rgba(var(--ax-sys-color-primary-900));
+  --color-primary-950: rgba(var(--ax-sys-color-primary-950));
+
+  --color-primary-lightest: rgba(var(--ax-sys-color-primary-lightest-surface));
+  --color-on-primary-lightest: rgba(var(--ax-sys-color-on-primary-lightest-surface));
+  --color-border-primary-lightest: rgba(var(--ax-sys-color-border-primary-lightest-surface));
+  --color-primary-lighter: rgba(var(--ax-sys-color-primary-lighter-surface));
+  --color-on-primary-lighter: rgba(var(--ax-sys-color-on-primary-lighter-surface));
+  --color-border-primary-lighter: rgba(var(--ax-sys-color-border-primary-lighter-surface));
+  --color-primary-light: rgba(var(--ax-sys-color-primary-light-surface));
+  --color-on-primary-light: rgba(var(--ax-sys-color-on-primary-light-surface));
+  --color-border-primary-light: rgba(var(--ax-sys-color-border-primary-light-surface));
+  --color-primary: rgba(var(--ax-sys-color-primary-surface));
+  --color-on-primary: rgba(var(--ax-sys-color-on-primary-surface));
+  --color-border-primary: rgba(var(--ax-sys-color-border-primary-surface));
+  --color-primary-dark: rgba(var(--ax-sys-color-primary-dark-surface));
+  --color-on-primary-dark: rgba(var(--ax-sys-color-on-primary-dark-surface));
+  --color-border-primary-dark: rgba(var(--ax-sys-color-border-primary-dark-surface));
+  --color-primary-darker: rgba(var(--ax-sys-color-primary-darker-surface));
+  --color-on-primary-darker: rgba(var(--ax-sys-color-on-primary-darker-surface));
+  --color-border-primary-darker: rgba(var(--ax-sys-color-border-primary-darker-surface));
+  --color-primary-darkest: rgba(var(--ax-sys-color-primary-darkest-surface));
+  --color-on-primary-darkest: rgba(var(--ax-sys-color-on-primary-darkest-surface));
+  --color-border-primary-darkest: rgba(var(--ax-sys-color-border-primary-darkest-surface));
+  /* Secondary Surfaces */
+  --color-secondary-50: rgba(var(--ax-sys-color-secondary-50));
+  --color-secondary-100: rgba(var(--ax-sys-color-secondary-100));
+  --color-secondary-200: rgba(var(--ax-sys-color-secondary-200));
+  --color-secondary-300: rgba(var(--ax-sys-color-secondary-300));
+  --color-secondary-400: rgba(var(--ax-sys-color-secondary-400));
+  --color-secondary-500: rgba(var(--ax-sys-color-secondary-500));
+  --color-secondary-600: rgba(var(--ax-sys-color-secondary-600));
+  --color-secondary-700: rgba(var(--ax-sys-color-secondary-700));
+  --color-secondary-800: rgba(var(--ax-sys-color-secondary-800));
+  --color-secondary-900: rgba(var(--ax-sys-color-secondary-900));
+  --color-secondary-950: rgba(var(--ax-sys-color-secondary-950));
+
+  --color-secondary-lightest: rgba(var(--ax-sys-color-secondary-lightest-surface));
+  --color-on-secondary-lightest: rgba(var(--ax-sys-color-on-secondary-lightest-surface));
+  --color-border-secondary-lightest: rgba(var(--ax-sys-color-border-secondary-lightest-surface));
+  --color-secondary-lighter: rgba(var(--ax-sys-color-secondary-lighter-surface));
+  --color-on-secondary-lighter: rgba(var(--ax-sys-color-on-secondary-lighter-surface));
+  --color-border-secondary-lighter: rgba(var(--ax-sys-color-border-secondary-lighter-surface));
+  --color-secondary-light: rgba(var(--ax-sys-color-secondary-light-surface));
+  --color-on-secondary-light: rgba(var(--ax-sys-color-on-secondary-light-surface));
+  --color-border-secondary-light: rgba(var(--ax-sys-color-border-secondary-light-surface));
+  --color-secondary: rgba(var(--ax-sys-color-secondary-surface));
+  --color-on-secondary: rgba(var(--ax-sys-color-on-secondary-surface));
+  --color-border-secondary: rgba(var(--ax-sys-color-border-secondary-surface));
+  --color-secondary-dark: rgba(var(--ax-sys-color-secondary-dark-surface));
+  --color-on-secondary-dark: rgba(var(--ax-sys-color-on-secondary-dark-surface));
+  --color-border-secondary-dark: rgba(var(--ax-sys-color-border-secondary-dark-surface));
+  --color-secondary-darker: rgba(var(--ax-sys-color-secondary-darker-surface));
+  --color-on-secondary-darker: rgba(var(--ax-sys-color-on-secondary-darker-surface));
+  --color-border-secondary-darker: rgba(var(--ax-sys-color-border-secondary-darker-surface));
+  --color-secondary-darkest: rgba(var(--ax-sys-color-secondary-darkest-surface));
+  --color-on-secondary-darkest: rgba(var(--ax-sys-color-on-secondary-darkest-surface));
+  --color-border-secondary-darkest: rgba(var(--ax-sys-color-border-secondary-darkest-surface));
+  /* Success Surfaces */
+  --color-success-50: rgba(var(--ax-sys-color-success-50));
+  --color-success-100: rgba(var(--ax-sys-color-success-100));
+  --color-success-200: rgba(var(--ax-sys-color-success-200));
+  --color-success-300: rgba(var(--ax-sys-color-success-300));
+  --color-success-400: rgba(var(--ax-sys-color-success-400));
+  --color-success-500: rgba(var(--ax-sys-color-success-500));
+  --color-success-600: rgba(var(--ax-sys-color-success-600));
+  --color-success-700: rgba(var(--ax-sys-color-success-700));
+  --color-success-800: rgba(var(--ax-sys-color-success-800));
+  --color-success-900: rgba(var(--ax-sys-color-success-900));
+  --color-success-950: rgba(var(--ax-sys-color-success-950));
+
+  --color-success-lightest: rgba(var(--ax-sys-color-success-lightest-surface));
+  --color-on-success-lightest: rgba(var(--ax-sys-color-on-success-lightest-surface));
+  --color-border-success-lightest: rgba(var(--ax-sys-color-border-success-lightest-surface));
+  --color-success-lighter: rgba(var(--ax-sys-color-success-lighter-surface));
+  --color-on-success-lighter: rgba(var(--ax-sys-color-on-success-lighter-surface));
+  --color-border-success-lighter: rgba(var(--ax-sys-color-border-success-lighter-surface));
+  --color-success-light: rgba(var(--ax-sys-color-success-light-surface));
+  --color-on-success-light: rgba(var(--ax-sys-color-on-success-light-surface));
+  --color-border-success-light: rgba(var(--ax-sys-color-border-success-light-surface));
+  --color-success: rgba(var(--ax-sys-color-success-surface));
+  --color-on-success: rgba(var(--ax-sys-color-on-success-surface));
+  --color-border-success: rgba(var(--ax-sys-color-border-success-surface));
+  --color-success-dark: rgba(var(--ax-sys-color-success-dark-surface));
+  --color-on-success-dark: rgba(var(--ax-sys-color-on-success-dark-surface));
+  --color-border-success-dark: rgba(var(--ax-sys-color-border-success-dark-surface));
+  --color-success-darker: rgba(var(--ax-sys-color-success-darker-surface));
+  --color-on-success-darker: rgba(var(--ax-sys-color-on-success-darker-surface));
+  --color-border-success-darker: rgba(var(--ax-sys-color-border-success-darker-surface));
+  --color-success-darkest: rgba(var(--ax-sys-color-success-darkest-surface));
+  --color-on-success-darkest: rgba(var(--ax-sys-color-on-success-darkest-surface));
+  --color-border-success-darkest: rgba(var(--ax-sys-color-border-success-darkest-surface));
+  /* Warning Surfaces */
+  --color-warning-50: rgba(var(--ax-sys-color-warning-50));
+  --color-warning-100: rgba(var(--ax-sys-color-warning-100));
+  --color-warning-200: rgba(var(--ax-sys-color-warning-200));
+  --color-warning-300: rgba(var(--ax-sys-color-warning-300));
+  --color-warning-400: rgba(var(--ax-sys-color-warning-400));
+  --color-warning-500: rgba(var(--ax-sys-color-warning-500));
+  --color-warning-600: rgba(var(--ax-sys-color-warning-600));
+  --color-warning-700: rgba(var(--ax-sys-color-warning-700));
+  --color-warning-800: rgba(var(--ax-sys-color-warning-800));
+  --color-warning-900: rgba(var(--ax-sys-color-warning-900));
+  --color-warning-950: rgba(var(--ax-sys-color-warning-950));
+
+  --color-warning-lightest: rgba(var(--ax-sys-color-warning-lightest-surface));
+  --color-on-warning-lightest: rgba(var(--ax-sys-color-on-warning-lightest-surface));
+  --color-border-warning-lightest: rgba(var(--ax-sys-color-border-warning-lightest-surface));
+  --color-warning-lighter: rgba(var(--ax-sys-color-warning-lighter-surface));
+  --color-on-warning-lighter: rgba(var(--ax-sys-color-on-warning-lighter-surface));
+  --color-border-warning-lighter: rgba(var(--ax-sys-color-border-warning-lighter-surface));
+  --color-warning-light: rgba(var(--ax-sys-color-warning-light-surface));
+  --color-on-warning-light: rgba(var(--ax-sys-color-on-warning-light-surface));
+  --color-border-warning-light: rgba(var(--ax-sys-color-border-warning-light-surface));
+  --color-warning: rgba(var(--ax-sys-color-warning-surface));
+  --color-on-warning: rgba(var(--ax-sys-color-on-warning-surface));
+  --color-border-warning: rgba(var(--ax-sys-color-border-warning-surface));
+  --color-warning-dark: rgba(var(--ax-sys-color-warning-dark-surface));
+  --color-on-warning-dark: rgba(var(--ax-sys-color-on-warning-dark-surface));
+  --color-border-warning-dark: rgba(var(--ax-sys-color-border-warning-dark-surface));
+  --color-warning-darker: rgba(var(--ax-sys-color-warning-darker-surface));
+  --color-on-warning-darker: rgba(var(--ax-sys-color-on-warning-darker-surface));
+  --color-border-warning-darker: rgba(var(--ax-sys-color-border-warning-darker-surface));
+  --color-warning-darkest: rgba(var(--ax-sys-color-warning-darkest-surface));
+  --color-on-warning-darkest: rgba(var(--ax-sys-color-on-warning-darkest-surface));
+  --color-border-warning-darkest: rgba(var(--ax-sys-color-border-warning-darkest-surface));
+  /* Danger Surfaces */
+  --color-danger-50: rgba(var(--ax-sys-color-danger-50));
+  --color-danger-100: rgba(var(--ax-sys-color-danger-100));
+  --color-danger-200: rgba(var(--ax-sys-color-danger-200));
+  --color-danger-300: rgba(var(--ax-sys-color-danger-300));
+  --color-danger-400: rgba(var(--ax-sys-color-danger-400));
+  --color-danger-500: rgba(var(--ax-sys-color-danger-500));
+  --color-danger-600: rgba(var(--ax-sys-color-danger-600));
+  --color-danger-700: rgba(var(--ax-sys-color-danger-700));
+  --color-danger-800: rgba(var(--ax-sys-color-danger-800));
+  --color-danger-900: rgba(var(--ax-sys-color-danger-900));
+  --color-danger-950: rgba(var(--ax-sys-color-danger-950));
+
+  --color-danger-lightest: rgba(var(--ax-sys-color-danger-lightest-surface));
+  --color-on-danger-lightest: rgba(var(--ax-sys-color-on-danger-lightest-surface));
+  --color-border-danger-lightest: rgba(var(--ax-sys-color-border-danger-lightest-surface));
+  --color-danger-lighter: rgba(var(--ax-sys-color-danger-lighter-surface));
+  --color-on-danger-lighter: rgba(var(--ax-sys-color-on-danger-lighter-surface));
+  --color-border-danger-lighter: rgba(var(--ax-sys-color-border-danger-lighter-surface));
+  --color-danger-light: rgba(var(--ax-sys-color-danger-light-surface));
+  --color-on-danger-light: rgba(var(--ax-sys-color-on-danger-light-surface));
+  --color-border-danger-light: rgba(var(--ax-sys-color-border-danger-light-surface));
+  --color-danger: rgba(var(--ax-sys-color-danger-surface));
+  --color-on-danger: rgba(var(--ax-sys-color-on-danger-surface));
+  --color-border-danger: rgba(var(--ax-sys-color-border-danger-surface));
+  --color-danger-dark: rgba(var(--ax-sys-color-danger-dark-surface));
+  --color-on-danger-dark: rgba(var(--ax-sys-color-on-danger-dark-surface));
+  --color-border-danger-dark: rgba(var(--ax-sys-color-border-danger-dark-surface));
+  --color-danger-darker: rgba(var(--ax-sys-color-danger-darker-surface));
+  --color-on-danger-darker: rgba(var(--ax-sys-color-on-danger-darker-surface));
+  --color-border-danger-darker: rgba(var(--ax-sys-color-border-danger-darker-surface));
+  --color-danger-darkest: rgba(var(--ax-sys-color-danger-darkest-surface));
+  --color-on-danger-darkest: rgba(var(--ax-sys-color-on-danger-darkest-surface));
+  --color-border-danger-darkest: rgba(var(--ax-sys-color-border-danger-darkest-surface));
+  /* Surface Surfaces */
+  --color-surface-50: rgba(var(--ax-sys-color-surface-50));
+  --color-surface-100: rgba(var(--ax-sys-color-surface-100));
+  --color-surface-200: rgba(var(--ax-sys-color-surface-200));
+  --color-surface-300: rgba(var(--ax-sys-color-surface-300));
+  --color-surface-400: rgba(var(--ax-sys-color-surface-400));
+  --color-surface-500: rgba(var(--ax-sys-color-surface-500));
+  --color-surface-600: rgba(var(--ax-sys-color-surface-600));
+  --color-surface-700: rgba(var(--ax-sys-color-surface-700));
+  --color-surface-800: rgba(var(--ax-sys-color-surface-800));
+  --color-surface-900: rgba(var(--ax-sys-color-surface-900));
+  --color-surface-950: rgba(var(--ax-sys-color-surface-950));
+
+  --color-surface-lightest: rgba(var(--ax-sys-color-surface-lightest-surface));
+  --color-on-surface-lightest: rgba(var(--ax-sys-color-on-surface-lightest-surface));
+  --color-border-surface-lightest: rgba(var(--ax-sys-color-border-surface-lightest-surface));
+  --color-surface-lighter: rgba(var(--ax-sys-color-surface-lighter-surface));
+  --color-on-surface-lighter: rgba(var(--ax-sys-color-on-surface-lighter-surface));
+  --color-border-surface-lighter: rgba(var(--ax-sys-color-border-surface-lighter-surface));
+  --color-surface-light: rgba(var(--ax-sys-color-surface-light-surface));
+  --color-on-surface-light: rgba(var(--ax-sys-color-on-surface-light-surface));
+  --color-border-surface-light: rgba(var(--ax-sys-color-border-surface-light-surface));
+  --color-surface: rgba(var(--ax-sys-color-surface-surface));
+  --color-on-surface: rgba(var(--ax-sys-color-on-surface-surface));
+  --color-border-surface: rgba(var(--ax-sys-color-border-surface-surface));
+  --color-surface-dark: rgba(var(--ax-sys-color-surface-dark-surface));
+  --color-on-surface-dark: rgba(var(--ax-sys-color-on-surface-dark-surface));
+  --color-border-surface-dark: rgba(var(--ax-sys-color-border-surface-dark-surface));
+  --color-surface-darker: rgba(var(--ax-sys-color-surface-darker-surface));
+  --color-on-surface-darker: rgba(var(--ax-sys-color-on-surface-darker-surface));
+  --color-border-surface-darker: rgba(var(--ax-sys-color-border-surface-darker-surface));
+  --color-surface-darkest: rgba(var(--ax-sys-color-surface-darkest-surface));
+  --color-on-surface-darkest: rgba(var(--ax-sys-color-on-surface-darkest-surface));
+  --color-border-surface-darkest: rgba(var(--ax-sys-color-border-surface-darkest-surface));
+  /* Accent Surfaces */
+  --color-accent-50: rgba(var(--ax-sys-color-accent-50));
+  --color-accent-100: rgba(var(--ax-sys-color-accent-100));
+  --color-accent-200: rgba(var(--ax-sys-color-accent-200));
+  --color-accent-300: rgba(var(--ax-sys-color-accent-300));
+  --color-accent-400: rgba(var(--ax-sys-color-accent-400));
+  --color-accent-500: rgba(var(--ax-sys-color-accent-500));
+  --color-accent-600: rgba(var(--ax-sys-color-accent-600));
+  --color-accent-700: rgba(var(--ax-sys-color-accent-700));
+  --color-accent-800: rgba(var(--ax-sys-color-accent-800));
+  --color-accent-900: rgba(var(--ax-sys-color-accent-900));
+  --color-accent-950: rgba(var(--ax-sys-color-accent-950));
+
+  --color-accent-lightest: rgba(var(--ax-sys-color-accent-lightest-surface));
+  --color-on-accent-lightest: rgba(var(--ax-sys-color-on-accent-lightest-surface));
+  --color-border-accent-lightest: rgba(var(--ax-sys-color-border-accent-lightest-surface));
+  --color-accent-lighter: rgba(var(--ax-sys-color-accent-lighter-surface));
+  --color-on-accent-lighter: rgba(var(--ax-sys-color-on-accent-lighter-surface));
+  --color-border-accent-lighter: rgba(var(--ax-sys-color-border-accent-lighter-surface));
+  --color-accent-light: rgba(var(--ax-sys-color-accent-light-surface));
+  --color-on-accent-light: rgba(var(--ax-sys-color-on-accent-light-surface));
+  --color-border-accent-light: rgba(var(--ax-sys-color-border-accent-light-surface));
+  --color-accent: rgba(var(--ax-sys-color-accent-surface));
+  --color-on-accent: rgba(var(--ax-sys-color-on-accent-surface));
+  --color-border-accent: rgba(var(--ax-sys-color-border-accent-surface));
+  --color-accent-dark: rgba(var(--ax-sys-color-accent-dark-surface));
+  --color-on-accent-dark: rgba(var(--ax-sys-color-on-accent-dark-surface));
+  --color-border-accent-dark: rgba(var(--ax-sys-color-border-accent-dark-surface));
+  --color-accent-darker: rgba(var(--ax-sys-color-accent-darker-surface));
+  --color-on-accent-darker: rgba(var(--ax-sys-color-on-accent-darker-surface));
+  --color-border-accent-darker: rgba(var(--ax-sys-color-border-accent-darker-surface));
+  --color-accent-darkest: rgba(var(--ax-sys-color-accent-darkest-surface));
+  --color-on-accent-darkest: rgba(var(--ax-sys-color-on-accent-darkest-surface));
+  --color-border-accent-darkest: rgba(var(--ax-sys-color-border-accent-darkest-surface));
+  /* Accent2 Surfaces */
+  --color-accent2-50: rgba(var(--ax-sys-color-accent2-50));
+  --color-accent2-100: rgba(var(--ax-sys-color-accent2-100));
+  --color-accent2-200: rgba(var(--ax-sys-color-accent2-200));
+  --color-accent2-300: rgba(var(--ax-sys-color-accent2-300));
+  --color-accent2-400: rgba(var(--ax-sys-color-accent2-400));
+  --color-accent2-500: rgba(var(--ax-sys-color-accent2-500));
+  --color-accent2-600: rgba(var(--ax-sys-color-accent2-600));
+  --color-accent2-700: rgba(var(--ax-sys-color-accent2-700));
+  --color-accent2-800: rgba(var(--ax-sys-color-accent2-800));
+  --color-accent2-900: rgba(var(--ax-sys-color-accent2-900));
+  --color-accent2-950: rgba(var(--ax-sys-color-accent2-950));
+
+  --color-accent2-lightest: rgba(var(--ax-sys-color-accent2-lightest-surface));
+  --color-on-accent2-lightest: rgba(var(--ax-sys-color-on-accent2-lightest-surface));
+  --color-border-accent2-lightest: rgba(var(--ax-sys-color-border-accent2-lightest-surface));
+  --color-accent2-lighter: rgba(var(--ax-sys-color-accent2-lighter-surface));
+  --color-on-accent2-lighter: rgba(var(--ax-sys-color-on-accent2-lighter-surface));
+  --color-border-accent2-lighter: rgba(var(--ax-sys-color-border-accent2-lighter-surface));
+  --color-accent2-light: rgba(var(--ax-sys-color-accent2-light-surface));
+  --color-on-accent2-light: rgba(var(--ax-sys-color-on-accent2-light-surface));
+  --color-border-accent2-light: rgba(var(--ax-sys-color-border-accent2-light-surface));
+  --color-accent2: rgba(var(--ax-sys-color-accent2-surface));
+  --color-on-accent2: rgba(var(--ax-sys-color-on-accent2-surface));
+  --color-border-accent2: rgba(var(--ax-sys-color-border-accent2-surface));
+  --color-accent2-dark: rgba(var(--ax-sys-color-accent2-dark-surface));
+  --color-on-accent2-dark: rgba(var(--ax-sys-color-on-accent2-dark-surface));
+  --color-border-accent2-dark: rgba(var(--ax-sys-color-border-accent2-dark-surface));
+  --color-accent2-darker: rgba(var(--ax-sys-color-accent2-darker-surface));
+  --color-on-accent2-darker: rgba(var(--ax-sys-color-on-accent2-darker-surface));
+  --color-border-accent2-darker: rgba(var(--ax-sys-color-border-accent2-darker-surface));
+  --color-accent2-darkest: rgba(var(--ax-sys-color-accent2-darkest-surface));
+  --color-on-accent2-darkest: rgba(var(--ax-sys-color-on-accent2-darkest-surface));
+  --color-border-accent2-darkest: rgba(var(--ax-sys-color-border-accent2-darkest-surface));
+  /* Accent3 Surfaces */
+  --color-accent3-50: rgba(var(--ax-sys-color-accent3-50));
+  --color-accent3-100: rgba(var(--ax-sys-color-accent3-100));
+  --color-accent3-200: rgba(var(--ax-sys-color-accent3-200));
+  --color-accent3-300: rgba(var(--ax-sys-color-accent3-300));
+  --color-accent3-400: rgba(var(--ax-sys-color-accent3-400));
+  --color-accent3-500: rgba(var(--ax-sys-color-accent3-500));
+  --color-accent3-600: rgba(var(--ax-sys-color-accent3-600));
+  --color-accent3-700: rgba(var(--ax-sys-color-accent3-700));
+  --color-accent3-800: rgba(var(--ax-sys-color-accent3-800));
+  --color-accent3-900: rgba(var(--ax-sys-color-accent3-900));
+  --color-accent3-950: rgba(var(--ax-sys-color-accent3-950));
+
+  --color-accent3-lightest: rgba(var(--ax-sys-color-accent3-lightest-surface));
+  --color-on-accent3-lightest: rgba(var(--ax-sys-color-on-accent3-lightest-surface));
+  --color-border-accent3-lightest: rgba(var(--ax-sys-color-border-accent3-lightest-surface));
+  --color-accent3-lighter: rgba(var(--ax-sys-color-accent3-lighter-surface));
+  --color-on-accent3-lighter: rgba(var(--ax-sys-color-on-accent3-lighter-surface));
+  --color-border-accent3-lighter: rgba(var(--ax-sys-color-border-accent3-lighter-surface));
+  --color-accent3-light: rgba(var(--ax-sys-color-accent3-light-surface));
+  --color-on-accent3-light: rgba(var(--ax-sys-color-on-accent3-light-surface));
+  --color-border-accent3-light: rgba(var(--ax-sys-color-border-accent3-light-surface));
+  --color-accent3: rgba(var(--ax-sys-color-accent3-surface));
+  --color-on-accent3: rgba(var(--ax-sys-color-on-accent3-surface));
+  --color-border-accent3: rgba(var(--ax-sys-color-border-accent3-surface));
+  --color-accent3-dark: rgba(var(--ax-sys-color-accent3-dark-surface));
+  --color-on-accent3-dark: rgba(var(--ax-sys-color-on-accent3-dark-surface));
+  --color-border-accent3-dark: rgba(var(--ax-sys-color-border-accent3-dark-surface));
+  --color-accent3-darker: rgba(var(--ax-sys-color-accent3-darker-surface));
+  --color-on-accent3-darker: rgba(var(--ax-sys-color-on-accent3-darker-surface));
+  --color-border-accent3-darker: rgba(var(--ax-sys-color-border-accent3-darker-surface));
+  --color-accent3-darkest: rgba(var(--ax-sys-color-accent3-darkest-surface));
+  --color-on-accent3-darkest: rgba(var(--ax-sys-color-on-accent3-darkest-surface));
+  --color-border-accent3-darkest: rgba(var(--ax-sys-color-border-accent3-darkest-surface));
+}
+
+@utility lightest-surface {
+  background-color: var(--color-lightest);
+  color: var(--color-on-lightest);
+  border-color: var(--color-border-lightest);
+}
+
+@utility lighter-surface {
+  background-color: var(--color-lighter);
+  color: var(--color-on-lighter);
+  border-color: var(--color-border-lighter);
+}
+
+@utility light-surface {
+  background-color: var(--color-light);
+  color: var(--color-on-light);
+  border-color: var(--color-border-light);
+}
+
+@utility surface {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  border-color: var(--color-border-surface);
+}
+
+@utility dark-surface {
+  background-color: var(--color-dark);
+  color: var(--color-on-dark);
+  border-color: var(--color-border-dark);
+}
+
+@utility darker-surface {
+  background-color: var(--color-darker);
+  color: var(--color-on-darker);
+  border-color: var(--color-border-darker);
+}
+
+@utility darkest-surface {
+  background-color: var(--color-darkest);
+  color: var(--color-on-darkest);
+  border-color: var(--color-border-darkest);
+}
+
+@utility border-lightest-surface {
+  border-color: var(--color-border-lightest);
+}
+
+@utility border-lighter-surface {
+  border-color: var(--color-border-lighter);
+}
+
+@utility border-light-surface {
+  border-color: var(--color-border-light);
+}
+
+@utility border-surface {
+  border-color: var(--color-border-surface);
+}
+
+@utility border-dark-surface {
+  border-color: var(--color-border-dark);
+}
+
+@utility border-darker-surface {
+  border-color: var(--color-border-darker);
+}
+
+@utility border-darkest-surface {
+  border-color: var(--color-border-darkest);
+}
+
+/* Primary Surfaces */
+
+@utility primary-lightest-surface {
+  background-color: var(--color-primary-lightest);
+  color: var(--color-on-primary-lightest);
+  border-color: var(--color-border-primary-lightest);
+}
+
+@utility primary-lighter-surface {
+  background-color: var(--color-primary-lighter);
+  color: var(--color-on-primary-lighter);
+  border-color: var(--color-border-primary-lighter);
+}
+
+@utility primary-light-surface {
+  background-color: var(--color-primary-light);
+  color: var(--color-on-primary-light);
+  border-color: var(--color-border-primary-light);
+}
+
+@utility primary-surface {
+  background-color: var(--color-primary);
+  color: var(--color-on-primary);
+  border-color: var(--color-border-primary);
+}
+
+@utility primary-dark-surface {
+  background-color: var(--color-primary-dark);
+  color: var(--color-on-primary-dark);
+  border-color: var(--color-border-primary-dark);
+}
+
+@utility primary-darker-surface {
+  background-color: var(--color-primary-darker);
+  color: var(--color-on-primary-darker);
+  border-color: var(--color-border-primary-darker);
+}
+
+@utility primary-darkest-surface {
+  background-color: var(--color-primary-darkest);
+  color: var(--color-on-primary-darkest);
+  border-color: var(--color-border-primary-darkest);
+}
+
+@utility border-primary-lightest-surface {
+  border-color: var(--color-border-primary-lightest);
+}
+
+@utility border-primary-lighter-surface {
+  border-color: var(--color-border-primary-lighter);
+}
+
+@utility border-primary-light-surface {
+  border-color: var(--color-border-primary-light);
+}
+
+@utility border-primary-surface {
+  border-color: var(--color-border-primary);
+}
+
+@utility border-primary-dark-surface {
+  border-color: var(--color-border-primary-dark);
+}
+
+@utility border-primary-darker-surface {
+  border-color: var(--color-border-primary-darker);
+}
+
+@utility border-primary-darkest-surface {
+  border-color: var(--color-border-primary-darkest);
+}
+
+@utility ax-primary {
+  --ax-comp-bg-lightest: var(--color-primary-lightest);
+  --ax-comp-text-lightest: var(--color-on-primary-lightest);
+  --ax-comp-border-lightest: var(--color-border-primary-lightest);
+  --ax-comp-bg-lighter: var(--color-primary-lighter);
+  --ax-comp-text-lighter: var(--color-on-primary-lighter);
+  --ax-comp-border-lighter: var(--color-border-primary-lighter);
+  --ax-comp-bg-light: var(--color-primary-light);
+  --ax-comp-text-light: var(--color-on-primary-light);
+  --ax-comp-border-light: var(--color-border-primary-light);
+  --ax-comp-bg: var(--color-primary);
+  --ax-comp-text: var(--color-on-primary);
+  --ax-comp-border: var(--color-border-primary);
+  --ax-comp-bg-dark: var(--color-primary-dark);
+  --ax-comp-text-dark: var(--color-on-primary-dark);
+  --ax-comp-border-dark: var(--color-border-primary-dark);
+  --ax-comp-bg-darker: var(--color-primary-darker);
+  --ax-comp-text-darker: var(--color-on-primary-darker);
+  --ax-comp-border-darker: var(--color-border-primary-darker);
+  --ax-comp-bg-darkest: var(--color-primary-darkest);
+  --ax-comp-text-darkest: var(--color-on-primary-darkest);
+  --ax-comp-border-darkest: var(--color-border-primary-darkest);
+}
+
+/* Secondary Surfaces */
+
+@utility secondary-lightest-surface {
+  background-color: var(--color-secondary-lightest);
+  color: var(--color-on-secondary-lightest);
+  border-color: var(--color-border-secondary-lightest);
+}
+
+@utility secondary-lighter-surface {
+  background-color: var(--color-secondary-lighter);
+  color: var(--color-on-secondary-lighter);
+  border-color: var(--color-border-secondary-lighter);
+}
+
+@utility secondary-light-surface {
+  background-color: var(--color-secondary-light);
+  color: var(--color-on-secondary-light);
+  border-color: var(--color-border-secondary-light);
+}
+
+@utility secondary-surface {
+  background-color: var(--color-secondary);
+  color: var(--color-on-secondary);
+  border-color: var(--color-border-secondary);
+}
+
+@utility secondary-dark-surface {
+  background-color: var(--color-secondary-dark);
+  color: var(--color-on-secondary-dark);
+  border-color: var(--color-border-secondary-dark);
+}
+
+@utility secondary-darker-surface {
+  background-color: var(--color-secondary-darker);
+  color: var(--color-on-secondary-darker);
+  border-color: var(--color-border-secondary-darker);
+}
+
+@utility secondary-darkest-surface {
+  background-color: var(--color-secondary-darkest);
+  color: var(--color-on-secondary-darkest);
+  border-color: var(--color-border-secondary-darkest);
+}
+
+@utility border-secondary-lightest-surface {
+  border-color: var(--color-border-secondary-lightest);
+}
+
+@utility border-secondary-lighter-surface {
+  border-color: var(--color-border-secondary-lighter);
+}
+
+@utility border-secondary-light-surface {
+  border-color: var(--color-border-secondary-light);
+}
+
+@utility border-secondary-surface {
+  border-color: var(--color-border-secondary);
+}
+
+@utility border-secondary-dark-surface {
+  border-color: var(--color-border-secondary-dark);
+}
+
+@utility border-secondary-darker-surface {
+  border-color: var(--color-border-secondary-darker);
+}
+
+@utility border-secondary-darkest-surface {
+  border-color: var(--color-border-secondary-darkest);
+}
+
+@utility ax-secondary {
+  --ax-comp-bg-lightest: var(--color-secondary-lightest);
+  --ax-comp-text-lightest: var(--color-on-secondary-lightest);
+  --ax-comp-border-lightest: var(--color-border-secondary-lightest);
+  --ax-comp-bg-lighter: var(--color-secondary-lighter);
+  --ax-comp-text-lighter: var(--color-on-secondary-lighter);
+  --ax-comp-border-lighter: var(--color-border-secondary-lighter);
+  --ax-comp-bg-light: var(--color-secondary-light);
+  --ax-comp-text-light: var(--color-on-secondary-light);
+  --ax-comp-border-light: var(--color-border-secondary-light);
+  --ax-comp-bg: var(--color-secondary);
+  --ax-comp-text: var(--color-on-secondary);
+  --ax-comp-border: var(--color-border-secondary);
+  --ax-comp-bg-dark: var(--color-secondary-dark);
+  --ax-comp-text-dark: var(--color-on-secondary-dark);
+  --ax-comp-border-dark: var(--color-border-secondary-dark);
+  --ax-comp-bg-darker: var(--color-secondary-darker);
+  --ax-comp-text-darker: var(--color-on-secondary-darker);
+  --ax-comp-border-darker: var(--color-border-secondary-darker);
+  --ax-comp-bg-darkest: var(--color-secondary-darkest);
+  --ax-comp-text-darkest: var(--color-on-secondary-darkest);
+  --ax-comp-border-darkest: var(--color-border-secondary-darkest);
+}
+
+/* Success Surfaces */
+
+@utility success-lightest-surface {
+  background-color: var(--color-success-lightest);
+  color: var(--color-on-success-lightest);
+  border-color: var(--color-border-success-lightest);
+}
+
+@utility success-lighter-surface {
+  background-color: var(--color-success-lighter);
+  color: var(--color-on-success-lighter);
+  border-color: var(--color-border-success-lighter);
+}
+
+@utility success-light-surface {
+  background-color: var(--color-success-light);
+  color: var(--color-on-success-light);
+  border-color: var(--color-border-success-light);
+}
+
+@utility success-surface {
+  background-color: var(--color-success);
+  color: var(--color-on-success);
+  border-color: var(--color-border-success);
+}
+
+@utility success-dark-surface {
+  background-color: var(--color-success-dark);
+  color: var(--color-on-success-dark);
+  border-color: var(--color-border-success-dark);
+}
+
+@utility success-darker-surface {
+  background-color: var(--color-success-darker);
+  color: var(--color-on-success-darker);
+  border-color: var(--color-border-success-darker);
+}
+
+@utility success-darkest-surface {
+  background-color: var(--color-success-darkest);
+  color: var(--color-on-success-darkest);
+  border-color: var(--color-border-success-darkest);
+}
+
+@utility border-success-lightest-surface {
+  border-color: var(--color-border-success-lightest);
+}
+
+@utility border-success-lighter-surface {
+  border-color: var(--color-border-success-lighter);
+}
+
+@utility border-success-light-surface {
+  border-color: var(--color-border-success-light);
+}
+
+@utility border-success-surface {
+  border-color: var(--color-border-success);
+}
+
+@utility border-success-dark-surface {
+  border-color: var(--color-border-success-dark);
+}
+
+@utility border-success-darker-surface {
+  border-color: var(--color-border-success-darker);
+}
+
+@utility border-success-darkest-surface {
+  border-color: var(--color-border-success-darkest);
+}
+
+@utility ax-success {
+  --ax-comp-bg-lightest: var(--color-success-lightest);
+  --ax-comp-text-lightest: var(--color-on-success-lightest);
+  --ax-comp-border-lightest: var(--color-border-success-lightest);
+  --ax-comp-bg-lighter: var(--color-success-lighter);
+  --ax-comp-text-lighter: var(--color-on-success-lighter);
+  --ax-comp-border-lighter: var(--color-border-success-lighter);
+  --ax-comp-bg-light: var(--color-success-light);
+  --ax-comp-text-light: var(--color-on-success-light);
+  --ax-comp-border-light: var(--color-border-success-light);
+  --ax-comp-bg: var(--color-success);
+  --ax-comp-text: var(--color-on-success);
+  --ax-comp-border: var(--color-border-success);
+  --ax-comp-bg-dark: var(--color-success-dark);
+  --ax-comp-text-dark: var(--color-on-success-dark);
+  --ax-comp-border-dark: var(--color-border-success-dark);
+  --ax-comp-bg-darker: var(--color-success-darker);
+  --ax-comp-text-darker: var(--color-on-success-darker);
+  --ax-comp-border-darker: var(--color-border-success-darker);
+  --ax-comp-bg-darkest: var(--color-success-darkest);
+  --ax-comp-text-darkest: var(--color-on-success-darkest);
+  --ax-comp-border-darkest: var(--color-border-success-darkest);
+}
+
+/* Warning Surfaces */
+
+@utility warning-lightest-surface {
+  background-color: var(--color-warning-lightest);
+  color: var(--color-on-warning-lightest);
+  border-color: var(--color-border-warning-lightest);
+}
+
+@utility warning-lighter-surface {
+  background-color: var(--color-warning-lighter);
+  color: var(--color-on-warning-lighter);
+  border-color: var(--color-border-warning-lighter);
+}
+
+@utility warning-light-surface {
+  background-color: var(--color-warning-light);
+  color: var(--color-on-warning-light);
+  border-color: var(--color-border-warning-light);
+}
+
+@utility warning-surface {
+  background-color: var(--color-warning);
+  color: var(--color-on-warning);
+  border-color: var(--color-border-warning);
+}
+
+@utility warning-dark-surface {
+  background-color: var(--color-warning-dark);
+  color: var(--color-on-warning-dark);
+  border-color: var(--color-border-warning-dark);
+}
+
+@utility warning-darker-surface {
+  background-color: var(--color-warning-darker);
+  color: var(--color-on-warning-darker);
+  border-color: var(--color-border-warning-darker);
+}
+
+@utility warning-darkest-surface {
+  background-color: var(--color-warning-darkest);
+  color: var(--color-on-warning-darkest);
+  border-color: var(--color-border-warning-darkest);
+}
+
+@utility border-warning-lightest-surface {
+  border-color: var(--color-border-warning-lightest);
+}
+
+@utility border-warning-lighter-surface {
+  border-color: var(--color-border-warning-lighter);
+}
+
+@utility border-warning-light-surface {
+  border-color: var(--color-border-warning-light);
+}
+
+@utility border-warning-surface {
+  border-color: var(--color-border-warning);
+}
+
+@utility border-warning-dark-surface {
+  border-color: var(--color-border-warning-dark);
+}
+
+@utility border-warning-darker-surface {
+  border-color: var(--color-border-warning-darker);
+}
+
+@utility border-warning-darkest-surface {
+  border-color: var(--color-border-warning-darkest);
+}
+
+@utility ax-warning {
+  --ax-comp-bg-lightest: var(--color-warning-lightest);
+  --ax-comp-text-lightest: var(--color-on-warning-lightest);
+  --ax-comp-border-lightest: var(--color-border-warning-lightest);
+  --ax-comp-bg-lighter: var(--color-warning-lighter);
+  --ax-comp-text-lighter: var(--color-on-warning-lighter);
+  --ax-comp-border-lighter: var(--color-border-warning-lighter);
+  --ax-comp-bg-light: var(--color-warning-light);
+  --ax-comp-text-light: var(--color-on-warning-light);
+  --ax-comp-border-light: var(--color-border-warning-light);
+  --ax-comp-bg: var(--color-warning);
+  --ax-comp-text: var(--color-on-warning);
+  --ax-comp-border: var(--color-border-warning);
+  --ax-comp-bg-dark: var(--color-warning-dark);
+  --ax-comp-text-dark: var(--color-on-warning-dark);
+  --ax-comp-border-dark: var(--color-border-warning-dark);
+  --ax-comp-bg-darker: var(--color-warning-darker);
+  --ax-comp-text-darker: var(--color-on-warning-darker);
+  --ax-comp-border-darker: var(--color-border-warning-darker);
+  --ax-comp-bg-darkest: var(--color-warning-darkest);
+  --ax-comp-text-darkest: var(--color-on-warning-darkest);
+  --ax-comp-border-darkest: var(--color-border-warning-darkest);
+}
+
+/* Danger Surfaces */
+
+@utility danger-lightest-surface {
+  background-color: var(--color-danger-lightest);
+  color: var(--color-on-danger-lightest);
+  border-color: var(--color-border-danger-lightest);
+}
+
+@utility danger-lighter-surface {
+  background-color: var(--color-danger-lighter);
+  color: var(--color-on-danger-lighter);
+  border-color: var(--color-border-danger-lighter);
+}
+
+@utility danger-light-surface {
+  background-color: var(--color-danger-light);
+  color: var(--color-on-danger-light);
+  border-color: var(--color-border-danger-light);
+}
+
+@utility danger-surface {
+  background-color: var(--color-danger);
+  color: var(--color-on-danger);
+  border-color: var(--color-border-danger);
+}
+
+@utility danger-dark-surface {
+  background-color: var(--color-danger-dark);
+  color: var(--color-on-danger-dark);
+  border-color: var(--color-border-danger-dark);
+}
+
+@utility danger-darker-surface {
+  background-color: var(--color-danger-darker);
+  color: var(--color-on-danger-darker);
+  border-color: var(--color-border-danger-darker);
+}
+
+@utility danger-darkest-surface {
+  background-color: var(--color-danger-darkest);
+  color: var(--color-on-danger-darkest);
+  border-color: var(--color-border-danger-darkest);
+}
+
+@utility border-danger-lightest-surface {
+  border-color: var(--color-border-danger-lightest);
+}
+
+@utility border-danger-lighter-surface {
+  border-color: var(--color-border-danger-lighter);
+}
+
+@utility border-danger-light-surface {
+  border-color: var(--color-border-danger-light);
+}
+
+@utility border-danger-surface {
+  border-color: var(--color-border-danger);
+}
+
+@utility border-danger-dark-surface {
+  border-color: var(--color-border-danger-dark);
+}
+
+@utility border-danger-darker-surface {
+  border-color: var(--color-border-danger-darker);
+}
+
+@utility border-danger-darkest-surface {
+  border-color: var(--color-border-danger-darkest);
+}
+
+@utility ax-danger {
+  --ax-comp-bg-lightest: var(--color-danger-lightest);
+  --ax-comp-text-lightest: var(--color-on-danger-lightest);
+  --ax-comp-border-lightest: var(--color-border-danger-lightest);
+  --ax-comp-bg-lighter: var(--color-danger-lighter);
+  --ax-comp-text-lighter: var(--color-on-danger-lighter);
+  --ax-comp-border-lighter: var(--color-border-danger-lighter);
+  --ax-comp-bg-light: var(--color-danger-light);
+  --ax-comp-text-light: var(--color-on-danger-light);
+  --ax-comp-border-light: var(--color-border-danger-light);
+  --ax-comp-bg: var(--color-danger);
+  --ax-comp-text: var(--color-on-danger);
+  --ax-comp-border: var(--color-border-danger);
+  --ax-comp-bg-dark: var(--color-danger-dark);
+  --ax-comp-text-dark: var(--color-on-danger-dark);
+  --ax-comp-border-dark: var(--color-border-danger-dark);
+  --ax-comp-bg-darker: var(--color-danger-darker);
+  --ax-comp-text-darker: var(--color-on-danger-darker);
+  --ax-comp-border-darker: var(--color-border-danger-darker);
+  --ax-comp-bg-darkest: var(--color-danger-darkest);
+  --ax-comp-text-darkest: var(--color-on-danger-darkest);
+  --ax-comp-border-darkest: var(--color-border-danger-darkest);
+}
+
+/* Surface Surfaces */
+
+@utility surface-lightest-surface {
+  background-color: var(--color-surface-lightest);
+  color: var(--color-on-surface-lightest);
+  border-color: var(--color-border-surface-lightest);
+}
+
+@utility surface-lighter-surface {
+  background-color: var(--color-surface-lighter);
+  color: var(--color-on-surface-lighter);
+  border-color: var(--color-border-surface-lighter);
+}
+
+@utility surface-light-surface {
+  background-color: var(--color-surface-light);
+  color: var(--color-on-surface-light);
+  border-color: var(--color-border-surface-light);
+}
+
+@utility surface-surface {
+  background-color: var(--color-surface);
+  color: var(--color-on-surface);
+  border-color: var(--color-border-surface);
+}
+
+@utility surface-dark-surface {
+  background-color: var(--color-surface-dark);
+  color: var(--color-on-surface-dark);
+  border-color: var(--color-border-surface-dark);
+}
+
+@utility surface-darker-surface {
+  background-color: var(--color-surface-darker);
+  color: var(--color-on-surface-darker);
+  border-color: var(--color-border-surface-darker);
+}
+
+@utility surface-darkest-surface {
+  background-color: var(--color-surface-darkest);
+  color: var(--color-on-surface-darkest);
+  border-color: var(--color-border-surface-darkest);
+}
+
+@utility border-surface-lightest-surface {
+  border-color: var(--color-border-surface-lightest);
+}
+
+@utility border-surface-lighter-surface {
+  border-color: var(--color-border-surface-lighter);
+}
+
+@utility border-surface-light-surface {
+  border-color: var(--color-border-surface-light);
+}
+
+@utility border-surface-surface {
+  border-color: var(--color-border-surface);
+}
+
+@utility border-surface-dark-surface {
+  border-color: var(--color-border-surface-dark);
+}
+
+@utility border-surface-darker-surface {
+  border-color: var(--color-border-surface-darker);
+}
+
+@utility border-surface-darkest-surface {
+  border-color: var(--color-border-surface-darkest);
+}
+
+@utility ax-surface {
+  --ax-comp-bg-lightest: var(--color-surface-lightest);
+  --ax-comp-text-lightest: var(--color-on-surface-lightest);
+  --ax-comp-border-lightest: var(--color-border-surface-lightest);
+  --ax-comp-bg-lighter: var(--color-surface-lighter);
+  --ax-comp-text-lighter: var(--color-on-surface-lighter);
+  --ax-comp-border-lighter: var(--color-border-surface-lighter);
+  --ax-comp-bg-light: var(--color-surface-light);
+  --ax-comp-text-light: var(--color-on-surface-light);
+  --ax-comp-border-light: var(--color-border-surface-light);
+  --ax-comp-bg: var(--color-surface);
+  --ax-comp-text: var(--color-on-surface);
+  --ax-comp-border: var(--color-border-surface);
+  --ax-comp-bg-dark: var(--color-surface-dark);
+  --ax-comp-text-dark: var(--color-on-surface-dark);
+  --ax-comp-border-dark: var(--color-border-surface-dark);
+  --ax-comp-bg-darker: var(--color-surface-darker);
+  --ax-comp-text-darker: var(--color-on-surface-darker);
+  --ax-comp-border-darker: var(--color-border-surface-darker);
+  --ax-comp-bg-darkest: var(--color-surface-darkest);
+  --ax-comp-text-darkest: var(--color-on-surface-darkest);
+  --ax-comp-border-darkest: var(--color-border-surface-darkest);
+}
+
+/* Accent Surfaces */
+
+@utility accent-lightest-surface {
+  background-color: var(--color-accent-lightest);
+  color: var(--color-on-accent-lightest);
+  border-color: var(--color-border-accent-lightest);
+}
+
+@utility accent-lighter-surface {
+  background-color: var(--color-accent-lighter);
+  color: var(--color-on-accent-lighter);
+  border-color: var(--color-border-accent-lighter);
+}
+
+@utility accent-light-surface {
+  background-color: var(--color-accent-light);
+  color: var(--color-on-accent-light);
+  border-color: var(--color-border-accent-light);
+}
+
+@utility accent-surface {
+  background-color: var(--color-accent);
+  color: var(--color-on-accent);
+  border-color: var(--color-border-accent);
+}
+
+@utility accent-dark-surface {
+  background-color: var(--color-accent-dark);
+  color: var(--color-on-accent-dark);
+  border-color: var(--color-border-accent-dark);
+}
+
+@utility accent-darker-surface {
+  background-color: var(--color-accent-darker);
+  color: var(--color-on-accent-darker);
+  border-color: var(--color-border-accent-darker);
+}
+
+@utility accent-darkest-surface {
+  background-color: var(--color-accent-darkest);
+  color: var(--color-on-accent-darkest);
+  border-color: var(--color-border-accent-darkest);
+}
+
+@utility border-accent-lightest-surface {
+  border-color: var(--color-border-accent-lightest);
+}
+
+@utility border-accent-lighter-surface {
+  border-color: var(--color-border-accent-lighter);
+}
+
+@utility border-accent-light-surface {
+  border-color: var(--color-border-accent-light);
+}
+
+@utility border-accent-surface {
+  border-color: var(--color-border-accent);
+}
+
+@utility border-accent-dark-surface {
+  border-color: var(--color-border-accent-dark);
+}
+
+@utility border-accent-darker-surface {
+  border-color: var(--color-border-accent-darker);
+}
+
+@utility border-accent-darkest-surface {
+  border-color: var(--color-border-accent-darkest);
+}
+
+@utility ax-accent {
+  --ax-comp-bg-lightest: var(--color-accent-lightest);
+  --ax-comp-text-lightest: var(--color-on-accent-lightest);
+  --ax-comp-border-lightest: var(--color-border-accent-lightest);
+  --ax-comp-bg-lighter: var(--color-accent-lighter);
+  --ax-comp-text-lighter: var(--color-on-accent-lighter);
+  --ax-comp-border-lighter: var(--color-border-accent-lighter);
+  --ax-comp-bg-light: var(--color-accent-light);
+  --ax-comp-text-light: var(--color-on-accent-light);
+  --ax-comp-border-light: var(--color-border-accent-light);
+  --ax-comp-bg: var(--color-accent);
+  --ax-comp-text: var(--color-on-accent);
+  --ax-comp-border: var(--color-border-accent);
+  --ax-comp-bg-dark: var(--color-accent-dark);
+  --ax-comp-text-dark: var(--color-on-accent-dark);
+  --ax-comp-border-dark: var(--color-border-accent-dark);
+  --ax-comp-bg-darker: var(--color-accent-darker);
+  --ax-comp-text-darker: var(--color-on-accent-darker);
+  --ax-comp-border-darker: var(--color-border-accent-darker);
+  --ax-comp-bg-darkest: var(--color-accent-darkest);
+  --ax-comp-text-darkest: var(--color-on-accent-darkest);
+  --ax-comp-border-darkest: var(--color-border-accent-darkest);
+}
+
+/* Accent2 Surfaces */
+
+@utility accent2-lightest-surface {
+  background-color: var(--color-accent2-lightest);
+  color: var(--color-on-accent2-lightest);
+  border-color: var(--color-border-accent2-lightest);
+}
+
+@utility accent2-lighter-surface {
+  background-color: var(--color-accent2-lighter);
+  color: var(--color-on-accent2-lighter);
+  border-color: var(--color-border-accent2-lighter);
+}
+
+@utility accent2-light-surface {
+  background-color: var(--color-accent2-light);
+  color: var(--color-on-accent2-light);
+  border-color: var(--color-border-accent2-light);
+}
+
+@utility accent2-surface {
+  background-color: var(--color-accent2);
+  color: var(--color-on-accent2);
+  border-color: var(--color-border-accent2);
+}
+
+@utility accent2-dark-surface {
+  background-color: var(--color-accent2-dark);
+  color: var(--color-on-accent2-dark);
+  border-color: var(--color-border-accent2-dark);
+}
+
+@utility accent2-darker-surface {
+  background-color: var(--color-accent2-darker);
+  color: var(--color-on-accent2-darker);
+  border-color: var(--color-border-accent2-darker);
+}
+
+@utility accent2-darkest-surface {
+  background-color: var(--color-accent2-darkest);
+  color: var(--color-on-accent2-darkest);
+  border-color: var(--color-border-accent2-darkest);
+}
+
+@utility border-accent2-lightest-surface {
+  border-color: var(--color-border-accent2-lightest);
+}
+
+@utility border-accent2-lighter-surface {
+  border-color: var(--color-border-accent2-lighter);
+}
+
+@utility border-accent2-light-surface {
+  border-color: var(--color-border-accent2-light);
+}
+
+@utility border-accent2-surface {
+  border-color: var(--color-border-accent2);
+}
+
+@utility border-accent2-dark-surface {
+  border-color: var(--color-border-accent2-dark);
+}
+
+@utility border-accent2-darker-surface {
+  border-color: var(--color-border-accent2-darker);
+}
+
+@utility border-accent2-darkest-surface {
+  border-color: var(--color-border-accent2-darkest);
+}
+
+@utility ax-accent2 {
+  --ax-comp-bg-lightest: var(--color-accent2-lightest);
+  --ax-comp-text-lightest: var(--color-on-accent2-lightest);
+  --ax-comp-border-lightest: var(--color-border-accent2-lightest);
+  --ax-comp-bg-lighter: var(--color-accent2-lighter);
+  --ax-comp-text-lighter: var(--color-on-accent2-lighter);
+  --ax-comp-border-lighter: var(--color-border-accent2-lighter);
+  --ax-comp-bg-light: var(--color-accent2-light);
+  --ax-comp-text-light: var(--color-on-accent2-light);
+  --ax-comp-border-light: var(--color-border-accent2-light);
+  --ax-comp-bg: var(--color-accent2);
+  --ax-comp-text: var(--color-on-accent2);
+  --ax-comp-border: var(--color-border-accent2);
+  --ax-comp-bg-dark: var(--color-accent2-dark);
+  --ax-comp-text-dark: var(--color-on-accent2-dark);
+  --ax-comp-border-dark: var(--color-border-accent2-dark);
+  --ax-comp-bg-darker: var(--color-accent2-darker);
+  --ax-comp-text-darker: var(--color-on-accent2-darker);
+  --ax-comp-border-darker: var(--color-border-accent2-darker);
+  --ax-comp-bg-darkest: var(--color-accent2-darkest);
+  --ax-comp-text-darkest: var(--color-on-accent2-darkest);
+  --ax-comp-border-darkest: var(--color-border-accent2-darkest);
+}
+
+/* Accent3 Surfaces */
+
+@utility accent3-lightest-surface {
+  background-color: var(--color-accent3-lightest);
+  color: var(--color-on-accent3-lightest);
+  border-color: var(--color-border-accent3-lightest);
+}
+
+@utility accent3-lighter-surface {
+  background-color: var(--color-accent3-lighter);
+  color: var(--color-on-accent3-lighter);
+  border-color: var(--color-border-accent3-lighter);
+}
+
+@utility accent3-light-surface {
+  background-color: var(--color-accent3-light);
+  color: var(--color-on-accent3-light);
+  border-color: var(--color-border-accent3-light);
+}
+
+@utility accent3-surface {
+  background-color: var(--color-accent3);
+  color: var(--color-on-accent3);
+  border-color: var(--color-border-accent3);
+}
+
+@utility accent3-dark-surface {
+  background-color: var(--color-accent3-dark);
+  color: var(--color-on-accent3-dark);
+  border-color: var(--color-border-accent3-dark);
+}
+
+@utility accent3-darker-surface {
+  background-color: var(--color-accent3-darker);
+  color: var(--color-on-accent3-darker);
+  border-color: var(--color-border-accent3-darker);
+}
+
+@utility accent3-darkest-surface {
+  background-color: var(--color-accent3-darkest);
+  color: var(--color-on-accent3-darkest);
+  border-color: var(--color-border-accent3-darkest);
+}
+
+@utility border-accent3-lightest-surface {
+  border-color: var(--color-border-accent3-lightest);
+}
+
+@utility border-accent3-lighter-surface {
+  border-color: var(--color-border-accent3-lighter);
+}
+
+@utility border-accent3-light-surface {
+  border-color: var(--color-border-accent3-light);
+}
+
+@utility border-accent3-surface {
+  border-color: var(--color-border-accent3);
+}
+
+@utility border-accent3-dark-surface {
+  border-color: var(--color-border-accent3-dark);
+}
+
+@utility border-accent3-darker-surface {
+  border-color: var(--color-border-accent3-darker);
+}
+
+@utility border-accent3-darkest-surface {
+  border-color: var(--color-border-accent3-darkest);
+}
+
+@utility ax-accent3 {
+  --ax-comp-bg-lightest: var(--color-accent3-lightest);
+  --ax-comp-text-lightest: var(--color-on-accent3-lightest);
+  --ax-comp-border-lightest: var(--color-border-accent3-lightest);
+  --ax-comp-bg-lighter: var(--color-accent3-lighter);
+  --ax-comp-text-lighter: var(--color-on-accent3-lighter);
+  --ax-comp-border-lighter: var(--color-border-accent3-lighter);
+  --ax-comp-bg-light: var(--color-accent3-light);
+  --ax-comp-text-light: var(--color-on-accent3-light);
+  --ax-comp-border-light: var(--color-border-accent3-light);
+  --ax-comp-bg: var(--color-accent3);
+  --ax-comp-text: var(--color-on-accent3);
+  --ax-comp-border: var(--color-border-accent3);
+  --ax-comp-bg-dark: var(--color-accent3-dark);
+  --ax-comp-text-dark: var(--color-on-accent3-dark);
+  --ax-comp-border-dark: var(--color-border-accent3-dark);
+  --ax-comp-bg-darker: var(--color-accent3-darker);
+  --ax-comp-text-darker: var(--color-on-accent3-darker);
+  --ax-comp-border-darker: var(--color-border-accent3-darker);
+  --ax-comp-bg-darkest: var(--color-accent3-darkest);
+  --ax-comp-text-darkest: var(--color-on-accent3-darkest);
+  --ax-comp-border-darkest: var(--color-border-accent3-darkest);
+}
+
+@utility bg-default {
+  background-color: var(--color-bg-default);
+}
+
+@utility text-default {
+  color: var(--color-text-default);
+}
+
+@utility text {
+  color: var(--color-text-default);
+}
+
+@utility border-default {
+  border-color: var(--color-border-default);
+}
+
+@utility border-s-default {
+  border-inline-start-width: 1px;
+}
+
+@utility border-e-default {
+  border-inline-end-width: 1px;
+}
+
+@utility border-t-default {
+  border-top-width: 1px;
+}
+
+@utility border-b-default {
+  border-bottom-width: 1px;
+}
+
+@utility border-x-default {
+  border-left-width: 1px;
+  border-right-width: 1px;
+}
+
+@utility border-y-default {
+  border-top-width: 1px;
+  border-bottom-width: 1px;
+}
+
+@utility text-default {
+  color: var(--color-text-default);
+}
+
+@utility bg-default {
+  background-color: var(--color-bg-default);
+}
+
+@utility max-w-8xl {
+  max-width: 90rem;
+}
+
+@utility rounded-default {
+  border-radius: var(--radius-default);
+}
+
+@utility rounded-s-default {
+  border-start-start-radius: var(--radius-default);
+  border-end-start-radius: var(--radius-default);
+}
+
+@utility rounded-e-default {
+  border-start-end-radius: var(--radius-default);
+  border-end-end-radius: var(--radius-default);
+}
+
+@utility rounded-t-default {
+  border-top-left-radius: var(--radius-default);
+  border-top-right-radius: var(--radius-default);
+}
+
+@utility rounded-b-default {
+  border-bottom-left-radius: var(--radius-default);
+  border-bottom-right-radius: var(--radius-default);
+}
+
+@utility rounded-tl-default {
+  border-top-left-radius: var(--radius-default);
+}
+
+@utility rounded-tr-default {
+  border-top-right-radius: var(--radius-default);
+}
+
+@utility rounded-bl-default {
+  border-bottom-left-radius: var(--radius-default);
+}
+
+@utility rounded-br-default {
+  border-bottom-right-radius: var(--radius-default);
+}
+
+@utility ax-state-disabled {
+  @apply cursor-not-allowed opacity-50 *:cursor-not-allowed;
+}
+
+@utility ax-state-readonly {
+  @apply cursor-text opacity-70 *:cursor-text;
+}
+
+@utility ax-fill {
+  &.ax-default {
+    @apply light-surface dark:dark-surface;
+  }
+  &.ax-editor-container {
+    @apply focus-within:ring-primary/30 focus-within:border-primary focus-within:ring-3;
+  }
+}
+
+@utility ax-flat {
+  @apply rounded-none;
+  &.ax-default {
+    @apply border-border-lightest dark:border-border-darkest border-b bg-transparent;
+  }
+  &.ax-editor-container {
+    @apply focus-within:border-primary!;
+  }
+}
+
+@utility ax-solid {
+  @apply bg-(--ax-comp-bg,var(--color-lightest)) text-(--ax-comp-text,var(--color-on-lightest)) dark:bg-(--ax-comp-bg,var(--color-darkest)) dark:text-(--ax-comp-text,var(--color-on-darkest));
+  &.ax-default {
+    @apply lightest-surface dark:darkest-surface border;
+  }
+  &.ax-state-selected {
+    @apply bg-(--ax-comp-bg-darker,var(--color-light)) text-(--ax-comp-text-darker,var(--color-on-light)) dark:bg-(--ax-comp-bg-darker,var(--color-dark)) dark:text-(--ax-comp-text-darker,var(--color-on-dark));
+  }
+  &.ax-editor-container {
+    @apply focus-within:ring-primary/30 focus-within:border-primary focus-within:ring-3;
+  }
+}
+
+@utility ax-solid-interactive {
+  @supports (color: color-mix(in lab, red, red)) {
+    --ax-comp-ripple-color: color-mix(in oklab, var(--ax-comp-bg-lightest, var(--color-on-lightest)) 25%, transparent);
+  }
+  @apply ax-solid transition-colors;
+  &:not(.ax-state-disabled, .ax-state-loading, .ax-state-selected) {
+    &:hover,
+    &:focus,
+    &:focus-within,
+    &:focus-visible {
+      @apply bg-(--ax-comp-bg-dark,var(--color-lighter)) text-(--ax-comp-text-dark,var(--color-on-lighter)) dark:bg-(--ax-comp-bg-dark,var(--color-darker)) dark:text-(--ax-comp-text-dark,var(--color-on-darker));
+    }
+  }
+  &:not(.ax-state-disabled, .ax-state-loading, .ax-state-selected):active {
+    @apply bg-(--ax-comp-bg-darker,var(--color-light)) text-(--ax-comp-text-darker,var(--color-on-light)) dark:bg-(--ax-comp-bg-darker,var(--color-dark)) dark:text-(--ax-comp-text-darker,var(--color-on-dark));
+  }
+}
+
+@utility ax-outline {
+  @apply border border-(--ax-comp-bg,var(--color-border-lightest)) bg-transparent text-(--ax-comp-bg,var(--color-on-lightest));
+  &.ax-default {
+    @apply border-border-lightest dark:border-border-darkest border;
+  }
+  &.ax-state-selected {
+    @apply border-(--ax-comp-bg-darker,var(--color-border-light)) text-(--ax-comp-bg-darker,var(--color-on-light));
+  }
+  &.ax-editor-container {
+    @apply focus-within:ring-primary/30 focus-within:border-primary focus-within:ring-3;
+  }
+}
+
+@utility ax-outline-interactive {
+  @supports (color: color-mix(in lab, red, red)) {
+    --ax-comp-ripple-color: color-mix(in oklab, var(--ax-comp-bg, var(--color-on-lightest)) 25%, transparent);
+  }
+  @apply ax-outline transition-colors;
+  &:not(.ax-state-disabled, .ax-state-loading, .ax-state-selected) {
+    &:hover,
+    &:focus,
+    &:focus-within,
+    &:focus-visible {
+      @apply border-(--ax-comp-bg-dark,var(--color-border-lighter)) text-(--ax-comp-bg-dark,var(--color-on-lighter));
+    }
+  }
+  &:not(.ax-state-disabled, .ax-state-loading, .ax-state-selected):active {
+    @apply border-(--ax-comp-bg-darker,var(--color-border-light)) text-(--ax-comp-bg-darker,var(--color-on-light));
+  }
+}
+
+@utility ax-twotone {
+  @apply bg-(--ax-comp-bg-lightest,var(--color-lighter)) text-(--ax-comp-text-lightest,var(--color-on-lighter)) dark:bg-(--ax-comp-bg-lightest,var(--color-darker)) dark:text-(--ax-comp-text-lightest,var(--color-on-darker));
+  &.ax-state-selected {
+    @apply bg-(--ax-comp-bg-light,var(--color-surface)) text-(--ax-comp-text-light,var(--color-on-surface));
+  }
+}
+
+@utility ax-twotone-interactive {
+  @supports (color: color-mix(in lab, red, red)) {
+    --ax-comp-ripple-color: color-mix(in oklab, var(--ax-comp-bg, var(--color-on-lightest)) 25%, transparent);
+  }
+  @apply ax-twotone transition-colors;
+  &:not(.ax-state-disabled, .ax-state-loading, .ax-state-selected) {
+    &:hover,
+    &:focus,
+    &:focus-within,
+    &:focus-visible {
+      @apply bg-(--ax-comp-bg-lighter,var(--color-light)) text-(--ax-comp-text-lighter,var(--color-on-light)) dark:bg-(--ax-comp-bg-lighter,var(--color-dark)) dark:text-(--ax-comp-text-lighter,var(--color-on-dark));
+    }
+  }
+  &:not(.ax-state-disabled, .ax-state-loading, .ax-state-selected):active {
+    @apply bg-(--ax-comp-bg-light,var(--color-surface)) text-(--ax-comp-text-light,var(--color-on-surface));
+  }
+}
+
+@utility ax-blank {
+  @apply bg-transparent text-(--ax-comp-bg,var(--color-on-surface));
+  &.ax-state-selected {
+    @apply bg-(--ax-comp-bg-lighter,var(--color-surface)) text-(--ax-comp-text-lighter,var(--color-on-surface));
+  }
+}
+
+@utility ax-blank-interactive {
+  @supports (color: color-mix(in lab, red, red)) {
+    --ax-comp-ripple-color: color-mix(in oklab, var(--ax-comp-bg, var(--color-on-lightest)) 25%, transparent);
+  }
+  @apply ax-blank transition-colors;
+  &:not(.ax-state-disabled, .ax-state-loading, .ax-state-selected) {
+    &:hover,
+    &:focus,
+    &:focus-within,
+    &:focus-visible {
+      @apply bg-(--ax-comp-bg-lightest,var(--color-lighter)) text-(--ax-comp-text-lightest,var(--color-on-lighter)) dark:bg-(--ax-comp-bg-lightest,var(--color-darker)) dark:text-(--ax-comp-text-lightest,var(--color-on-darker));
+    }
+  }
+  &:not(.ax-state-disabled, .ax-state-loading, .ax-state-selected):active {
+    @apply bg-(--ax-comp-bg-lighter,var(--color-surface)) text-(--ax-comp-text-lighter,var(--color-on-surface));
+  }
+}
+
+@utility links {
+  @apply bg-transparent text-(--ax-comp-bg,var(--color-on-surface));
+  &.ax-state-selected {
+    @apply text-(--ax-comp-bg-darker,var(--color-on-surface));
+  }
+}
+
+@utility links-interactive {
+  @supports (color: color-mix(in lab, red, red)) {
+    --ax-comp-ripple-color: color-mix(in oklab, var(--ax-comp-bg, var(--color-on-lightest)) 25%, transparent);
+  }
+  @apply links transition-colors;
+  &:not(.ax-state-disabled, .ax-state-loading, .ax-state-selected) {
+    &:hover,
+    &:focus,
+    &:focus-within,
+    &:focus-visible {
+      @apply text-(--ax-comp-bg-dark,var(--color-on-surface));
+    }
+  }
+  &:not(.ax-state-disabled, .ax-state-loading, .ax-state-selected):active {
+    @apply text-(--ax-comp-bg-darker,var(--color-on-surface));
+  }
+}
+@utility h1 {
+  font-size: 2.5rem;
+  font-weight: 500;
+  line-height: 2.5rem;
+}  
+@utility h2 {
+  font-size: 2rem;
+  font-weight: 500;
+  line-height: 2rem;
+}  
+@utility h3 {
+  font-size: 1.75rem;
+  font-weight: 500;
+  line-height: 1.75rem;
+}  
+@utility h4 {
+  font-size: 1.5rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+}  
+@utility h5 {
+  font-size: 1.125rem;
+  font-weight: 500;
+  line-height: 1.125rem;
+}  
+@utility h6 {
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1rem;
+}  
+@utility heading {
+  width: 100%;
+  border-bottom: 1px solid;
+  border-color: rgba(var(--ax-sys-color-border-lightest-surface));
+  line-height: 0.1em;
+  margin: 1rem auto;
+}  
+@utility heading-start {
+  text-align: start;
+}  
+@utility heading-center {
+  text-align: center;
+}  
+@utility heading-end {
+  text-align: end;
+}  
+@utility subtitle {
+  opacity: 74%;
+  display: block;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.625rem;
+}
+@utility tabs-fit {
+  width: 100%;
+}
+@utility ax-xs {
+  --ax-sys-xs-size: var(--ax-sys-size-xs);
+}
+@utility ax-sm {
+  --ax-sys-sm-size: var(--ax-sys-size-sm);
+}
+@utility ax-md {
+  --ax-sys-md-size: var(--ax-sys-size-md);
+}
+@utility ax-lg {
+  --ax-sys-lg-size: var(--ax-sys-size-lg);
+}
+@utility ax-xl {
+  --ax-sys-xl-size: var(--ax-sys-size-xl);
+}

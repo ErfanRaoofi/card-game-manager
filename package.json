@@ -11,6 +11,11 @@
   },
   "private": true,
   "dependencies": {
+    "@acorex/cdk": "21.0.1-next.52",
+    "@acorex/charts": "21.0.1-next.52",
+    "@acorex/components": "21.0.1-next.52",
+    "@acorex/core": "21.0.1-next.52",
+    "@acorex/styles": "21.0.1-next.52",
     "@angular-devkit/build-angular": "~21.2.0",
     "@angular/common": "~21.2.0",
     "@angular/compiler": "~21.2.0",
