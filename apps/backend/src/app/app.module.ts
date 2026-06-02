@@ -1,9 +1,7 @@
-import { RedisModule } from '@nestjs-modules/ioredis';
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { RoomEntity } from './room/room.entity'; // مسیر فایل انتیتی را تنظیم کنید
 import { RoomModule } from './room/room.module';
 import { UserModule } from './user/user.module';
 import { AdminModule } from './admin/admin.module';
@@ -12,13 +10,13 @@ import { AdminModule } from './admin/admin.module';
   imports: [
     TypeOrmModule.forRoot({
       type: 'postgres',
-      host: 'localhost',
-      port: 5432,
-      username: 'postgres',
-      password: 'postgres',
-      database: 'hokmdb',
+      host: process.env['DB_HOST'] ?? 'localhost',
+      port: parseInt(process.env['DB_PORT'] ?? '5432', 10),
+      username: process.env['DB_USER'] ?? 'postgres',
+      password: process.env['DB_PASSWORD'] ?? 'postgres',
+      database: process.env['DB_NAME'] ?? 'hokmdb',
       autoLoadEntities: true,
-      synchronize: true,
+      synchronize: process.env['DB_SYNC'] !== 'false',
     }),
     UserModule,
     RoomModule,

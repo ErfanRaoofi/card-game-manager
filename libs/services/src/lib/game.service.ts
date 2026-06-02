@@ -12,6 +12,7 @@ import {
   TeamId,
 } from '@fe/shared-types';
 import { AuthService } from './auth.service';
+import { getApiBaseUrl } from './app-config';
 
 @Injectable({
   providedIn: 'root',
@@ -21,8 +22,9 @@ export class GameService {
   private auth = inject(AuthService);
   private socket: Socket;
 
-  private apiUrl = 'http://localhost:5000/api/rooms';
-  private socketUrl = 'http://localhost:5000';
+  private get apiUrl(): string {
+    return `${getApiBaseUrl()}/api/rooms`;
+  }
 
   public roomState = signal<RoomState | null>(null);
   public roomList = signal<RoomListItem[]>([]);
@@ -33,7 +35,7 @@ export class GameService {
   private activeRoomId: string | null = null;
 
   constructor() {
-    this.socket = io(this.socketUrl, { autoConnect: false });
+    this.socket = io(getApiBaseUrl(), { autoConnect: false });
     this.setupSocketListeners();
   }
 

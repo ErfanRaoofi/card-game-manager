@@ -8,6 +8,7 @@ import {
   RoomListItem,
   UpdateUserDto,
 } from '@fe/shared-types';
+import { getApiUrl } from './app-config';
 
 const TOKEN_KEY = 'hokm_token';
 
@@ -16,7 +17,10 @@ const TOKEN_KEY = 'hokm_token';
 })
 export class AuthService {
   private http = inject(HttpClient);
-  private apiUrl = 'http://localhost:5000/api';
+
+  private get apiUrl(): string {
+    return getApiUrl('/api');
+  }
 
   public currentUser = signal<AppUser | null>(null);
   public sessionReady = signal(false);

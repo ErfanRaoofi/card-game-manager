@@ -11,7 +11,10 @@ import {
   provideClientHydration,
   withEventReplay,
 } from '@angular/platform-browser';
-import { AuthService } from '@fe/services';
+import { AuthService, configureAppApi } from '@fe/services';
+import { environment } from '../environments/environment';
+
+configureAppApi(environment.apiBaseUrl);
 
 export const appConfig: ApplicationConfig = {
   providers: [

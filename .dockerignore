@@ -1,0 +1,11 @@
+node_modules
+dist
+.nx
+.git
+.github
+.vscode
+.verdaccio
+*.md
+.env
+.env.*
+!.env.example

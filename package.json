@@ -4,7 +4,10 @@
   "license": "MIT",
   "scripts": {
     "start:frontend": "npx nx run frontend:serve --configuration=development",
-    "start:backend": "npx nx run backend:serve --configuration=development --watch=true"
+    "start:backend": "npx nx run backend:serve --configuration=development --watch=true",
+    "build": "npx nx run backend:build --configuration=production && npx nx run frontend:build --configuration=production",
+    "docker:up": "docker compose up -d --build",
+    "docker:down": "docker compose down"
   },
   "private": true,
   "dependencies": {
