@@ -72,6 +72,24 @@ export class AuthService {
     return res;
   }
 
+  async registerPlayerForRoom(
+    username: string,
+    displayName?: string,
+    password?: string,
+  ): Promise<AppUser> {
+    return firstValueFrom(
+      this.http.post<AppUser>(
+        `${this.apiUrl}/auth/register-player`,
+        {
+          username,
+          password: password || username,
+          displayName,
+        },
+        { headers: this.authHeaders() },
+      ),
+    );
+  }
+
   async login(username: string, password: string): Promise<AuthResponse> {
     const res = await firstValueFrom(
       this.http.post<AuthResponse>(`${this.apiUrl}/auth/login`, { username, password }),
@@ -93,6 +111,20 @@ export class AuthService {
       this.logout();
       return null;
     }
+  }
+
+  async updateMyCredentials(dto: {
+    username?: string;
+    password?: string;
+    displayName?: string;
+  }): Promise<AppUser> {
+    const user = await firstValueFrom(
+      this.http.patch<AppUser>(`${this.apiUrl}/auth/me`, dto, {
+        headers: this.authHeaders(),
+      }),
+    );
+    this.currentUser.set(user);
+    return user;
   }
 
   async listUsers(): Promise<AppUser[]> {

@@ -61,6 +61,44 @@ export class UserService {
     return this.usersRepo.save(user);
   }
 
+  async updateOwnCredentials(
+    userId: string,
+    dto: { username?: string; password?: string; displayName?: string },
+  ): Promise<AppUser> {
+    const user = await this.usersRepo.findOne({ where: { id: userId } });
+    if (!user) throw new BadRequestException('کاربر یافت نشد');
+
+    if (dto.username !== undefined) {
+      const trimmed = dto.username.trim().toLowerCase();
+      if (!/^[a-z0-9_]{3,32}$/.test(trimmed)) {
+        throw new BadRequestException('نام کاربری: ۳–۳۲ حرف، فقط حروف انگلیسی، عدد و _');
+      }
+      if (trimmed !== user.username) {
+        const exists = await this.usersRepo.findOne({ where: { username: trimmed } });
+        if (exists && exists.id !== user.id) {
+          throw new ConflictException('این نام کاربری قبلاً ثبت شده است');
+        }
+        user.username = trimmed;
+      }
+    }
+
+    if (dto.displayName !== undefined) {
+      const name = dto.displayName.trim();
+      if (!name) throw new BadRequestException('نام نمایشی خالی است');
+      user.displayName = name;
+    }
+
+    if (dto.password !== undefined) {
+      if (dto.password.length < 4) {
+        throw new BadRequestException('رمز عبور حداقل ۴ کاراکتر');
+      }
+      user.passwordHash = await bcrypt.hash(dto.password, 10);
+    }
+
+    const saved = await this.usersRepo.save(user);
+    return this.toPublic(saved);
+  }
+
   async listUsersForAdmin(): Promise<AdminUserDetail[]> {
     const users = await this.usersRepo.find({ order: { createdAt: 'DESC' } });
     return users.map((u) => this.toAdminDetail(u));

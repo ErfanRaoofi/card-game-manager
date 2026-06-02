@@ -2,6 +2,7 @@ import { CommonModule } from '@angular/common';
 import {
   ChangeDetectionStrategy,
   Component,
+  computed,
   inject,
   OnInit,
   signal,
@@ -23,8 +24,28 @@ export class Admin implements OnInit {
   tab = signal<'users' | 'rooms'>('users');
   users = signal<AdminUserDetail[]>([]);
   rooms = signal<RoomListItem[]>([]);
+  usersSearch = signal('');
+  roomsSearch = signal('');
   loading = signal(false);
   error = signal<string | null>(null);
+
+  filteredUsers = computed(() => {
+    const q = this.usersSearch().trim().toLowerCase();
+    const list = this.users();
+    if (!q) return list;
+    return list.filter((u) =>
+      `${u.displayName} ${u.username} ${u.role}`.toLowerCase().includes(q),
+    );
+  });
+
+  filteredRooms = computed(() => {
+    const q = this.roomsSearch().trim().toLowerCase();
+    const list = this.rooms();
+    if (!q) return list;
+    return list.filter((r) =>
+      `${r.roomId} ${r.gameType} ${r.status} ${r.hostUsername ?? ''} ${r.playerNames.join(' ')}`.toLowerCase().includes(q),
+    );
+  });
 
   editUserId = signal<string | null>(null);
   editDisplayName = '';

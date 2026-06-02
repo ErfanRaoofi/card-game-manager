@@ -30,6 +30,9 @@ interface PlayerDraft {
   appUserId: string;
   team: TeamId;
   isHakem: boolean;
+  quickUsername?: string;
+  userFilter?: string;
+  userQuery?: string;
 }
 
 @Component({
@@ -73,20 +76,27 @@ export class Room implements OnInit {
   readonly allHokmChoices = [...HOKM_ALL_CHOICES];
 
   public playerDrafts: PlayerDraft[] = [
-    { appUserId: '', team: 'team1', isHakem: true },
-    { appUserId: '', team: 'team1', isHakem: false },
-    { appUserId: '', team: 'team2', isHakem: false },
-    { appUserId: '', team: 'team2', isHakem: false },
+    { appUserId: '', team: 'team1', isHakem: true, quickUsername: '', userFilter: '', userQuery: '' },
+    { appUserId: '', team: 'team1', isHakem: false, quickUsername: '', userFilter: '', userQuery: '' },
+    { appUserId: '', team: 'team2', isHakem: false, quickUsername: '', userFilter: '', userQuery: '' },
+    { appUserId: '', team: 'team2', isHakem: false, quickUsername: '', userFilter: '', userQuery: '' },
   ];
 
   public roomState = this.gameService.roomState;
   public roomList = this.gameService.roomList;
   public registeredUsers = this.gameService.registeredUsers;
+  public roomSearch = signal('');
   public error = this.gameService.connectionError;
   public isLoadingRooms = signal(false);
   public copyToast = signal(false);
+  public creatingDraftIndex = signal<number | null>(null);
+  public createUserSuccess = signal<string | null>(null);
+  public draftCreateError = signal<{ index: number; message: string } | null>(null);
+  public draftUserPickError = signal<{ index: number; message: string } | null>(null);
+  public openUserPickerIndex = signal<number | null>(null);
 
   public currentUser = this.authService.currentUser;
+  public isAdmin = this.authService.isAdmin;
   public isHost = computed(() => this.gameService.isHost(this.roomState()));
 
   public team1Players = computed(() => {
@@ -97,6 +107,24 @@ export class Room implements OnInit {
   public team2Players = computed(() => {
     const state = this.roomState();
     return state ? state.players.filter((p) => p.team === 'team2') : [];
+  });
+
+  public filteredRoomList = computed(() => {
+    const q = this.roomSearch().trim().toLowerCase();
+    const list = this.roomList();
+    if (!q) return list;
+    return list.filter((item) => {
+      const haystack = [
+        item.roomId,
+        item.gameType,
+        item.status,
+        item.hostUsername ?? '',
+        item.playerNames.join(' '),
+      ]
+        .join(' ')
+        .toLowerCase();
+      return haystack.includes(q);
+    });
   });
 
   public canScore = computed(() => {
@@ -131,6 +159,14 @@ export class Room implements OnInit {
     if (team1 !== 2) return 'هر تیم باید دقیقاً ۲ نفر داشته باشد';
     if (this.playerDrafts.filter((d) => d.isHakem).length !== 1) return 'یک نفر را حاکم انتخاب کنید';
     return null;
+  }
+
+  private toSafeUsername(raw: string): string {
+    return raw
+      .trim()
+      .toLowerCase()
+      .replace(/\s+/g, '_')
+      .replace(/[^a-z0-9_]/g, '');
   }
 
   ngOnInit() {
@@ -168,12 +204,140 @@ export class Room implements OnInit {
       appUserId: p.appUserId ?? '',
       team: p.team,
       isHakem: state.hakemId === p.id,
+      quickUsername: '',
+      userFilter: '',
+      userQuery: p.name,
     }));
+  }
+
+  async createAndAssignUserForDraft(index: number) {
+    this.draftCreateError.set(null);
+    this.createUserSuccess.set(null);
+    const draft = this.playerDrafts[index];
+    if (!draft) return;
+
+    const username = this.toSafeUsername(draft.quickUsername || '');
+    if (!username) {
+      this.draftCreateError.set({ index, message: 'username را وارد کنید' });
+      return;
+    }
+    if (username.length < 3) {
+      this.draftCreateError.set({ index, message: 'username باید حداقل ۳ کاراکتر باشد' });
+      return;
+    }
+
+    this.creatingDraftIndex.set(index);
+    try {
+      const created = await this.authService.registerPlayerForRoom(username, username, username);
+      await this.gameService.fetchRegisteredUsers();
+      this.playerDrafts[index] = {
+        ...this.playerDrafts[index],
+        appUserId: created.id,
+        quickUsername: '',
+        userQuery: created.username,
+      };
+      this.createUserSuccess.set(`@${created.username} ساخته شد و روی سطر ${index + 1} قرار گرفت`);
+      this.cdr.markForCheck();
+    } catch (e: unknown) {
+      const err = e as { error?: { message?: string | string[] }; message?: string };
+      const msg = err.error?.message;
+      this.draftCreateError.set({
+        index,
+        message: Array.isArray(msg) ? msg.join('، ') : msg || err.message || 'خطا در ساخت کاربر',
+      });
+    } finally {
+      this.creatingDraftIndex.set(null);
+    }
   }
 
   userLabel(userId: string): string {
     const u = this.registeredUsers().find((x) => x.id === userId);
     return u ? `${u.displayName} (@${u.username})` : '';
+  }
+
+  isUserPickedInAnotherDraft(userId: string, draftIndex: number): boolean {
+    if (!userId) return false;
+    return this.playerDrafts.some((draft, index) => index !== draftIndex && draft.appUserId === userId);
+  }
+
+  filteredUsersForDraft(draftIndex: number) {
+    const q = this.playerDrafts[draftIndex]?.userQuery?.trim().toLowerCase() ?? '';
+    const selected = this.playerDrafts[draftIndex]?.appUserId;
+    const users = this.registeredUsers();
+    if (!q) return users;
+    return users.filter((u) => {
+      if (selected && u.id === selected) return true;
+      const haystack = `${u.displayName} ${u.username}`.toLowerCase();
+      return haystack.includes(q);
+    });
+  }
+
+  userQueryValue(draft: PlayerDraft): string {
+    if (draft.userQuery?.trim()) return draft.userQuery;
+    if (!draft.appUserId) return '';
+    const selected = this.registeredUsers().find((u) => u.id === draft.appUserId);
+    return selected?.username ?? '';
+  }
+
+  onDraftUserQueryInput(index: number, raw: string): void {
+    const value = raw.trim().toLowerCase();
+    this.draftUserPickError.set(null);
+    this.playerDrafts[index] = {
+      ...this.playerDrafts[index],
+      userQuery: raw,
+    };
+    if (!value) {
+      this.playerDrafts[index] = { ...this.playerDrafts[index], appUserId: '' };
+    }
+  }
+
+  toggleUserPicker(index: number): void {
+    const current = this.openUserPickerIndex();
+    if (current === index) {
+      this.openUserPickerIndex.set(null);
+      return;
+    }
+    const draft = this.playerDrafts[index];
+    if (!draft) return;
+    const selected = draft?.appUserId
+      ? this.registeredUsers().find((u) => u.id === draft.appUserId)
+      : null;
+    this.playerDrafts[index] = {
+      ...draft,
+      userQuery: selected?.username ?? '',
+    };
+    this.openUserPickerIndex.set(index);
+  }
+
+  closeUserPicker(): void {
+    this.openUserPickerIndex.set(null);
+  }
+
+  onDraftUserSelect(index: number, userId: string): void {
+    this.draftUserPickError.set(null);
+    if (!userId) {
+      this.playerDrafts[index] = { ...this.playerDrafts[index], appUserId: '' };
+      return;
+    }
+
+    if (this.isUserPickedInAnotherDraft(userId, index)) {
+      this.draftUserPickError.set({ index, message: 'این کاربر قبلاً در سطر دیگری انتخاب شده است' });
+      return;
+    }
+
+    const selected = this.registeredUsers().find((u) => u.id === userId);
+    this.playerDrafts[index] = {
+      ...this.playerDrafts[index],
+      appUserId: userId,
+      userQuery: selected?.username ?? this.playerDrafts[index].userQuery ?? '',
+    };
+    this.openUserPickerIndex.set(null);
+  }
+
+  selectedUserLabel(userId: string): string {
+    if (!userId) return 'انتخاب کاربر';
+    const u = this.registeredUsers().find((x) => x.id === userId);
+    return u ? `${u.displayName} (@${u.username})` : 'انتخاب کاربر';
   }
 
   async loadRoomList() {
@@ -204,6 +368,31 @@ export class Room implements OnInit {
     this.authService.logout();
     this.gameService.leaveRoom();
     void this.router.navigate(['/login']);
+  }
+
+  async editMyCredentials() {
+    const me = this.currentUser();
+    if (!me) return;
+
+    const nextUsername = prompt('نام کاربری جدید (انگلیسی، اختیاری):', me.username)?.trim();
+    if (nextUsername === null) return;
+    const nextDisplayName = prompt('نام نمایشی جدید (اختیاری):', me.displayName)?.trim();
+    if (nextDisplayName === null) return;
+    const nextPassword = prompt('رمز عبور جدید (حداقل ۴ کاراکتر، خالی=بدون تغییر):')?.trim();
+    if (nextPassword === null) return;
+
+    try {
+      await this.authService.updateMyCredentials({
+        username: nextUsername || undefined,
+        displayName: nextDisplayName || undefined,
+        password: nextPassword || undefined,
+      });
+      this.createUserSuccess.set('اطلاعات حساب شما به‌روزرسانی شد');
+    } catch (e: unknown) {
+      const err = e as { error?: { message?: string | string[] }; message?: string };
+      const msg = err.error?.message;
+      this.error.set(Array.isArray(msg) ? msg.join('، ') : msg || err.message || 'خطا در بروزرسانی حساب');
+    }
   }
 
   statusLabel(status: RoomStatus): string {

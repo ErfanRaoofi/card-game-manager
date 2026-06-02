@@ -9,7 +9,8 @@
         <span>(@{{ user.username }})</span>
       </div>
       <div class="user-bar__actions">
-        @if (authService.isAdmin()) {
+        <button type="button" class="user-bar__link" (click)="editMyCredentials()">ویرایش حساب</button>
+        @if (isAdmin()) {
         <a routerLink="/admin" class="user-bar__link">پنل مدیر</a>
         }
         <button type="button" class="user-bar__logout" (click)="logout()">خروج</button>
@@ -28,12 +29,20 @@
               {{ isLoadingRooms() ? 'در حال بارگذاری...' : 'بروزرسانی' }}
             </button>
           </div>
+          <div class="mb-3">
+            <input
+              [(ngModel)]="roomSearch"
+              type="text"
+              placeholder="جستجوی اتاق (کد، میزبان، بازیکن، وضعیت...)"
+              class="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
 
           <div class="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
             <strong>کاربران ثبت‌شده:</strong> {{ registeredUsers().length }} نفر — برای شروع بازی حداقل ۴ کاربر با ثبت‌نام جداگانه لازم است. اولین ورود شما به اتاق = میزبان.
           </div>
 
-          @if (roomList().length === 0 && !isLoadingRooms()) {
+          @if (filteredRoomList().length === 0 && !isLoadingRooms()) {
           <p class="rounded-lg border border-dashed py-8 text-center text-gray-500">هنوز اتاقی ساخته نشده. یک اتاق جدید بسازید.</p>
           } @else {
           <div class="overflow-x-auto rounded-lg border">
@@ -49,7 +58,7 @@
                 </tr>
               </thead>
               <tbody>
-                @for (item of roomList(); track item.roomId) {
+                @for (item of filteredRoomList(); track item.roomId) {
                 <tr class="border-t hover:bg-gray-50">
                   <td class="p-3">{{ gameTypeLabel(item.gameType) }}</td>
                   <td class="p-3">{{ statusLabel(item.status) }}</td>
@@ -169,23 +178,78 @@
             @for (draft of playerDrafts; track $index) {
             <div class="grid grid-cols-1 items-center gap-2 rounded-lg border bg-white p-3 sm:grid-cols-12">
               <span class="text-sm font-bold text-gray-500 sm:col-span-1">{{ $index + 1 }}</span>
-              <select [(ngModel)]="draft.appUserId" class="rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-400 sm:col-span-4">
-                <option value="">— انتخاب کاربر —</option>
-                @for (u of registeredUsers(); track u.id) {
-                <option [value]="u.id">{{ u.displayName }} (@{{ u.username }})</option>
+              <div class="relative sm:col-span-5">
+                <button
+                  type="button"
+                  (click)="toggleUserPicker($index)"
+                  class="flex w-full items-center justify-between rounded-lg border bg-white px-3 py-2 text-sm"
+                >
+                  <span class="truncate">{{ selectedUserLabel(draft.appUserId) }}</span>
+                  <span class="text-gray-400">▾</span>
+                </button>
+                @if (openUserPickerIndex() === $index) {
+                <div class="absolute z-20 mt-1 w-full rounded-lg border bg-white p-2 shadow-lg">
+                  <input
+                    [ngModel]="userQueryValue(draft)"
+                    (ngModelChange)="onDraftUserQueryInput($index, $event)"
+                    type="text"
+                    placeholder="جستجوی کاربر..."
+                    class="mb-2 w-full rounded-md border px-2 py-1.5 text-sm outline-none focus:ring-2 focus:ring-amber-400"
+                  />
+                  <div class="max-h-40 overflow-auto rounded-md border">
+                    @for (u of filteredUsersForDraft($index); track u.id) {
+                    <button
+                      type="button"
+                      (click)="onDraftUserSelect($index, u.id)"
+                      [disabled]="isUserPickedInAnotherDraft(u.id, $index)"
+                      class="block w-full border-b px-2 py-1.5 text-right text-sm hover:bg-amber-50 disabled:cursor-not-allowed disabled:text-gray-400"
+                    >
+                      {{ u.displayName }} (@{{ u.username }})
+                    </button>
+                    } @empty {
+                    <div class="px-2 py-2 text-xs text-gray-500">نتیجه‌ای پیدا نشد</div>
+                    }
+                  </div>
+                  <button type="button" (click)="closeUserPicker()" class="mt-2 text-xs text-gray-500 hover:text-gray-700">بستن</button>
+                </div>
                 }
-              </select>
-              <select [(ngModel)]="draft.team" class="rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-400 sm:col-span-3">
+              </div>
+              <input
+                [(ngModel)]="draft.quickUsername"
+                type="text"
+                placeholder="ساخت سریع: username"
+                class="rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-400 sm:col-span-2"
+              />
+              <button
+                type="button"
+                (click)="createAndAssignUserForDraft($index)"
+                [disabled]="creatingDraftIndex() === $index"
+                class="rounded-lg bg-amber-600 px-3 py-2 text-xs font-bold text-white hover:bg-amber-700 disabled:opacity-50 sm:col-span-2"
+              >
+                {{ creatingDraftIndex() === $index ? '...' : 'ساخت و انتخاب' }}
+              </button>
+              <select [(ngModel)]="draft.team" class="rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-400 sm:col-span-2">
                 <option value="team1">تیم ۱</option>
                 <option value="team2">تیم ۲</option>
               </select>
-              <label class="flex cursor-pointer items-center gap-2 text-sm sm:col-span-4">
+              <label class="flex cursor-pointer items-center gap-2 text-sm sm:col-span-2">
                 <input type="radio" name="hakemDraft" [checked]="draft.isHakem" (change)="selectHakemDraft($index)" class="h-4 w-4 text-amber-600" />
                 <span>حاکم 👑</span>
               </label>
+              @if (draftCreateError()?.index === $index) {
+              <p class="text-xs text-red-600 sm:col-span-12">{{ draftCreateError()?.message }}</p>
+              }
+              @if (draftUserPickError()?.index === $index) {
+              <p class="text-xs text-red-600 sm:col-span-12">{{ draftUserPickError()?.message }}</p>
+              }
             </div>
             }
           </div>
+
+          <p class="mt-2 text-xs text-gray-600">در ساخت سریع هر سطر، نام نمایشی و رمز اولیه هر دو برابر username می‌شود.</p>
+          @if (createUserSuccess()) {
+          <p class="mt-1 text-sm text-green-700">{{ createUserSuccess() }}</p>
+          }
 
           @if (getSetupValidationError()) {
           <p class="mt-3 text-sm text-red-600">{{ getSetupValidationError() }}</p>

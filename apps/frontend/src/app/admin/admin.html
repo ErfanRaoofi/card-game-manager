@@ -23,6 +23,14 @@
     @if (loading()) {
       <p class="text-center text-slate-500 py-8">در حال بارگذاری...</p>
     } @else if (tab() === 'users') {
+      <div class="mb-3">
+        <input
+          [(ngModel)]="usersSearch"
+          type="text"
+          placeholder="جستجوی کاربر (نام، username، نقش)"
+          class="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
       <div class="overflow-x-auto border rounded-lg">
         <table class="w-full text-sm">
           <thead class="bg-slate-50">
@@ -34,7 +42,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (u of users(); track u.id) {
+            @for (u of filteredUsers(); track u.id) {
               <tr class="border-t">
                 @if (editUserId() === u.id) {
                   <td class="p-2" colspan="4">
@@ -78,6 +86,14 @@
       </div>
       <p class="text-xs text-slate-500 mt-3">اولین کاربر ثبت‌نام‌شده به‌صورت خودکار مدیر می‌شود.</p>
     } @else {
+      <div class="mb-3">
+        <input
+          [(ngModel)]="roomsSearch"
+          type="text"
+          placeholder="جستجوی اتاق (کد، میزبان، بازیکن، وضعیت)"
+          class="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
+        />
+      </div>
       <div class="overflow-x-auto border rounded-lg">
         <table class="w-full text-sm">
           <thead class="bg-slate-50">
@@ -90,7 +106,7 @@
             </tr>
           </thead>
           <tbody>
-            @for (r of rooms(); track r.roomId) {
+            @for (r of filteredRooms(); track r.roomId) {
               <tr class="border-t">
                 <td class="p-2">{{ r.gameType }}</td>
                 <td class="p-2">{{ r.status }}</td>
