@@ -17,7 +17,8 @@ ENV NODE_ENV=production
 
 COPY --from=builder /app/dist/apps/backend ./
 
-RUN npm ci --omit=dev
+# TypeORM در runtime به درایور postgres نیاز دارد.
+RUN npm ci --omit=dev && npm install pg --omit=dev --no-save
 
 EXPOSE 5000
 

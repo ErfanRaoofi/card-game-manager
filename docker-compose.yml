@@ -1,3 +1,6 @@
+# با Nginx Proxy Manager: سرویس nginx اینجا لازم نیست.
+# پورت‌ها را publish کن و در NPM به host:port اشاره کن (یا stack را به شبکه NPM وصل کن).
+
 services:
   postgres:
     image: postgres:16-alpine
@@ -20,6 +23,8 @@ services:
       context: .
       dockerfile: Dockerfile.backend
     restart: unless-stopped
+    ports:
+      - '${BACKEND_PORT:-5000}:5000'
     environment:
       PORT: 5000
       DB_HOST: postgres
@@ -38,20 +43,11 @@ services:
       context: .
       dockerfile: Dockerfile.frontend
     restart: unless-stopped
+    ports:
+      - '${FRONTEND_PORT:-4000}:4000'
     environment:
       PORT: 4000
     depends_on:
-      - backend
-
-  nginx:
-    image: nginx:1.27-alpine
-    restart: unless-stopped
-    ports:
-      - '${HTTP_PORT:-80}:80'
-    volumes:
-      - ./deploy/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-    depends_on:
-      - frontend
       - backend
 
 volumes:
