@@ -3,25 +3,26 @@ import { AXDialogService } from '@acorex/components/dialog';
 import { AXLoadingService } from '@acorex/components/loading';
 import { AXPopupService } from '@acorex/components/popup';
 import { AXToastService } from '@acorex/components/toast';
-import { AX_DATETIME_CONFIG, dateTimeConfig } from '@acorex/core/date-time';
+import { AX_DATETIME_CONFIG, AXDateTimeModule, dateTimeConfig } from '@acorex/core/date-time';
+import { AXFormatModule } from '@acorex/core/format';
 import { AX_LOCALSTORAGE_SECRET_KEY, AXLocalStorageService } from '@acorex/core/storage';
 import { AX_TRANSLATION_CONFIG, AX_TRANSLATION_LOADER, translationConfig } from '@acorex/core/translation';
+import { AXValidationModule } from '@acorex/core/validation';
 import { provideHttpClient, withFetch } from '@angular/common/http';
-import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
+import { ApplicationConfig, importProvidersFrom, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideRouter } from '@angular/router';
 import { AuthService, configureAppApi } from '@fe/services';
 import { environment } from '../environments/environment';
 import { AppTranslationLoader } from './app.loaders';
 import { appRoutes } from './app.routes';
-import { AXFormatModule } from '@acorex/core/format';
-import { AXValidationModule } from '@acorex/core/validation';
+import { OverlayModule } from '@angular/cdk/overlay';
 
 configureAppApi(environment.apiBaseUrl);
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideClientHydration(withEventReplay()),
+    // provideClientHydration(withEventReplay()),
     provideBrowserGlobalErrorListeners(),
     provideHttpClient(withFetch()),
     provideRouter(appRoutes),
@@ -31,7 +32,7 @@ export const appConfig: ApplicationConfig = {
     AXDialogService,
     AXHotkeysService,
     AXFormatModule,
-    AXValidationModule,
+    importProvidersFrom(AXValidationModule.forRoot(), AXFormatModule.forRoot(), AXDateTimeModule, OverlayModule),
     provideAppInitializer(() => inject(AuthService).initSession()),
     {
       provide: AX_DATETIME_CONFIG,

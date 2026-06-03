@@ -1,82 +1,73 @@
-<div class="p-4 h-full">
-  <div class="bg-secondary-500 w-full h-full rounded-xl p-4 shadow-lg flex flex-col items-center justify-center">
-    <div class="flex w-full justify-center">
-      <img src="/assets/images/logo_200x300.webp" alt="logo" class="h-2w-28 mb-4 w-28" />
-    </div>
-    <!-- <h1 class="text-2xl font-bold text-center text-gray-800 mb-2">مدیریت بازی حکم</h1> -->
-    <p class="mb-6 text-center text-sm text-gray-100">ثبت‌نام یا ورود برای ساخت اتاق و ثبت امتیاز</p>
-
-    <div class="border-persian-green-600 mb-4 flex overflow-hidden rounded-lg border w-full">
-      <button
-        type="button"
-        class="flex-1 py-2 text-sm font-medium"
-        [class.bg-primary]="mode() === 'login'"
-        [class.text-white]="mode() === 'login'"
-        [class.bg-white]="mode() !== 'login'"
-        (click)="setMode('login')"
-      >
-        ورود
-      </button>
-      <button
-        type="button"
-        class="flex-1 py-2 text-sm font-medium"
-        [class.bg-primary]="mode() === 'register'"
-        [class.text-white]="mode() === 'register'"
-        [class.bg-white]="mode() !== 'register'"
-        (click)="setMode('register')"
-      >
-        ثبت‌نام
-      </button>
-    </div>
-
-    @if (error()) {
-    <div class="mb-4 rounded-lg bg-red-100 p-3 text-center text-sm text-red-700">{{ error() }}</div>
-    }
-
-    <form class="space-y-4 w-full" (ngSubmit)="submit()">
-      <div>
-        <label for="username" class="mb-1 block text-sm font-semibold text-gray-100">نام کاربری (انگلیسی)</label>
-        <input
-          type="text"
-          [(ngModel)]="username"
-          name="username"
-          autocomplete="username"
-          placeholder="username"
-          dir="ltr"
-          class="border-primary focus:primary focus:ring-persian-green-800 w-full rounded-lg border px-3 py-2 text-gray-100 placeholder-gray-500! outline-none focus:ring-2"
-        />
-        <p class="mt-1 text-xs text-gray-100">۳–۳۲ کاراکتر: a-z، 0-9، _</p>
+<ax-form class="h-full!" #fromValid [inUserInteractionActive]="false" [messageStyle]="'float'" [updateOn]="'change'">
+  <div class="h-full p-4">
+    <div class="bg-secondary-500 flex h-full w-full flex-col items-center justify-center rounded-xl p-4 shadow-lg">
+      <div class="flex w-full justify-center">
+        <img src="/assets/images/logo_200x300.webp" alt="logo" class="h-2w-28 mb-4 w-28" />
       </div>
+      <!-- <h1 class="text-2xl font-bold text-center text-gray-800 mb-2">مدیریت بازی حکم</h1> -->
+      <p class="mb-6 text-center text-sm text-gray-100">ثبت‌نام یا ورود برای ساخت اتاق و ثبت امتیاز</p>
 
-      @if (mode() === 'register') {
-      <div>
-        <label for="displayName" class="mb-1 block text-sm font-semibold text-gray-100">نام نمایشی</label>
-        <input
-          type="text"
-          [(ngModel)]="displayName"
-          name="displayName"
-          placeholder="علی"
-          dir="rtl"
-          class="border-primary focus:primary focus:ring-persian-green-800 w-full rounded-lg border px-3 py-2 text-gray-100 placeholder-gray-500! outline-none focus:ring-2"
-        />
-      </div>
+      <ax-tabs look="default" color="primary" [fitParent]="true" (onActiveTabChanged)="setMode($event)" #tab>
+        <ax-tab-item text="ورود" key="login" [active]="true"> </ax-tab-item>
+        <ax-tab-item text="ثبت‌نام" key="register"> </ax-tab-item>
+      </ax-tabs>
+
+     
+
+      @if (error()) {
+      <div class="mb-4 rounded-lg bg-red-100 p-3 text-center text-sm text-red-700">{{ error() }}</div>
       }
 
-      <div>
-        <label for="password" class="mb-1 block text-sm font-semibold text-gray-100">رمز عبور</label>
-        <input
-          type="password"
-          [(ngModel)]="password"
-          name="password"
-          autocomplete="current-password"
-          dir="ltr"
-          class="border-primary focus:primary focus:ring-persian-green-800 w-full rounded-lg border px-3 py-2 text-gray-100 placeholder-gray-500! outline-none focus:ring-2"
-        />
-      </div>
+      <ax-form-field >
+        <ax-label>نام کاربری (انگلیسی)</ax-label>
+        <ax-text-box [(ngModel)]="username" [look]="'solid'" placeholder="John Doe">
+          <ax-validation-rule rule="required"> </ax-validation-rule>
+        </ax-text-box>
+      </ax-form-field>
 
-      <button type="submit" [disabled]="loading() || !username.trim() || !password" class="bg-primary mt-2 w-full rounded-lg py-3 font-bold text-white hover:bg-blue-700 disabled:opacity-50">
-        {{ loading() ? 'لطفاً صبر کنید...' : (mode() === 'login' ? 'ورود' : 'ثبت‌نام') }}
-      </button>
-    </form>
+        <div>
+          <label for="username" class="mb-1 block text-sm font-semibold text-gray-100">نام کاربری (انگلیسی)</label>
+          <input
+            type="text"
+            [(ngModel)]="username"
+            name="username"
+            autocomplete="username"
+            placeholder="username"
+            dir="ltr"
+            class="border-primary focus:primary focus:ring-persian-green-800 w-full rounded-lg border px-3 py-2 text-gray-100 placeholder-gray-500! outline-none focus:ring-2"
+          />
+          <p class="mt-1 text-xs text-gray-100">۳–۳۲ کاراکتر: a-z، 0-9، _</p>
+        </div>
+
+        @if (mode() === 'register') {
+        <div>
+          <label for="displayName" class="mb-1 block text-sm font-semibold text-gray-100">نام نمایشی</label>
+          <input
+            type="text"
+            [(ngModel)]="displayName"
+            name="displayName"
+            placeholder="علی"
+            dir="rtl"
+            class="border-primary focus:primary focus:ring-persian-green-800 w-full rounded-lg border px-3 py-2 text-gray-100 placeholder-gray-500! outline-none focus:ring-2"
+          />
+        </div>
+        }
+
+        <div>
+          <label for="password" class="mb-1 block text-sm font-semibold text-gray-100">رمز عبور</label>
+          <input
+            type="password"
+            [(ngModel)]="password"
+            name="password"
+            autocomplete="current-password"
+            dir="ltr"
+            class="border-primary focus:primary focus:ring-persian-green-800 w-full rounded-lg border px-3 py-2 text-gray-100 placeholder-gray-500! outline-none focus:ring-2"
+          />
+        </div>
+
+        <button type="submit" [disabled]="loading() || !username.trim() || !password" class="bg-primary mt-2 w-full rounded-lg py-3 font-bold text-white hover:bg-blue-700 disabled:opacity-50">
+          {{ loading() ? 'لطفاً صبر کنید...' : (mode() === 'login' ? 'ورود' : 'ثبت‌نام') }}
+        </button>
+    </div>
   </div>
-</div>
+</ax-form>
