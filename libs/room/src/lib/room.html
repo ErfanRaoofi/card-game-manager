@@ -1,103 +1,144 @@
-<div class="hokm-app" dir="rtl">
-  <div class="hokm-shell">
+<div class="h-full min-h-screen overflow-auto bg-slate-100 font-[inherit]">
+  <div class="overflow-y-auto py-4 pb-8">
     @if (error()) {
     <div class="mb-4 rounded-lg bg-red-100 p-4 text-center font-bold text-red-700">{{ error() }}</div>
     } @if (currentUser(); as user) {
-    <div class="user-bar">
-      <div class="user-bar__name">
-        <strong>{{ user.displayName }}</strong>
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-xl border border-slate-200 bg-white px-4 py-2.5">
+      <div class="text-sm text-slate-500">
+        <strong class="font-semibold text-slate-900">{{ user.displayName }}</strong>
         <span>(@{{ user.username }})</span>
       </div>
-      <div class="user-bar__actions">
-        <button type="button" class="user-bar__link" (click)="editMyCredentials()">ویرایش حساب</button>
+      <div class="flex items-center gap-4">
+        <button
+          type="button"
+          class="border-0 bg-transparent p-0 text-sm font-medium text-amber-700 hover:text-amber-800"
+          (click)="editMyCredentials()"
+        >
+          ویرایش حساب
+        </button>
         @if (isAdmin()) {
-        <a routerLink="/admin" class="user-bar__link">پنل مدیر</a>
+        <a routerLink="/admin" class="text-sm font-medium text-amber-700 no-underline hover:text-amber-800">پنل مدیر</a>
         }
-        <button type="button" class="user-bar__logout" (click)="logout()">خروج</button>
+        <button type="button" class="border-0 bg-transparent p-0 text-sm text-red-600 hover:text-red-700" (click)="logout()">خروج</button>
       </div>
     </div>
     }
 
-    <div class="hokm-card">
+    <div class="bg-white p-4">
       <!-- لابی: لیست اتاق‌ها + ساخت اتاق جدید -->
       @if (!roomId()) {
-      <div class="space-y-8">
-        <div>
-          <div class="mb-4 flex items-center justify-between">
-            <h2 class="text-2xl font-bold text-gray-800">اتاق‌های بازی</h2>
-            <button (click)="loadRoomList()" [disabled]="isLoadingRooms()" class="text-sm text-blue-600 hover:text-blue-800 disabled:opacity-50">
-              {{ isLoadingRooms() ? 'در حال بارگذاری...' : 'بروزرسانی' }}
-            </button>
-          </div>
-          <div class="mb-3">
-            <input
-              [(ngModel)]="roomSearch"
-              type="text"
-              placeholder="جستجوی اتاق (کد، میزبان، بازیکن، وضعیت...)"
-              class="w-full rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-            />
-          </div>
-
-          <div class="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-4 text-sm text-blue-900">
-            <strong>کاربران ثبت‌شده:</strong> {{ registeredUsers().length }} نفر — برای شروع بازی حداقل ۴ کاربر با ثبت‌نام جداگانه لازم است. اولین ورود شما به اتاق = میزبان.
-          </div>
-
-          @if (filteredRoomList().length === 0 && !isLoadingRooms()) {
-          <p class="rounded-lg border border-dashed py-8 text-center text-gray-500">هنوز اتاقی ساخته نشده. یک اتاق جدید بسازید.</p>
-          } @else {
-          <div class="overflow-x-auto rounded-lg border">
-            <table class="w-full text-sm ">
-              <thead class="bg-gray-50 text-gray-700">
-                <tr>
-                  <th class="p-3 text-right">بازی</th>
-                  <th class="p-3 text-right">وضعیت</th>
-                  <th class="p-3 text-right">بازیکن</th>
-                  <th class="p-3 text-right">میزبان</th>
-                  <th class="p-3 text-right">ست (۱ / ۲)</th>
-                  <th class="p-3 text-right"></th>
-                </tr>
-              </thead>
-              <tbody>
-                @for (item of filteredRoomList(); track item.roomId) {
-                <tr class="border-t hover:bg-gray-50">
-                  <td class="p-3">{{ gameTypeLabel(item.gameType) }}</td>
-                  <td class="p-3">{{ statusLabel(item.status) }}</td>
-                  <td class="p-3">
-                    {{ item.playerCount }}/4 @if (item.playerNames.length) {
-                    <span class="mt-0.5 block text-xs text-gray-500">{{ item.playerNames.join('، ') }}</span>
-                    }
-                  </td>
-                  <td class="p-3">
-                    @if (item.hasHost) {
-                    <span class="text-green-700">{{ item.hostUsername || 'دارد' }}</span>
-                    } @else {
-                    <span class="text-amber-700">آزاد</span>
-                    }
-                  </td>
-                  <td class="p-3">{{ item.setsTeam1 }} – {{ item.setsTeam2 }}</td>
-                  <td class="p-3">
-                    <button (click)="openRoom(item)" class="font-medium text-blue-600 hover:text-blue-800">ورود</button>
-                  </td>
-                </tr>
-                }
-              </tbody>
-            </table>
-          </div>
-          }
+      <div class="flex flex-col gap-5">
+        <div class="flex items-center justify-between gap-3">
+          <h2 class="m-0 text-2xl font-bold text-slate-900">اتاق‌های بازی</h2>
+          <button
+            type="button"
+            class="border-0 bg-transparent p-0 text-sm font-medium text-emerald-600 hover:text-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+            (click)="loadRoomList()"
+            [disabled]="isLoadingRooms()"
+          >
+            {{ isLoadingRooms() ? 'در حال بارگذاری...' : 'بروزرسانی' }}
+          </button>
         </div>
 
-        <div class="flex flex-col items-center space-y-4 border-t pt-8">
-          <h3 class="text-lg font-bold text-gray-800">ساخت اتاق جدید</h3>
-          <div class="flex w-64 flex-col space-y-2">
-            <label for="gameType" class="text-sm font-semibold text-gray-700">نوع بازی:</label>
-            <select [(ngModel)]="gameType" class="rounded-lg border px-4 py-2 outline-none focus:ring-2 focus:ring-blue-500">
-              <option value="hokm">حکم</option>
-              <option value="shelem">شلم</option>
-              <option value="11tayi">۱۱ تایی</option>
-            </select>
-          </div>
-          <button (click)="createRoom()" class="w-64 rounded-lg bg-green-600 px-6 py-2 text-white transition-colors hover:bg-green-700">ساخت اتاق</button>
+        <input
+          type="text"
+          [ngModel]="roomSearch()"
+          (ngModelChange)="onRoomSearchChange($event)"
+          placeholder="جستجوی اتاق (کد، میزبان، بازیکن، وضعیت...)"
+          class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:ring-3 focus:ring-emerald-600/15"
+        />
+
+        <div class="rounded-xl border border-blue-200 bg-blue-50 px-4 py-3.5 text-sm leading-relaxed text-blue-900">
+          <strong>کاربران ثبت‌شده:</strong> {{ registeredUsers().length }} نفر — برای شروع بازی حداقل ۴ کاربر با ثبت‌نام جداگانه لازم است. اولین ورود
+          شما به اتاق = میزبان.
         </div>
+
+        @if (isLoadingRooms()) {
+        <p class="m-0 rounded-xl border border-dashed border-slate-300 px-4 py-8 text-center text-sm text-slate-500">در حال بارگذاری اتاق‌ها...</p>
+        } @else if (filteredRoomList().length === 0) {
+        <p class="m-0 rounded-xl border border-dashed border-slate-300 px-4 py-8 text-center text-sm text-slate-500">
+          هنوز اتاقی ساخته نشده. یک اتاق جدید بسازید.
+        </p>
+        } @else {
+        <div class="relative">
+          <button type="button" #swiperPrev class="swiper-button-prev" aria-label="اتاق قبلی"></button>
+          <button type="button" #swiperNext class="swiper-button-next" aria-label="اتاق بعدی"></button>
+
+          <div class="swiper overflow-hidden" #roomSwiper>
+            <div class="swiper-wrapper">
+              @for (item of filteredRoomList(); track item.roomId) {
+              <div class="swiper-slide w-64!">
+                <article class="flex min-h-70 flex-col justify-between gap-3 rounded-2xl border p-4">
+                  <div class="flex items-start justify-between gap-2">
+                    <h3 class="m-0 text-lg font-bold text-slate-900">{{ gameTypeLabel(item.gameType) }}</h3>
+                    <span class="shrink-0 rounded-full px-2 py-0.5 text-xs font-semibold leading-snug {{ statusBadgeClass(item.status) }}">
+                      {{ statusLabel(item.status) }}
+                    </span>
+                  </div>
+
+                  <dl class="m-0 grid gap-2">
+                    <div class="flex items-center justify-between gap-3 text-sm">
+                      <dt class="m-0 text-slate-500">بازیکنان</dt>
+                      <dd class="m-0 font-semibold text-slate-900">{{ item.playerCount }}/۴</dd>
+                    </div>
+                    <div class="flex items-center justify-between gap-3 text-sm">
+                      <dt class="m-0 text-slate-500">میزبان</dt>
+                      <dd class="m-0 font-semibold text-slate-900">
+                        @if (item.hasHost) {
+                        <span class="text-emerald-600">{{ item.hostUsername || 'دارد' }}</span>
+                        } @else {
+                        <span class="text-amber-600">آزاد</span>
+                        }
+                      </dd>
+                    </div>
+                    <div class="flex items-center justify-between gap-3 text-sm">
+                      <dt class="m-0 text-slate-500">ست (۱ / ۲)</dt>
+                      <dd class="m-0 font-semibold text-slate-900 tabular-nums">{{ item.setsTeam1 }} – {{ item.setsTeam2 }}</dd>
+                    </div>
+                  </dl>
+
+                  @if (item.playerNames.length) {
+                  <p class="m-0 min-h-10 text-xs leading-relaxed text-slate-500">{{ item.playerNames.join('، ') }}</p>
+                  }
+
+                  <p class="m-0 text-xs text-slate-400">کد: <span class="ltr">{{ item.roomId }}</span></p>
+
+                  <ax-button look="solid" color="primary" text="ورود به اتاق" (click)="openRoom(item)"> </ax-button>
+                </article>
+              </div>
+              }
+            </div>
+          </div>
+
+          <div
+            #swiperPagination
+            class="swiper-pagination static! mt-1 text-center [&_.swiper-pagination-bullet]:bg-slate-400 [&_.swiper-pagination-bullet]:opacity-100 [&_.swiper-pagination-bullet-active]:bg-emerald-600"
+          ></div>
+        </div>
+        }
+
+        <article class="mt-2 flex flex-col gap-3 rounded-2xl border border-slate-200 bg-white p-5 shadow-[0_4px_16px_rgb(15_23_42/0.05)]">
+          <h3 class="m-0 text-lg font-bold text-slate-900">ساخت اتاق جدید</h3>
+          <p class="m-0 text-sm text-slate-500">نوع بازی را انتخاب کنید و اتاق تازه بسازید.</p>
+          <label class="text-sm font-semibold text-slate-700" for="gameType">نوع بازی</label>
+          <select
+            id="gameType"
+            class="w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm outline-none focus:border-emerald-600 focus:ring-3 focus:ring-emerald-600/15"
+            [ngModel]="gameType()"
+            (ngModelChange)="onGameTypeChange($event)"
+          >
+            <option value="hokm">حکم</option>
+            <option value="shelem">شلم</option>
+            <option value="11tayi">۱۱ تایی</option>
+          </select>
+          <button
+            type="button"
+            class="w-full rounded-xl border-0 bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-slate-800"
+            (click)="createRoom()"
+          >
+            ساخت اتاق
+          </button>
+        </article>
       </div>
       }
       <!-- ورود به اتاق موجود -->
@@ -105,7 +146,9 @@
       <div class="flex flex-col items-center justify-center space-y-6 py-10">
         <button (click)="goToLobby()" class="self-start text-sm text-gray-500 hover:text-gray-800">← بازگشت به لیست اتاق‌ها</button>
         <h2 class="text-2xl font-bold text-gray-800">ورود به میز</h2>
-        <div class="rounded-md border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-blue-800">کد اتاق: <span class="font-mono font-bold">{{ roomId() }}</span></div>
+        <div class="rounded-md border border-blue-200 bg-blue-50 px-4 py-2 text-sm text-blue-800">
+          کد اتاق: <span class="font-mono font-bold">{{ roomId() }}</span>
+        </div>
         @if (roomState(); as preview) { @if (preview.players.length > 0) {
         <div class="w-full max-w-md rounded-lg border bg-white p-4 text-sm">
           <p class="mb-2 font-bold text-gray-800">بازیکنان ثبت‌شده در این اتاق:</p>
@@ -121,10 +164,17 @@
         </div>
         } }
         <div class="max-w-md rounded-lg border border-amber-200 bg-amber-50 px-4 py-3 text-center text-sm text-amber-900">
-          @if (roomState(); as preview) { @if (preview.hostUsername && isCurrentUserHost(preview)) { شما قبلاً میزبان این اتاق بودید (<strong>{{ preview.hostUsername }}</strong>) — با ورود، کنترل
-          برمی‌گردد. } @else if (preview.hostUsername) { میزبان فعلی: <strong>{{ preview.hostUsername }}</strong> — فقط همان کاربر می‌تواند امتیاز بزند. } @else { اولین ورود شما = میزبان این اتاق. } }
+          @if (roomState(); as preview) { @if (preview.hostUsername && isCurrentUserHost(preview)) { شما قبلاً میزبان این اتاق بودید (<strong
+            >{{ preview.hostUsername }}</strong
+          >) — با ورود، کنترل برمی‌گردد. } @else if (preview.hostUsername) { میزبان فعلی: <strong>{{ preview.hostUsername }}</strong> — فقط همان کاربر
+          می‌تواند امتیاز بزند. } @else { اولین ورود شما = میزبان این اتاق. } }
         </div>
-        <button (click)="connectToRoom()" class="w-64 rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 disabled:opacity-50">ورود به میز</button>
+        <button
+          (click)="connectToRoom()"
+          class="w-64 rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
+        >
+          ورود به میز
+        </button>
       </div>
       } @else if (roomState(); as state) {
       <div class="game-dashboard">
@@ -228,7 +278,10 @@
               >
                 {{ creatingDraftIndex() === $index ? '...' : 'ساخت و انتخاب' }}
               </button>
-              <select [(ngModel)]="draft.team" class="rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-400 sm:col-span-2">
+              <select
+                [(ngModel)]="draft.team"
+                class="rounded-lg border px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-amber-400 sm:col-span-2"
+              >
                 <option value="team1">تیم ۱</option>
                 <option value="team2">تیم ۲</option>
               </select>
@@ -238,8 +291,7 @@
               </label>
               @if (draftCreateError()?.index === $index) {
               <p class="text-xs text-red-600 sm:col-span-12">{{ draftCreateError()?.message }}</p>
-              }
-              @if (draftUserPickError()?.index === $index) {
+              } @if (draftUserPickError()?.index === $index) {
               <p class="text-xs text-red-600 sm:col-span-12">{{ draftUserPickError()?.message }}</p>
               }
             </div>
@@ -249,13 +301,15 @@
           <p class="mt-2 text-xs text-gray-600">در ساخت سریع هر سطر، نام نمایشی و رمز اولیه هر دو برابر username می‌شود.</p>
           @if (createUserSuccess()) {
           <p class="mt-1 text-sm text-green-700">{{ createUserSuccess() }}</p>
-          }
-
-          @if (getSetupValidationError()) {
+          } @if (getSetupValidationError()) {
           <p class="mt-3 text-sm text-red-600">{{ getSetupValidationError() }}</p>
           }
 
-          <button (click)="startGame()" [disabled]="!!getSetupValidationError()" class="mt-4 w-full rounded-lg bg-amber-600 py-3 font-bold text-white hover:bg-amber-700 disabled:opacity-50">
+          <button
+            (click)="startGame()"
+            [disabled]="!!getSetupValidationError()"
+            class="mt-4 w-full rounded-lg bg-amber-600 py-3 font-bold text-white hover:bg-amber-700 disabled:opacity-50"
+          >
             شروع بازی
           </button>
         </div>
@@ -292,11 +346,21 @@
               </div>
             </div>
             @if (isHost()) { @if (canUndoScore()) {
-            <button type="button" (click)="undoLastScore()" class="mb-3 w-full rounded-lg border border-orange-300 bg-orange-50 px-4 py-2 text-sm text-orange-900 hover:bg-orange-100">
+            <button
+              type="button"
+              (click)="undoLastScore()"
+              class="mb-3 w-full rounded-lg border border-orange-300 bg-orange-50 px-4 py-2 text-sm text-orange-900 hover:bg-orange-100"
+            >
               ↩ برگشت آخرین امتیاز
             </button>
             }
-            <button type="button" (click)="confirmSetNext()" class="w-full rounded-xl bg-amber-500 px-6 py-3 text-lg font-bold text-white hover:bg-amber-600">تأیید و شروع ست بعدی</button>
+            <button
+              type="button"
+              (click)="confirmSetNext()"
+              class="w-full rounded-xl bg-amber-500 px-6 py-3 text-lg font-bold text-white hover:bg-amber-600"
+            >
+              تأیید و شروع ست بعدی
+            </button>
             } @else {
             <p class="text-sm text-gray-500">در انتظار تأیید میزبان برای شروع ست بعدی...</p>
             }
@@ -310,9 +374,18 @@
           <div class="hokm-picker">
             <span class="hokm-picker__label">انتخاب حکم:</span>
             @for (suit of hokmSuits; track suit) {
-            <button type="button" class="hokm-pill" [class.hokm-pill--active]="(state.hokm || selectedHokm) === suit" (click)="pickHokm(suit)">{{ suit }}</button>
+            <button type="button" class="hokm-pill" [class.hokm-pill--active]="(state.hokm || selectedHokm) === suit" (click)="pickHokm(suit)">
+              {{ suit }}
+            </button>
             } @for (kind of hokmSpecial; track kind) {
-            <button type="button" class="hokm-pill hokm-pill--special" [class.hokm-pill--active]="(state.hokm || selectedHokm) === kind" (click)="pickHokm(kind)">{{ kind }}</button>
+            <button
+              type="button"
+              class="hokm-pill hokm-pill--special"
+              [class.hokm-pill--active]="(state.hokm || selectedHokm) === kind"
+              (click)="pickHokm(kind)"
+            >
+              {{ kind }}
+            </button>
             } @if (!state.hokm) {
             <button type="button" class="btn-confirm-hokm" (click)="confirmHokm()">ثبت «{{ selectedHokm }}»</button>
             }
@@ -327,7 +400,9 @@
           <span class="mb-1 w-full text-sm font-semibold text-indigo-900">حاکم (تیم {{ hakemTeamLabel(state) }}):</span>
           <div class="flex flex-wrap gap-2">
             @for (player of hakemTeamPlayers(state); track player.id) {
-            <button type="button" (click)="changeHakem(player.id)" class="hokm-pill" [class.hokm-pill--active]="isPlayerHakem(state, player.id)">{{ player.name }}</button>
+            <button type="button" (click)="changeHakem(player.id)" class="hokm-pill" [class.hokm-pill--active]="isPlayerHakem(state, player.id)">
+              {{ player.name }}
+            </button>
             }
           </div>
         </div>
@@ -361,7 +436,11 @@
                 </div>
                 <div class="chalk-sticks">
                   @for (slot of handChalkSlots; track slot) {
-                  <span class="chalk-stick chalk-stick--hand" [class.chalk-stick--on]="slot < state.scores.team1.handsWon" [class.chalk-stick--off]="slot >= state.scores.team1.handsWon"></span>
+                  <span
+                    class="chalk-stick chalk-stick--hand"
+                    [class.chalk-stick--on]="slot < state.scores.team1.handsWon"
+                    [class.chalk-stick--off]="slot >= state.scores.team1.handsWon"
+                  ></span>
                   }
                 </div>
               </div>
@@ -387,7 +466,9 @@
             </div>
             @if (isHost()) {
             <div class="team-actions">
-              <button type="button" class="btn-score btn-score--ket" [disabled]="!canScore()" (click)="scoreKetForTeam('team1')">کت (+{{ ketPointsForTeam(state, 'team1') }})</button>
+              <button type="button" class="btn-score btn-score--ket" [disabled]="!canScore()" (click)="scoreKetForTeam('team1')">
+                کت (+{{ ketPointsForTeam(state, 'team1') }})
+              </button>
               <button type="button" class="btn-score btn-score--hand" [disabled]="!canScore()" (click)="scoreNormalHand('team1')">
                 + برد دست ({{ scoring.NORMAL_HAND }}) @if (!isHakemTeam(state, 'team1')) {
                 <span class="btn-score__hint">حاکم عوض می‌شود</span>
@@ -418,7 +499,11 @@
                 </div>
                 <div class="chalk-sticks">
                   @for (slot of handChalkSlots; track slot) {
-                  <span class="chalk-stick chalk-stick--hand" [class.chalk-stick--on]="slot < state.scores.team2.handsWon" [class.chalk-stick--off]="slot >= state.scores.team2.handsWon"></span>
+                  <span
+                    class="chalk-stick chalk-stick--hand"
+                    [class.chalk-stick--on]="slot < state.scores.team2.handsWon"
+                    [class.chalk-stick--off]="slot >= state.scores.team2.handsWon"
+                  ></span>
                   }
                 </div>
               </div>
@@ -444,7 +529,9 @@
             </div>
             @if (isHost()) {
             <div class="team-actions">
-              <button type="button" class="btn-score btn-score--ket" [disabled]="!canScore()" (click)="scoreKetForTeam('team2')">کت (+{{ ketPointsForTeam(state, 'team2') }})</button>
+              <button type="button" class="btn-score btn-score--ket" [disabled]="!canScore()" (click)="scoreKetForTeam('team2')">
+                کت (+{{ ketPointsForTeam(state, 'team2') }})
+              </button>
               <button type="button" class="btn-score btn-score--hand" [disabled]="!canScore()" (click)="scoreNormalHand('team2')">
                 + برد دست ({{ scoring.NORMAL_HAND }}) @if (!isHakemTeam(state, 'team2')) {
                 <span class="btn-score__hint">حاکم عوض می‌شود</span>

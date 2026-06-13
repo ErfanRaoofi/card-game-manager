@@ -1,5 +1,8 @@
 import { AXButtonComponent } from '@acorex/components/button';
-import { AXFormComponent, AXFormFieldComponent, AXValidationRuleDirective } from '@acorex/components/form';import { AXLabelComponent } from '@acorex/components/label';
+import { AXFormComponent, AXFormFieldComponent, AXValidationRuleDirective } from '@acorex/components/form';
+import { AXLabelComponent } from '@acorex/components/label';
+import { AXLoadingComponent } from '@acorex/components/loading';
+import { AXPasswordBoxComponent } from '@acorex/components/password-box';
 import { AXTabItemComponent, AXTabsComponent, AXTabStripChangedEvent } from '@acorex/components/tabs';
 import { AXTextBoxComponent } from '@acorex/components/text-box';
 import { AXToastService } from '@acorex/components/toast';
@@ -11,7 +14,20 @@ import { AuthService } from '@fe/services';
 
 @Component({
   selector: 'app-login',
-  imports: [CommonModule, FormsModule, AXTabsComponent, AXTabItemComponent, AXFormFieldComponent, AXButtonComponent, AXFormComponent, AXLabelComponent, AXTextBoxComponent, AXValidationRuleDirective],
+  imports: [
+    CommonModule,
+    FormsModule,
+    AXTabsComponent,
+    AXTabItemComponent,
+    AXFormFieldComponent,
+    AXButtonComponent,
+    AXFormComponent,
+    AXLabelComponent,
+    AXTextBoxComponent,
+    AXValidationRuleDirective,
+    AXPasswordBoxComponent,
+    AXLoadingComponent,
+  ],
   templateUrl: './login.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
 })

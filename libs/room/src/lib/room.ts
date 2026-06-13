@@ -1,15 +1,22 @@
 import { CommonModule } from '@angular/common';
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   computed,
   effect,
+  ElementRef,
   inject,
+  Injector,
+  OnDestroy,
   OnInit,
   signal,
+  ViewChild,
   ViewEncapsulation,
 } from '@angular/core';
+import Swiper from 'swiper';
+import { Navigation, Pagination } from 'swiper/modules';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthService, GameService } from '@fe/services';
@@ -26,6 +33,8 @@ import {
   TeamId,
 } from '@fe/shared-types';
 
+import {AXButtonComponent} from '@acorex/components/button'
+
 interface PlayerDraft {
   appUserId: string;
   team: TeamId;
@@ -37,18 +46,25 @@ interface PlayerDraft {
 
 @Component({
   selector: 'lib-room',
-  imports: [CommonModule, FormsModule, RouterLink],
+  imports: [CommonModule, FormsModule, RouterLink, AXButtonComponent],
   templateUrl: './room.html',
   styleUrl: './room.css',
   encapsulation: ViewEncapsulation.None,
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class Room implements OnInit {
+export class Room implements OnInit, OnDestroy {
   private route = inject(ActivatedRoute);
   private router = inject(Router);
   private cdr = inject(ChangeDetectorRef);
+  private injector = inject(Injector);
   public gameService = inject(GameService);
   public authService = inject(AuthService);
+
+  @ViewChild('roomSwiper') roomSwiperRef?: ElementRef<HTMLElement>;
+  @ViewChild('swiperPrev') swiperPrevRef?: ElementRef<HTMLElement>;
+  @ViewChild('swiperNext') swiperNextRef?: ElementRef<HTMLElement>;
+  @ViewChild('swiperPagination') swiperPaginationRef?: ElementRef<HTMLElement>;
+  private roomSwiper?: Swiper;
 
   constructor() {
     effect(() => {
@@ -59,6 +75,15 @@ export class Room implements OnInit {
       if (state?.hokm) {
         this.selectedHokm = state.hokm;
       }
+    });
+
+    effect(() => {
+      const rooms = this.filteredRoomList();
+      if (!rooms.length) {
+        this.destroyRoomSwiper();
+        return;
+      }
+      afterNextRender(() => this.initRoomSwiper(), { injector: this.injector });
     });
   }
 
@@ -412,6 +437,67 @@ export class Room implements OnInit {
       YAZDAHTAEI: '۱۱ تایی',
     };
     return labels[type] ?? type;
+  }
+
+  statusBadgeClass(status: RoomStatus): string {
+    const classes: Record<RoomStatus, string> = {
+      SETUP: 'bg-amber-100 text-amber-800',
+      PLAYING: 'bg-emerald-100 text-emerald-800',
+      PAUSED: 'bg-slate-200 text-slate-600',
+      FINISHED: 'bg-red-100 text-red-800',
+    };
+    return classes[status] ?? 'bg-amber-100 text-amber-800';
+  }
+
+  onRoomSearchChange(value: string): void {
+    this.roomSearch.set(value);
+  }
+
+  onGameTypeChange(value: 'hokm' | 'shelem' | '11tayi'): void {
+    this.gameType.set(value);
+  }
+
+  ngOnDestroy(): void {
+    this.destroyRoomSwiper();
+  }
+
+  private initRoomSwiper(): void {
+    const el = this.roomSwiperRef?.nativeElement;
+    if (!el) {
+      return;
+    }
+
+    if (this.roomSwiper) {
+      this.roomSwiper.update();
+      return;
+    }
+
+    this.roomSwiper = new Swiper(el, {
+      modules: [Navigation, Pagination],
+      slidesPerView: 'auto',
+      spaceBetween: 16,
+      grabCursor: true,
+      watchOverflow: true,
+      breakpoints: {
+        480: { slidesPerView: 1.35, spaceBetween: 16 },
+        640: { slidesPerView: 2.1, spaceBetween: 16 },
+        1024: { slidesPerView: 2.6, spaceBetween: 20 },
+        1280: { slidesPerView: 3, spaceBetween: 20 },
+      },
+      navigation: {
+        nextEl: this.swiperNextRef?.nativeElement ?? null,
+        prevEl: this.swiperPrevRef?.nativeElement ?? null,
+      },
+      pagination: {
+        el: this.swiperPaginationRef?.nativeElement ?? null,
+        clickable: true,
+      },
+    });
+  }
+
+  private destroyRoomSwiper(): void {
+    this.roomSwiper?.destroy(true, true);
+    this.roomSwiper = undefined;
   }
 
   async createRoom() {

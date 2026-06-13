@@ -17,7 +17,7 @@ body {
   /* font-family: 'BalooDa'; */
   touch-action: manipulation;
   direction: rtl;
-  @apply surface h-dvh  w-full overflow-hidden md:mx-auto! md:w-100! md:rounded-2xl md:border dark:surface;
+  @apply md:flex md:items-center md:justify-center overflow-hidden w-full h-dvh;
 }
 
 .ltr {
@@ -25,6 +25,7 @@ body {
   unicode-bidi: embed;
   text-align: left;
 }
+
 .ax-popup {
-  @apply rounded-default! surface! dark:darkest-surface mx-auto flex w-auto flex-col overflow-hidden border p-0 outline-2 outline-offset-2 outline-transparent;
+  @apply rounded-default surface dark:darkest-surface mx-auto flex w-auto flex-col overflow-hidden border p-0 outline-2 outline-offset-2 outline-transparent;
 }

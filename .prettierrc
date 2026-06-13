@@ -1,6 +1,6 @@
 {
   "singleQuote": true,
-  "printWidth": 200,
+  "printWidth": 150,
   "plugins": ["prettier-plugin-organize-imports", "prettier-plugin-tailwindcss"],
-  "tailwindConfig": "./apps/cita/tailwind.config.js"
+  "tailwindConfig": "./apps/frontend/tailwind.config.js"
 }
